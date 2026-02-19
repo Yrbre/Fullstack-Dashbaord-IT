@@ -9,16 +9,16 @@
                 <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink"
                     role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="avatar avatar-sm mt-2">
-                        <img src="{{ Auth::user()->photo ? Storage::url(Auth::user()->photo) : asset('dark/assets/avatars/face-1.jpg') }}"
+                        <img src="<?php echo e(Auth::user()->photo ? Storage::url(Auth::user()->photo) : asset('dark/assets/avatars/face-1.jpg')); ?>"
                             alt="..." class="avatar-img rounded-circle">
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <label class="d-flex justify-content-center">{{ Auth::user()->name }}</label>
+                    <label class="d-flex justify-content-center"><?php echo e(Auth::user()->name); ?></label>
                     <a class="dropdown-item" href="#">Profile</a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <a class="dropdown-item" href="{{ route('logout') }}"
+                    <form method="POST" action="<?php echo e(route('logout')); ?>">
+                        <?php echo csrf_field(); ?>
+                        <a class="dropdown-item" href="<?php echo e(route('logout')); ?>"
                             onclick="event.preventDefault(); this.closest('form').submit();">
                             Logout
                         </a>
@@ -27,3 +27,4 @@
             </li>
         </ul>
     </nav>
+<?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/layouts/navbar.blade.php ENDPATH**/ ?>

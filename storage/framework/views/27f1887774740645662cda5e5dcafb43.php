@@ -16,8 +16,7 @@
                         <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
                     </g>
                 </svg>
-                {{-- <i class="fe fe-monitor"></i><br>
-                <span class="text-base">Information Technology</span> --}}
+                
             </a>
         </div>
         <ul class="navbar-nav flex-fill w-100 mb-2">
@@ -37,41 +36,10 @@
                     <i class="fe fe-box fe-16"></i>
                     <span class="ml-3 item-text">Tasks</span>
                 </a>
-                {{-- <ul class="collapse list-unstyled pl-4 w-100" id="ui-elements">
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-color.html"><span class="ml-1 item-text">Colors</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-typograpy.html"><span
-                                class="ml-1 item-text">Typograpy</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-icons.html"><span class="ml-1 item-text">Icons</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-buttons.html"><span
-                                class="ml-1 item-text">Buttons</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-notification.html"><span
-                                class="ml-1 item-text">Notifications</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-modals.html"><span class="ml-1 item-text">Modals</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-tabs-accordion.html"><span class="ml-1 item-text">Tabs &
-                                Accordion</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link pl-3" href="./ui-progress.html"><span
-                                class="ml-1 item-text">Progress</span></a>
-                    </li>
-                </ul> --}}
+                
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link @yield('menuactivity')" href="{{ route('activity.index') }}">
+                <a class="nav-link <?php echo $__env->yieldContent('menuactivity'); ?>" href="<?php echo e(route('activity.index')); ?>">
                     <i class="fe fe-activity fe-16"></i>
                     <span class="ml-3 item-text">Activity</span>
                 </a>
@@ -83,25 +51,25 @@
                 </a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link @yield('menucategory')" href="{{ route('category.index') }}">
+                <a class="nav-link <?php echo $__env->yieldContent('menucategory'); ?>" href="<?php echo e(route('category.index')); ?>">
                     <i class="fe fe-grid fe-16"></i>
                     <span class="ml-3 item-text">Category</span>
                 </a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link @yield('menuenduser')" href="{{ route('enduser.index') }}">
+                <a class="nav-link <?php echo $__env->yieldContent('menuenduser'); ?>" href="<?php echo e(route('enduser.index')); ?>">
                     <i class="fe fe-users fe-16"></i>
                     <span class="ml-3 item-text">End User</span>
                 </a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link @yield('menulocation')" href="{{ route('location.index') }}">
+                <a class="nav-link <?php echo $__env->yieldContent('menulocation'); ?>" href="<?php echo e(route('location.index')); ?>">
                     <i class="fe fe-map-pin fe-16"></i>
                     <span class="ml-3 item-text">Location</span>
                 </a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link" href="{{ route('user.index') }}">
+                <a class="nav-link" href="<?php echo e(route('user.index')); ?>">
                     <i class="fe fe-user fe-16"></i>
                     <span class="ml-3 item-text">User</span>
                 </a>
@@ -110,3 +78,4 @@
 
     </nav>
 </aside>
+<?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/layouts/sidebar.blade.php ENDPATH**/ ?>

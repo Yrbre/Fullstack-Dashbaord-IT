@@ -6,7 +6,6 @@ use App\Http\Requests\GetEndUserRequest;
 use App\Http\Requests\StoreEndUserRequest;
 use App\Http\Requests\UpdateEndUserRequest;
 use App\Models\EndUser;
-use Illuminate\Http\Request;
 
 class EndUserController extends Controller
 {
