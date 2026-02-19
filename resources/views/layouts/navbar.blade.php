@@ -3,7 +3,7 @@
         <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
             <i class="fe fe-menu navbar-toggler-icon"></i>
         </button>
-        <label class="text-white">Name</label>
+        <label class="text-white"></label>
         <ul class="nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink"
@@ -13,7 +13,7 @@
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <label for="">{{ Auth::user()->name }}</label>
+                    <label class="d-flex justify-content-center">{{ Auth::user()->name }}</label>
                     <a class="dropdown-item" href="#">Profile</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

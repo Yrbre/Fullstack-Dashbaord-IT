@@ -89,7 +89,7 @@
                 </a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link" href="#">
+                <a class="nav-link @yield('menuenduser')" href="{{ route('enduser.index') }}">
                     <i class="fe fe-users fe-16"></i>
                     <span class="ml-3 item-text">End User</span>
                 </a>

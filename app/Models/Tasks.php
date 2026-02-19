@@ -27,4 +27,9 @@ class Tasks extends Model
     {
         return $this->belongsTo(Location::class, 'location_id', 'id');
     }
+
+    public function enduser()
+    {
+        return $this->belongsTo(EndUser::class, 'enduser_id', 'id');
+    }
 }
