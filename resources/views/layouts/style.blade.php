@@ -5,6 +5,7 @@
     rel="stylesheet">
 <!-- Icons CSS -->
 <link rel="stylesheet" href="{{ asset('dark/css/feather.css') }}">
+<link rel="stylesheet" href="{{ asset('dark/css/dataTables.bootstrap4.css') }}">
 <link rel="stylesheet" href="{{ asset('dark/css/select2.css') }}">
 <link rel="stylesheet" href="{{ asset('dark/css/dropzone.css') }}">
 <link rel="stylesheet" href="{{ asset('dark/css/uppy.min.css') }}">

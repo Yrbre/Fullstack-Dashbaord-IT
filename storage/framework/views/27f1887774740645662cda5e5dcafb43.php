@@ -31,12 +31,11 @@
             <span>Main</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item">
-                <a href="#" data-toggle="collapse" aria-expanded="false" class="nav-link">
+            <li class="nav-item w-100">
+                <a class="nav-link <?php echo $__env->yieldContent('menutask'); ?>" href="<?php echo e(route('task.index')); ?>">
                     <i class="fe fe-box fe-16"></i>
                     <span class="ml-3 item-text">Tasks</span>
                 </a>
-                
             </li>
             <li class="nav-item w-100">
                 <a class="nav-link <?php echo $__env->yieldContent('menuactivity'); ?>" href="<?php echo e(route('activity.index')); ?>">

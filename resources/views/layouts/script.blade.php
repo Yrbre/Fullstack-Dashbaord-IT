@@ -25,6 +25,8 @@
 <script src='{{ asset('dark/js/dropzone.min.js') }}'></script>
 <script src='{{ asset('dark/js/uppy.min.js') }}'></script>
 <script src='{{ asset('dark/js/quill.min.js') }}'></script>
+<script src='{{ asset('dark/js/jquery.dataTables.min.js') }}'></script>
+<script src='{{ asset('dark/js/dataTables.bootstrap4.min.js') }}'></script>
 <script src="{{ asset('dark/js/apps.js') }}"></script>
 {{-- Sweetalart --}}
 <script src="{{ asset('dark/sweetalert2/dist/sweetalert2.min.js') }}"></script>

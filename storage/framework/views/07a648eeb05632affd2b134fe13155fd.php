@@ -25,6 +25,8 @@
 <script src='<?php echo e(asset('dark/js/dropzone.min.js')); ?>'></script>
 <script src='<?php echo e(asset('dark/js/uppy.min.js')); ?>'></script>
 <script src='<?php echo e(asset('dark/js/quill.min.js')); ?>'></script>
+<script src='<?php echo e(asset('dark/js/jquery.dataTables.min.js')); ?>'></script>
+<script src='<?php echo e(asset('dark/js/dataTables.bootstrap4.min.js')); ?>'></script>
 <script src="<?php echo e(asset('dark/js/apps.js')); ?>"></script>
 
 <script src="<?php echo e(asset('dark/sweetalert2/dist/sweetalert2.min.js')); ?>"></script>

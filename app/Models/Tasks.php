@@ -12,9 +12,21 @@ class Tasks extends Model
 
     protected $fillable = [
         'name',
-        'description',
+        'priority',
         'category_id',
+        'assign_to',
+        'task_level',
+        'enduser_id',
         'status',
+        'progress',
+        'delivered',
+        'location_id',
+        'in_timeline',
+        'schedule_start',
+        'schedule_end',
+        'actual_start',
+        'actual_end',
+        'description',
     ];
     protected $table = 'tasks';
 
@@ -31,5 +43,10 @@ class Tasks extends Model
     public function enduser()
     {
         return $this->belongsTo(EndUser::class, 'enduser_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'assign_to', 'id');
     }
 }

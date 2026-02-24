@@ -8,23 +8,16 @@
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('activity.create') }}" class="btn btn-primary">Create New Activity</a>
             </div>
-            {{-- Search --}}
-            <form class="form-inline mr-auto searchform text-muted" action="{{ route('activity.index') }}" method="GET">
-                <input class="form-control mr-sm-2 bg-transparent border-1 pl-4 text-muted" type="search"
-                    placeholder="Type something..." aria-label="Search" name="search"
-                    value="{{ $search['search'] ?? '' }}">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">
                         <div class="card-body">
                             <h5 class="card-title">Table Activity</h5>
                             <p class="card-text"></p>
-                            <table class="table table-hover">
+                            <table class="table datatables" id="dataTable-1">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>#</th>
                                         <th>Name</th>
                                         <th>Location</th>
                                         <th>Create at</th>
@@ -65,6 +58,7 @@
             </div>
         </div>
     </div>
+    {{-- Modal Delete --}}
     <script>
         // Handle delete modal
         $('#deleteModal').on('show.bs.modal', function(event) {
@@ -78,6 +72,7 @@
             modal.find('#deleteForm').attr('action', deleteUrl);
         });
     </script>
+    {{-- SweetAlert --}}
     <script>
         @if (session('success'))
             Swal.fire({
@@ -89,5 +84,15 @@
                 showConfirmButton: false,
             });
         @endif
+    </script>
+    {{-- DataTableScript --}}
+    <script>
+        $('#dataTable-1').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+            ]
+        });
     </script>
 @endsection

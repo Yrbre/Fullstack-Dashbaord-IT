@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('endusers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('department');
             $table->softDeletes();
             $table->timestamps();

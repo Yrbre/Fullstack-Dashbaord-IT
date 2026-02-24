@@ -21,7 +21,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Table Location</h5>
                             <p class="card-text"></p>
-                            <table class="table table-hover">
+                            <table class="table datatables" id="dataTable-1">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -92,5 +92,15 @@
                 showConfirmButton: false,
             });
         @endif
+    </script>
+    {{-- DataTableScript --}}
+    <script>
+        $('#dataTable-1').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+            ]
+        });
     </script>
 @endsection
