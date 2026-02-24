@@ -115,11 +115,14 @@
                             name="status">
                             <optgroup label="Select Status Type">
                                 <option value="" selected disabled>Select Status</option>
+                                @if ($task->status === 'ON DUTY')
+                                    <option value="ON DUTY"
+                                        {{ old('status', $task->status) == 'ON DUTY' ? 'selected' : '' }}>
+                                        ON DUTY
+                                    </option>
+                                @endif
                                 <option value="NEW" {{ old('status', $task->status) == 'NEW' ? 'selected' : '' }}>
                                     NEW
-                                </option>
-                                <option value="ON DUTY" {{ old('status', $task->status) == 'ON DUTY' ? 'selected' : '' }}>
-                                    ON DUTY
                                 </option>
                                 <option value="COMPLETED"
                                     {{ old('status', $task->status) == 'COMPLETED' ? 'selected' : '' }}>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ActivityHistoryController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EndUserController;
 use App\Http\Controllers\LocationController;
@@ -26,6 +27,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('/enduser', EndUserController::class)->names('enduser');
     Route::resource('/user', UserController::class)->names('user');
     Route::resource('/task', TaskController::class)->names('task');
+    Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
+    Route::get('/activity_history/{id}', [ActivityHistoryController::class, 'show'])->name('activity_history.show');
+});
+
+// Edit Activity History, Privilage only for Admin
+Route::group(['middleware' => ['auth', 'verified', 'role:ADMIN']], function () {
+    Route::get('/activity_history/{id}/edit', [ActivityHistoryController::class, 'edit'])->name('activity_history.edit');
+    Route::put('/activity_history/{id}', [ActivityHistoryController::class, 'update'])->name('activity_history.update');
+    Route::delete('/activity_history/{id}', [ActivityHistoryController::class, 'destroy'])->name('activity_history.destroy');
 });
 
 Route::middleware('auth')->group(function () {

@@ -205,11 +205,14 @@ unset($__errorArgs, $__bag); ?>" id="select-status"
                             name="status">
                             <optgroup label="Select Status Type">
                                 <option value="" selected disabled>Select Status</option>
+                                <?php if($task->status === 'ON DUTY'): ?>
+                                    <option value="ON DUTY"
+                                        <?php echo e(old('status', $task->status) == 'ON DUTY' ? 'selected' : ''); ?>>
+                                        ON DUTY
+                                    </option>
+                                <?php endif; ?>
                                 <option value="NEW" <?php echo e(old('status', $task->status) == 'NEW' ? 'selected' : ''); ?>>
                                     NEW
-                                </option>
-                                <option value="ON DUTY" <?php echo e(old('status', $task->status) == 'ON DUTY' ? 'selected' : ''); ?>>
-                                    ON DUTY
                                 </option>
                                 <option value="COMPLETED"
                                     <?php echo e(old('status', $task->status) == 'COMPLETED' ? 'selected' : ''); ?>>

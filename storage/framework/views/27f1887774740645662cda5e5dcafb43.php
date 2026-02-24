@@ -20,12 +20,25 @@
             </a>
         </div>
         <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item">
-                <a href="#" data-toggle="collapse" aria-expanded="false" class="nav-link">
-                    <i class="fe fe-home fe-16"></i>
-                    <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
-                </a>
-            </li>
+
+            <?php if(Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT'])): ?>
+                <li class="nav-item">
+                    <a href="#" data-toggle="collapse" aria-expanded="false" class="nav-link">
+                        <i class="fe fe-home fe-16"></i>
+                        <span class="ml-3 item-text">Dashboard Management</span><span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            <?php elseif(Auth::check() && in_array(Auth::user()->role, ['OPERATOR'])): ?>
+                <li class="nav-item w-100">
+                    <a class="nav-link <?php echo $__env->yieldContent('menudashboard'); ?>" href="#">
+                        <i class="fe fe-home fe-16"></i>
+                        <span class="ml-3 item-text">Dashboard Operator</span>
+                    </a>
+                </li>
+            <?php elseif(Auth::check() && in_array(Auth::user()->role, ['ADMIN'])): ?>
+                
+            <?php endif; ?>
+
         </ul>
         <p class="text-muted nav-heading mt-4 mb-1">
             <span>Main</span>
@@ -44,7 +57,7 @@
                 </a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="<?php echo e(route('activity_history.index')); ?>">
                     <i class="fe fe-layers fe-16"></i>
                     <span class="ml-3 item-text">Activity History</span>
                 </a>
