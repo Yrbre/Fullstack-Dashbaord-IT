@@ -24,14 +24,14 @@
 
             @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT']))
                 <li class="nav-item">
-                    <a href="#" data-toggle="collapse" aria-expanded="false" class="nav-link">
+                    <a href="{{ route('dashboard_management.index') }}" class="nav-link">
                         <i class="fe fe-home fe-16"></i>
                         <span class="ml-3 item-text">Dashboard Management</span><span class="sr-only">(current)</span>
                     </a>
                 </li>
             @elseif(Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
                 <li class="nav-item w-100">
-                    <a class="nav-link @yield('menudashboard')" href="#">
+                    <a class="nav-link @yield('menudashboard')" href="{{ route('dashboard_operator.index') }}">
                         <i class="fe fe-home fe-16"></i>
                         <span class="ml-3 item-text">Dashboard Operator</span>
                     </a>
@@ -45,11 +45,22 @@
             <span>Main</span>
         </p>
         <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-                <a class="nav-link @yield('menutask')" href="{{ route('task.index') }}">
-                    <i class="fe fe-box fe-16"></i>
-                    <span class="ml-3 item-text">Tasks</span>
+            <li class="nav-item dropdown">
+                <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+                    <i class="fe fe-home fe-16"></i>
+                    <span class="ml-3 item-text">Task</span><span class="sr-only">(current)</span>
                 </a>
+                <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
+                    <li class="nav-item active">
+                        <a class="nav-link pl-3" href="{{ route('task.index') }}"><span class="ml-1 item-text">Task
+                                Department</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link pl-3" href="{{ route('task_personal.index') }}"><span
+                                class="ml-1 item-text">Task
+                                Pesonal</span></a>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item w-100">
                 <a class="nav-link @yield('menuactivity')" href="{{ route('activity.index') }}">

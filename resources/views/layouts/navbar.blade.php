@@ -11,10 +11,10 @@
                     <span class="avatar avatar-sm mt-2">
                         <img src="{{ Auth::user()->photo ? Storage::url(Auth::user()->photo) : asset('dark/assets/avatars/face-1.jpg') }}"
                             alt="..." class="avatar-img rounded-circle">
+                        <span class="ml-2">{{ Auth::user()->name }}</span>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <label class="d-flex justify-content-center">{{ Auth::user()->name }}</label>
                     <a class="dropdown-item" href="#">Profile</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

@@ -1,1 +1,0 @@
-<?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/activity_history/show.blade.php ENDPATH**/ ?>

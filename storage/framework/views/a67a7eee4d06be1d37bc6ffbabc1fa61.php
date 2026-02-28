@@ -214,6 +214,10 @@ unset($__errorArgs, $__bag); ?>" id="select-status"
                                 <option value="NEW" <?php echo e(old('status', $task->status) == 'NEW' ? 'selected' : ''); ?>>
                                     NEW
                                 </option>
+                                <option value="ON PROGRESS"
+                                    <?php echo e(old('status', $task->status) == 'ON PROGRESS' ? 'selected' : ''); ?>>
+                                    ON PROGRESS
+                                </option>
                                 <option value="COMPLETED"
                                     <?php echo e(old('status', $task->status) == 'COMPLETED' ? 'selected' : ''); ?>>
                                     COMPLETED

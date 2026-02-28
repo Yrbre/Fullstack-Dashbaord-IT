@@ -20,15 +20,32 @@
                     </div>
 
                     <div class="form-group col-6">
+                        <label for="simple-select2">Relation Task</label>
+                        <select class="form-control select2 @error('relation_task') is-invalid @enderror"
+                            id="select-relation-task" name="relation_task">
+                            <optgroup label="Select Relation Task">
+                                <option value="" selected>Without Relation</option>
+                                @foreach ($task as $item)
+                                    <option value="{{ $item->id }}" @if (old('relation_task') == $item->id) selected @endif>
+                                        {{ $item->name }}</option>
+                                @endforeach
+                            </optgroup>
+                        </select>
+                        @error('relation_task')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group col-6">
                         <label for="simple-select2">Priority</label>
                         <select class="form-control select2 @error('priority') is-invalid @enderror" id="select-priority"
                             name="priority">
                             <optgroup label="Select Priority Type">
                                 <option value="" selected disabled>Select Priority</option>
-                                <option value="CRITICAL">CRITICAL</option>
-                                <option value="HIGH">HIGH</option>
-                                <option value="MEDIUM">MEDIUM</option>
-                                <option value="LOW">LOW</option>
+                                <option value="CRITICAL" @if (old('priority') == 'CRITICAL') selected @endif>CRITICAL</option>
+                                <option value="HIGH" @if (old('priority') == 'HIGH') selected @endif>HIGH</option>
+                                <option value="MEDIUM" @if (old('priority') == 'MEDIUM') selected @endif>MEDIUM</option>
+                                <option value="LOW" @if (old('priority') == 'LOW') selected @endif>LOW</option>
                             </optgroup>
                         </select>
                         @error('priority')
@@ -43,7 +60,8 @@
                             <optgroup label="Select Category Type">
                                 <option value="" selected disabled>Select Category</option>
                                 @foreach ($category as $item)
-                                    <option value="{{ $item->id }}">{{ $item->type }} - {{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" @if (old('category_id') == $item->id) selected @endif>
+                                        {{ $item->type }} - {{ $item->name }}</option>
                                 @endforeach
                             </optgroup>
                         </select>
@@ -53,7 +71,7 @@
                     </div>
 
                     <div class="form-group col-6">
-                        <label for="simple-select2">Assign to</label>
+                        <label for="simple-select2">Responsibility</label>
                         <select class="form-control select2" id="select-assign" name="assign_to">
                             <optgroup label="Select User">
                                 @foreach ($assignTo as $id => $name)
@@ -70,8 +88,8 @@
                             name="task_level">
                             <optgroup label="Select Level Type">
                                 <option value="" selected disabled>Select Level</option>
-                                <option value="DEPARTMENT">DEPARTMENT</option>
-                                <option value="PERSONAL">PERSONAL</option>
+                                <option value="DEPARTMENT" @if (old('task_level') == 'DEPARTMENT') selected @endif>DEPARTMENT
+                                </option>
                             </optgroup>
                         </select>
                         @error('task_level')
@@ -85,10 +103,17 @@
                             <optgroup label="Select Department">
                                 <option value="" selected disabled>Select Department</option>
                                 @foreach ($department as $item)
-                                    <option value="{{ $item->id }}">{{ $item->department }}</option>
+                                    <option value="{{ $item->id }}" @if (old('enduser_department') == $item->id) selected @endif>
+                                        {{ $item->department }}</option>
                                 @endforeach
                             </optgroup>
+                            <option value="OTHER" @if (old('enduser_department') == 'OTHER') selected @endif>OTHER</option>
                         </select>
+                    </div>
+                    <div class="form-group col-6" id="otherDepartmentInput" style="display: none;">
+                        <label for="other_department">Specify Department</label>
+                        <input type="text" class="form-control" id="other_department" name="other_department"
+                            placeholder="Enter custom department" value="{{ old('other_department') }}">
                     </div>
 
                     <div class="form-group col-6">
@@ -97,10 +122,24 @@
                             <optgroup label="Select Personal">
                                 <option value="" selected disabled>Select Personal</option>
                                 @foreach ($endUser as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}"
+                                        @if (old('enduser_personal') == $item->id) selected @endif>
+                                        {{ $item->name }}</option>
                                 @endforeach
+                                <option value="OTHER" @if (old('enduser_personal') == 'OTHER') selected @endif>OTHER</option>
                             </optgroup>
                         </select>
+                    </div>
+                    <div class="form-group col-6" id="otherPersonalInput" style="display: none;">
+                        <label for="other_personal">Specify Personal</label>
+                        <input type="text" class="form-control" id="other_personal" name="other_personal"
+                            placeholder="Enter custom personal" value="{{ old('other_personal') }}">
+                    </div>
+                    <div class="form-group col-6" id="otherPersonalDepartmentInput" style="display: none;">
+                        <label for="other_personal_department">Specify Department</label>
+                        <input type="text" class="form-control" id="other_personal_department"
+                            name="other_personal_department" placeholder="Enter custom department"
+                            value="{{ old('other_personal_department') }}">
                     </div>
 
 
@@ -110,9 +149,11 @@
                             name="status">
                             <optgroup label="Select Status Type">
                                 <option value="" selected disabled>Select Status</option>
-                                <option value="NEW">NEW</option>
-                                <option value="ON DUTY">ON DUTY</option>
-                                <option value="COMPLETED">COMPLETED</option>
+                                <option value="NEW" @if (old('status') == 'NEW') selected @endif>NEW</option>
+                                <option value="ON PROGRESS" @if (old('status') == 'ON PROGRESS') selected @endif>IN PROGRESS
+                                </option>
+                                <option value="COMPLETED" @if (old('status') == 'COMPLETED') selected @endif>COMPLETED
+                                </option>
                             </optgroup>
                         </select>
                         @error('status')
@@ -120,21 +161,36 @@
                         @enderror
                     </div>
 
-                    <div class="form-group col-6">
+                    {{-- <div class="form-group col-6">
                         <label for="simple-select2">Location</label>
-                        <select class="form-control select2 @error('location_id') is-invalid @enderror" id="select-location"
-                            name="location_id">
+                        <select class="form-control select2 @error('location_id') is-invalid @enderror"
+                            id="select-location" name="location_id">
                             <optgroup label="Select Location">
                                 <option value="" selected disabled>Select Location</option>
                                 @foreach ($location as $item)
-                                    <option value="{{ $item->id }}" @if (old('location_id') == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}"
+                                        @if (old('location_id') == $item->id) selected @endif>
                                         {{ $item->department }} - {{ $item->location }}</option>
                                 @endforeach
+                                <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option>
                             </optgroup>
                         </select>
                         @error('location_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
+                    </div> --}}
+
+                    <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
+                        <label for="other_department_location">Specify Department Location</label>
+                        <input type="text" class="form-control" id="other_department_location"
+                            name="other_department_location" placeholder="Enter custom department location"
+                            value="{{ old('other_department_location') }}">
+                    </div>
+
+                    <div class="form-group col-6" id="otherLocationInput" style="display: none;">
+                        <label for="other_location">Specify Location</label>
+                        <input type="text" class="form-control" id="other_location" name="other_location"
+                            placeholder="Enter custom location" value="{{ old('other_location') }}">
                     </div>
 
                     <div class="form-group col-md-6">
@@ -174,49 +230,106 @@
     {{-- JS Department --}}
     <script>
         $(document).ready(function() {
-            $('#select-department').closest('.form-group').hide();
-            $('#select-department').prop('required', false);
 
-            $('#select-level').on('change', function() {
+            function toggleLevel() {
+                const level = $('#select-level').val();
 
-                if ($(this).val() === 'DEPARTMENT') {
-
+                // DEPARTMENT
+                if (level === 'DEPARTMENT') {
                     $('#select-department').closest('.form-group').show();
                     $('#select-department').prop('required', true);
-
                 } else {
-
-                    $('#select-department').closest('.form-group').hide();
+                    $('#select-department')
+                        .closest('.form-group').hide();
                     $('#select-department')
                         .prop('required', false)
                         .val(null)
                         .trigger('change');
                 }
-            });
-        });
-    </script>
-    {{-- JS PERSONAL --}}
-    <script>
-        $(document).ready(function() {
-            $('#select-personal').closest('.form-group').hide();
-            $('#select-personal').prop('required', false);
 
-            $('#select-level').on('change', function() {
-
-                if ($(this).val() === 'PERSONAL') {
-
+                // PERSONAL
+                if (level === 'PERSONAL') {
                     $('#select-personal').closest('.form-group').show();
                     $('#select-personal').prop('required', true);
-
                 } else {
-
-                    $('#select-personal').closest('.form-group').hide();
+                    $('#select-personal')
+                        .closest('.form-group').hide();
                     $('#select-personal')
                         .prop('required', false)
                         .val(null)
                         .trigger('change');
                 }
-            });
+            }
+
+            function toggleDepartmentOther() {
+                if ($('#select-department').val() === 'OTHER') {
+                    $('#otherDepartmentInput').show();
+                    $('#other_department').prop('required', true);
+                } else {
+                    $('#otherDepartmentInput').hide();
+                    $('#other_department')
+                        .prop('required', false)
+                        .val('');
+                }
+            }
+
+            function togglePersonalOther() {
+                if ($('#select-personal').val() === 'OTHER') {
+                    $('#otherPersonalInput').show();
+                    $('#other_personal').prop('required', true);
+
+                    $('#otherPersonalDepartmentInput').show();
+                    $('#other_personal_department').prop('required', true);
+                } else {
+                    $('#otherPersonalInput').hide();
+                    $('#other_personal')
+                        .prop('required', false)
+                        .val('');
+
+                    $('#otherPersonalDepartmentInput').hide();
+                    $('#other_personal_department')
+                        .prop('required', false)
+                        .val('');
+                }
+            }
+
+            function toggleLocationOther() {
+                if ($('#select-location').val() === 'OTHER') {
+                    $('#otherLocationInput').show();
+                    $('#other_location').prop('required', true);
+
+                    $('#otherDepartmentLocationInput').show();
+                    $('#other_department_location').prop('required', true);
+                } else {
+                    $('#otherLocationInput').hide();
+                    $('#other_location')
+                        .prop('required', false)
+                        .val('');
+
+                    $('#otherDepartmentLocationInput').hide();
+                    $('#other_department_location')
+                        .prop('required', false)
+                        .val('');
+                }
+            }
+
+            // ===== Event Binding =====
+            $('#select-level').on('change', toggleLevel);
+            $('#select-department').on('change', toggleDepartmentOther);
+            $('#select-personal').on('change', togglePersonalOther);
+            $('#select-location').on('change', toggleLocationOther);
+
+            // ===== Initial Load State (IMPORTANT) =====
+            toggleLevel();
+            toggleDepartmentOther();
+            togglePersonalOther();
+            toggleLocationOther();
+
+            console.log('Initial load: Level = ' + $('#select-level').val());
+            console.log('Initial load: Department = ' + $('#select-department').val());
+            console.log('Initial load: Personal = ' + $('#select-personal').val());
+            console.log('Initial load: Location = ' + $('#select-location').val());
+
         });
     </script>
     <script>

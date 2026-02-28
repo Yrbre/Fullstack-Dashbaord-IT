@@ -124,6 +124,10 @@
                                 <option value="NEW" {{ old('status', $task->status) == 'NEW' ? 'selected' : '' }}>
                                     NEW
                                 </option>
+                                <option value="ON PROGRESS"
+                                    {{ old('status', $task->status) == 'ON PROGRESS' ? 'selected' : '' }}>
+                                    ON PROGRESS
+                                </option>
                                 <option value="COMPLETED"
                                     {{ old('status', $task->status) == 'COMPLETED' ? 'selected' : '' }}>
                                     COMPLETED

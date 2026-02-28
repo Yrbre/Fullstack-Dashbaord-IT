@@ -28,7 +28,7 @@ class UpdateTaskRequest extends FormRequest
             'assign_to'             => 'sometimes|exists:users,id',
             'enduser_department'    => 'sometimes|exists:endusers,id',
             'enduser_personal'      => 'sometimes|exists:endusers,id',
-            'status'                => 'sometimes|string|in:NEW,ON DUTY,COMPLETED,ON HOLD,CANCELLED',
+            'status'                => 'sometimes|string|in:NEW,ON PROGRESS,ON DUTY,COMPLETED,ON HOLD,CANCELLED',
             'progress'              => 'sometimes|integer|min:0|max:100',
             'location_id'           => 'sometimes|exists:location_lists,id',
             'schedule_start'        => 'sometimes|date',

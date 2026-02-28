@@ -1,1 +1,1 @@
-@include('layouts.template');
+@include('layouts.template')

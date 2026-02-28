@@ -16,10 +16,9 @@
                                         <th>#</th>
                                         <th>Member</th>
                                         <th>Reference Type</th>
-
                                         <th>Do Somegthing</th>
                                         <th>Location</th>
-                                        <th>Create at</th>
+                                        <th>Start Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,7 +39,7 @@
                                             <td><?php echo e($item->task->enduser->department ?? '-'); ?> - <?php echo e($item->location ?? '-'); ?>
 
                                             </td>
-                                            <td><?php echo e($item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d-m-Y H:i') : '-'); ?>
+                                            <td><?php echo e($item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-'); ?>
 
                                             </td>
 

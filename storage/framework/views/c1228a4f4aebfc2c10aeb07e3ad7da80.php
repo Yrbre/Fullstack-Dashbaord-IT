@@ -19,6 +19,7 @@
     <main role="main" class="main-content">
         <?php echo $__env->make('layouts.script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <?php echo $__env->yieldContent('content'); ?>
+        <?php echo $__env->yieldPushContent('scripts'); ?>
     </main> <!-- main -->
     </div> <!-- .wrapper -->
 </body>

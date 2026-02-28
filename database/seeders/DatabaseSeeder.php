@@ -18,8 +18,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@tifico.co.id',
             'password' => Hash::make('1'),
-            'phone' => '081234567890',
+            'phone' => '1234567890',
             'role' => 'admin',
+        ]);
+
+        \App\Models\Activity::factory()->create([
+            'name' => 'STAND BY',
+            'location' => 'IT OFFICE',
         ]);
     }
 }

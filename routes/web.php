@@ -3,20 +3,31 @@
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityHistoryController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardManagementController;
+use App\Http\Controllers\DashboardOperatorController;
 use App\Http\Controllers\EndUserController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskPersonalController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
     return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    if (Auth::user()->role === 'OPERATOR') {
+        return redirect()->route('dashboard_operator.index');
+    } elseif (Auth::user()->role === 'MANAGEMENT') {
+        return redirect()->route('dashboard_management.index');
+    }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -26,9 +37,21 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('/location', LocationController::class)->names('location');
     Route::resource('/enduser', EndUserController::class)->names('enduser');
     Route::resource('/user', UserController::class)->names('user');
+    Route::resource('/task/personal', TaskPersonalController::class)->names('task_personal');
     Route::resource('/task', TaskController::class)->names('task');
     Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
     Route::get('/activity_history/{id}', [ActivityHistoryController::class, 'show'])->name('activity_history.show');
+    Route::get('/dashboard/operator', [DashboardOperatorController::class, 'index'])->name('dashboard_operator.index');
+    Route::post('/dashboard_operator/take/{id}', [DashboardOperatorController::class, 'takeActivity'])->name('dashboard_operator.take');
+    Route::put('/dashboard_operator/complete/{id}', [DashboardOperatorController::class, 'completeActivity'])->name('dashboard_operator.complete');
+    Route::get('/activity/active/{id}', [DashboardOperatorController::class, 'idle'])->name('dashboard_operator.idle');
+    Route::get('/active_task/{id}', [DashboardOperatorController::class, 'takeTask'])->name('active_task.index');
+    Route::get('/task/active/{id}', [DashboardOperatorController::class, 'idleTask'])->name('dashboard_operator.idle_task');
+    Route::put('/task/update/{id}', [DashboardOperatorController::class, 'updateTask'])->name('dashboard_operator.update_task');
+});
+
+Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT']], function () {
+    Route::get('/dashboard/management', [DashboardManagementController::class, 'index'])->name('dashboard_management.index');
 });
 
 // Edit Activity History, Privilage only for Admin

@@ -8,13 +8,7 @@
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('user.create') }}" class="btn btn-primary">Create New User</a>
             </div>
-            {{-- Search --}}
-            <form class="form-inline mr-auto searchform text-muted" action="{{ route('user.index') }}" method="GET">
-                <input class="form-control mr-sm-2 bg-transparent border-1 pl-4 text-muted" type="search"
-                    placeholder="Type something..." aria-label="Search" name="search"
-                    value="{{ $search['search'] ?? '' }}">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">
@@ -51,8 +45,7 @@
                                                             href="{{ route('user.edit', $item->id) }}">Edit</a>
                                                         <a class="dropdown-item" data-toggle="modal"
                                                             data-target="#deleteModal" data-id="{{ $item->id }}"
-                                                            data-name="{{ $item->name }}"
-                                                            data-role="{{ $item->role }}"
+                                                            data-name="{{ $item->name }}" data-role="{{ $item->role }}"
                                                             data-url="{{ route('user.destroy', $item->id) }}"
                                                             href="#">Remove</a>
                                                     </div>

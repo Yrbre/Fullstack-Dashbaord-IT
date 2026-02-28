@@ -19,6 +19,7 @@
     <main role="main" class="main-content">
         @include('layouts.script')
         @yield('content')
+        @stack('scripts')
     </main> <!-- main -->
     </div> <!-- .wrapper -->
 </body>

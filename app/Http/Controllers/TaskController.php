@@ -24,7 +24,7 @@ class TaskController extends Controller
 
         $tasks = Tasks::orderByRaw("
     FIELD(status, 'NEW', 'ON DUTY', 'ON HOLD', 'COMPLETED', 'CANCELLED')
-    ")->orderBy('created_at', 'desc')->get();
+    ")->where('task_level', 'DEPARTMENT')->orderBy('created_at', 'desc')->get();
         return view('pages.task.index', compact('tasks'));
     }
 
@@ -38,8 +38,11 @@ class TaskController extends Controller
         $location       = Location::orderBy('department', 'asc')->distinct('department')->get();
         $endUser        = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
         $department     = EndUser::whereNull('name')->orderBy('department', 'asc')->distinct()->get();
+        $task           = Tasks::where('task_level', 'DEPARTMENT')
+            ->where('status', '!=', 'COMPLETED')
+            ->get();
 
-        return view('pages.task.create', compact('assignTo', 'category', 'location', 'endUser', 'department'));
+        return view('pages.task.create', compact('assignTo', 'category', 'location', 'endUser', 'department', 'task'));
     }
 
     /**
@@ -54,6 +57,46 @@ class TaskController extends Controller
         $data['actual_end']   = null;
         $data['progress']     = 0;
 
+        $enduserId = null;
+
+        if ($data['task_level'] === 'DEPARTMENT') {
+            if (($data['enduser_department'] ?? null) === 'OTHER') {
+                // Create or find custom department EndUser
+                $endUser = EndUser::firstOrCreate([
+                    'name'       => null,
+                    'department' => $data['other_department'],
+                ]);
+                $enduserId = $endUser->id;
+            } else {
+                // Use existing EndUser ID directly
+                $enduserId = $data['enduser_department'] ?? null;
+            }
+        } else { // PERSONAL
+            if (($data['enduser_personal'] ?? null) === 'OTHER') {
+                // Create or find custom personal EndUser
+                $endUser = EndUser::firstOrCreate([
+                    'name'       => $data['other_personal'],
+                    'department' => $data['other_personal_department'] ?? null,
+                ]);
+                $enduserId = $endUser->id;
+            } else {
+                // Use existing EndUser ID directly
+                $enduserId = $data['enduser_personal'] ?? null;
+            }
+        }
+
+        $location_ID = null;
+        if (($data['location_id'] ?? null) === 'OTHER') {
+            $location = Location::firstOrCreate([
+                'department' => $data['other_department_location'] ?? null,
+                'location'   => $data['other_location'],
+            ]);
+            $location_ID = $location->id;
+        } else {
+            $location_ID = $data['location_id'] ?? null;
+        }
+
+
         if ($data['status'] === 'ON DUTY') {
             $data['actual_start'] = now()->format('Y-m-d H:i');
             $data['progress'] = 10;
@@ -61,6 +104,9 @@ class TaskController extends Controller
             $data['actual_start'] = now()->format('Y-m-d H:i');
             $data['actual_end'] = now()->format('Y-m-d H:i');
             $data['progress'] = 100;
+        } elseif ($data['status'] === 'ON PROGRESS') {
+            $data['actual_start'] = now()->format('Y-m-d H:i');
+            $data['progress'] = 10;
         }
 
         // Logic in Timeline
@@ -70,22 +116,19 @@ class TaskController extends Controller
             $data['in_timeline'] = true;
         }
 
-        // Logic Level
-        $enduser = $data['task_level'] === 'DEPARTMENT'
-            ? ($data['enduser_department'] ?? null)
-            : ($data['enduser_personal'] ?? null);
 
         $task = Tasks::create([
+            'relation_task' => $data['relation_task'] ?? null,
             'name'          => $data['name'],
             'priority'      => $data['priority'],
             'category_id'   => $data['category_id'],
             'assign_to'     => $data['assign_to'],
             'task_level'    => $data['task_level'],
-            'enduser_id'    => $enduser,
+            'enduser_id'    => $enduserId,
             'status'        => $data['status'],
             'progress'      => $data['progress'],
             'delivered'     => Auth::user()->name,
-            'location_id'   => $data['location_id'],
+            'location_id'   => $location_ID,
             'in_timeline'   => $data['in_timeline'],
             'schedule_start' => $data['schedule_start'],
             'schedule_end'  => $data['schedule_end'],
@@ -96,12 +139,13 @@ class TaskController extends Controller
 
         // Logic create activity history when status ON DUTY
         if ($data['status'] === 'ON DUTY') {
-            $locationName = Location::find($data['location_id'])->location;
+            $locationName = Location::find($location_ID)->location;
             ActivityHistory::create([
                 'user_id'           => $data['assign_to'],
                 'reference_id'      => $task->id,
                 'reference_type'    => 'TASK',
                 'location'          => $locationName,
+                'start_time'        => now()->format('Y-m-d H:i'),
             ]);
         }
 
@@ -138,6 +182,16 @@ class TaskController extends Controller
     {
         $task = Tasks::findOrFail($id);
         $data = $request->validated();
+
+        if ($data['status'] === 'ON PROGRESS') {
+            $data['actual_start'] = now()->format('Y-m-d H:i');
+        } elseif ($data['status'] === 'COMPLETED') {
+            $data['actual_end'] = now()->format('Y-m-d H:i');
+            if (!$task->actual_start) {
+                $data['actual_start'] = now()->format('Y-m-d H:i');
+            }
+            $data['progress'] = 100;
+        }
 
 
 

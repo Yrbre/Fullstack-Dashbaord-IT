@@ -8,13 +8,7 @@
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('category.create') }}" class="btn btn-primary">Create New Category</a>
             </div>
-            {{-- Search --}}
-            <form class="form-inline mr-auto searchform text-muted" action="{{ route('category.index') }}" method="GET">
-                <input class="form-control mr-sm-2 bg-transparent border-1 pl-4 text-muted" type="search"
-                    placeholder="Type something..." aria-label="Search" name="search"
-                    value="{{ $search['search'] ?? '' }}">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">

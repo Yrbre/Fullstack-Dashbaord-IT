@@ -7,13 +7,7 @@
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('user.create')); ?>" class="btn btn-primary">Create New User</a>
             </div>
-            
-            <form class="form-inline mr-auto searchform text-muted" action="<?php echo e(route('user.index')); ?>" method="GET">
-                <input class="form-control mr-sm-2 bg-transparent border-1 pl-4 text-muted" type="search"
-                    placeholder="Type something..." aria-label="Search" name="search"
-                    value="<?php echo e($search['search'] ?? ''); ?>">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">
@@ -51,8 +45,7 @@
                                                             href="<?php echo e(route('user.edit', $item->id)); ?>">Edit</a>
                                                         <a class="dropdown-item" data-toggle="modal"
                                                             data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
-                                                            data-name="<?php echo e($item->name); ?>"
-                                                            data-role="<?php echo e($item->role); ?>"
+                                                            data-name="<?php echo e($item->name); ?>" data-role="<?php echo e($item->role); ?>"
                                                             data-url="<?php echo e(route('user.destroy', $item->id)); ?>"
                                                             href="#">Remove</a>
                                                     </div>

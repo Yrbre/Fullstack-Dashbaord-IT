@@ -7,13 +7,7 @@
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('enduser.create')); ?>" class="btn btn-primary">Create New End User</a>
             </div>
-            
-            <form class="form-inline mr-auto searchform text-muted" action="<?php echo e(route('enduser.index')); ?>" method="GET">
-                <input class="form-control mr-sm-2 bg-transparent border-1 pl-4 text-muted" type="search"
-                    placeholder="Type something..." aria-label="Search" name="search"
-                    value="<?php echo e($search['search'] ?? ''); ?>">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">

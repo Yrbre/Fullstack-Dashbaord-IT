@@ -11,6 +11,7 @@ class Tasks extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'relation_task',
         'name',
         'priority',
         'category_id',
@@ -48,5 +49,15 @@ class Tasks extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'assign_to', 'id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Tasks::class, 'relation_task');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Tasks::class, 'relation_task');
     }
 }

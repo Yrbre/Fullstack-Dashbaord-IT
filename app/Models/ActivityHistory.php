@@ -17,6 +17,8 @@ class ActivityHistory extends Model
         'reference_id',
         'reference_type',
         'location',
+        'start_time',
+        'end_time',
     ];
 
     public function user()
