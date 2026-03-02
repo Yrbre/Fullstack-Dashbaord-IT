@@ -15,7 +15,7 @@
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="<?php echo e(route('profileNew.edit', Auth::user()->id)); ?>">Profile</a>
                     <form method="POST" action="<?php echo e(route('logout')); ?>">
                         <?php echo csrf_field(); ?>
                         <a class="dropdown-item" href="<?php echo e(route('logout')); ?>"

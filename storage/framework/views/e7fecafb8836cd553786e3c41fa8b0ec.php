@@ -1,37 +1,33 @@
-@extends('layouts.template')
-@section('menuenduser', 'active')
-@section('content')
+<?php $__env->startSection('menuenduserdepartment', 'active'); ?>
+<?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">End User List</h2>
-            {{-- <div class="mb-4 d-flex justify-content-end">
-                <a href="{{ route('enduser.create') }}" class="btn btn-primary">Create New End User</a>
-            </div> --}}
+            <h2 class="page-title">End User Department List</h2>
+            
 
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title">Table End User</h5>
+                            <h5 class="card-title">Table End User Department</h5>
                             <p class="card-text"></p>
                             <table class="table datatables" id="dataTable-1">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
                                         <th>Department</th>
                                         <th>Create at</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($endUser as $item)
+                                    <?php $__currentLoopData = $department; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->department }}</td>
-                                            <td>{{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
+                                            <td><?php echo e($loop->iteration); ?></td>
+                                            <td><?php echo e($item->department); ?></td>
+                                            <td><?php echo e($item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-'); ?>
+
                                             </td>
                                             <td>
                                                 <div class="dropdown d-flex justify-content-center">
@@ -40,20 +36,20 @@
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('enduser.edit', $item->id) }}">Edit</a>
+                                                            href="<?php echo e(route('enduser_department.edit', $item->id)); ?>">Edit</a>
                                                         <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="{{ $item->id }}"
-                                                            data-name="{{ $item->name }}"
-                                                            data-department="{{ $item->department }}"
-                                                            data-url="{{ route('enduser.destroy', $item->id) }}"
+                                                            data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
+                                                            data-name="<?php echo e($item->name); ?>"
+                                                            data-department="<?php echo e($item->department); ?>"
+                                                            data-url="<?php echo e(route('enduser_department.destroy', $item->id)); ?>"
                                                             href="#">Remove</a>
                                                     </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
-                            @extends('pages.enduser.delete')
+                            
                         </div>
                     </div>
                 </div>
@@ -76,18 +72,18 @@
         });
     </script>
     <script>
-        @if (session('success'))
+        <?php if(session('success')): ?>
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
                 theme: 'dark',
-                text: '{{ session('success') }}',
+                text: '<?php echo e(session('success')); ?>',
                 timer: 2000,
                 showConfirmButton: false,
             });
-        @endif
+        <?php endif; ?>
     </script>
-    {{-- DataTableScript --}}
+    
     <script>
         $('#dataTable-1').DataTable({
             autoWidth: true,
@@ -97,4 +93,7 @@
             ]
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('pages.enduser_department.delete', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/enduser_department/index.blade.php ENDPATH**/ ?>

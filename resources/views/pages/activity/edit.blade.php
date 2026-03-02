@@ -21,15 +21,11 @@
                     </div>
                     <div class="form-group col-12">
                         <label for="simple-select2">Location</label>
-                        <select class="form-control select2" id="simple-select2" name="location">
-                            <optgroup label="Select Activity Location">
-                                @foreach ($location as $item)
-                                    <option value="{{ $item }}"@if (old('location', $item) == $activity->location) selected @endif>
-                                        {{ $item }}</option>
-                                @endforeach
-                                <option value="other">Other</option>
-                            </optgroup>
-                        </select>
+                        <input type="text" class="form-control @error('location') is-invalid @enderror" name="location"
+                            value="{{ old('location', $activity->location ?? '') }}">
+                        @error('location')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group col-12" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>

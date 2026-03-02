@@ -272,37 +272,7 @@ unset($__errorArgs, $__bag); ?>" id="select-progress"
                         </select>
                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="simple-select2">Location</label>
-                        <select class="form-control select2 <?php $__errorArgs = ['location_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" id="select-location"
-                            name="location_id">
-                            <optgroup label="Select Location">
-                                <option value="" selected disabled>Select Location</option>
-                                <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($item->id); ?>"
-                                        <?php echo e(old('location_id', $task->location_id) == $item->id ? 'selected' : ''); ?>>
-                                        <?php echo e($item->department); ?> - <?php echo e($item->location); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </optgroup>
-                        </select>
-                        <?php $__errorArgs = ['location_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                    </div>
+                    
 
                     <div class="form-group col-md-6">
                         <label for="">Schedule Start</label>

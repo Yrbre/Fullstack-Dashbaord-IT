@@ -99,6 +99,7 @@
                                     <td>Client</td>
                                     <td>Progress</td>
                                     <td>Status</td>
+                                    <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,6 +111,10 @@
                                         <td><?php echo e($item->enduser->department ?? '-'); ?></td>
                                         <td><?php echo e($item->progress); ?>%</td>
                                         <td><?php echo e($item->status); ?></td>
+                                        <td>
+                                            <a href="<?php echo e(route('task.show', $item->id)); ?>"
+                                                class="btn btn-sm btn-primary">View</a>
+                                        </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
@@ -155,6 +160,18 @@
         setTimeout(function() {
             location.reload();
         }, 30000);
+    </script>
+    <script>
+        <?php if(session('success')): ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                theme: 'dark',
+                text: '<?php echo e(session('success')); ?>',
+                timer: 2000,
+                showConfirmButton: false,
+            });
+        <?php endif; ?>
     </script>
 <?php $__env->stopSection(); ?>
 

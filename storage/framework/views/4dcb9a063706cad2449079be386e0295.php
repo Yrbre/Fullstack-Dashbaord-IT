@@ -35,7 +35,7 @@
                                                     <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
 
                                                     </td>
-                                                    <td><?php echo e($item->location->location); ?></td>
+                                                    <td><?php echo e($item->location->location ?? '-'); ?></td>
                                                     <td>
                                                         <a href="<?php echo e(route('active_task.index', $item->id)); ?>"
                                                             class="btn btn-sm btn-primary">Take</a>
@@ -109,6 +109,18 @@
                 modal.find('#activityLocation').text(activityLocation);
                 modal.find('#takeForm').attr('action', takeUrl);
             });
+        </script>
+        <script>
+            <?php if(session('success')): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    theme: 'dark',
+                    text: '<?php echo e(session('success')); ?>',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            <?php endif; ?>
         </script>
     <?php $__env->stopSection(); ?>
 

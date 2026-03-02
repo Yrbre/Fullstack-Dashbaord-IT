@@ -69,6 +69,8 @@
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
+                                                            href="<?php echo e(route('task.show', $item->id)); ?>">View</a>
+                                                        <a class="dropdown-item"
                                                             href="<?php echo e(route('task.edit', $item->id)); ?>">Edit</a>
                                                         <a class="dropdown-item" data-toggle="modal"
                                                             data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"

@@ -1,10 +1,10 @@
 @extends('layouts.template')
-@section('menuenduser', 'active')
+@section('menuenduserdepartment', 'active')
 @section('content')
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">End User List</h2>
+            <h2 class="page-title">End User Department List</h2>
             {{-- <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('enduser.create') }}" class="btn btn-primary">Create New End User</a>
             </div> --}}
@@ -13,23 +13,21 @@
                 <div class="col-12 my-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title">Table End User</h5>
+                            <h5 class="card-title">Table End User Department</h5>
                             <p class="card-text"></p>
                             <table class="table datatables" id="dataTable-1">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
                                         <th>Department</th>
                                         <th>Create at</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($endUser as $item)
+                                    @foreach ($department as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->name }}</td>
                                             <td>{{ $item->department }}</td>
                                             <td>{{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
                                             </td>
@@ -40,12 +38,12 @@
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('enduser.edit', $item->id) }}">Edit</a>
+                                                            href="{{ route('enduser_department.edit', $item->id) }}">Edit</a>
                                                         <a class="dropdown-item" data-toggle="modal"
                                                             data-target="#deleteModal" data-id="{{ $item->id }}"
                                                             data-name="{{ $item->name }}"
                                                             data-department="{{ $item->department }}"
-                                                            data-url="{{ route('enduser.destroy', $item->id) }}"
+                                                            data-url="{{ route('enduser_department.destroy', $item->id) }}"
                                                             href="#">Remove</a>
                                                     </div>
                                             </td>
@@ -53,7 +51,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            @extends('pages.enduser.delete')
+                            @extends('pages.enduser_department.delete')
                         </div>
                     </div>
                 </div>

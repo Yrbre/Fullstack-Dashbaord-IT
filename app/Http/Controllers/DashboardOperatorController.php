@@ -43,6 +43,7 @@ class DashboardOperatorController extends Controller
 
         $taskReady = Tasks::where('status', '!=', 'COMPLETED')
             ->where('assign_to', Auth()->id())
+            ->where('task_level', 'PERSONAL')
             ->get();
         return view('pages.dashboard_operator.index', compact('activityList', 'taskReady'));
     }
@@ -86,8 +87,8 @@ class DashboardOperatorController extends Controller
             ->whereNull('actual_start')
             ->update(['actual_start' => now()->format('Y-m-d H:i:s'),]);
 
-        $relationTask = Tasks::where('id', $task->relation_task)->first();
-        if ($relationTask['status'] != 'ON PROGRESS') {
+        $relationTask = $task->relation_task ? Tasks::where('id', $task->relation_task)->first() : null;
+        if ($relationTask && $relationTask->status != 'ON PROGRESS') {
             $relationTask->update([
                 'status' => 'ON PROGRESS',
             ]);

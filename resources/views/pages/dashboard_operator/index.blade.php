@@ -34,7 +34,7 @@
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
                                                     </td>
-                                                    <td>{{ $item->location->location }}</td>
+                                                    <td>{{ $item->location->location ?? '-' }}</td>
                                                     <td>
                                                         <a href="{{ route('active_task.index', $item->id) }}"
                                                             class="btn btn-sm btn-primary">Take</a>
@@ -108,5 +108,17 @@
                 modal.find('#activityLocation').text(activityLocation);
                 modal.find('#takeForm').attr('action', takeUrl);
             });
+        </script>
+        <script>
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    theme: 'dark',
+                    text: '{{ session('success') }}',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            @endif
         </script>
     @endsection

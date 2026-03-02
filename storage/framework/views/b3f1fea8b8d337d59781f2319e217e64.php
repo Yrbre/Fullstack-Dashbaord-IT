@@ -4,9 +4,7 @@
     <div class="container-fluid">
         <div class="col-12">
             <h2 class="page-title">End User List</h2>
-            <div class="mb-4 d-flex justify-content-end">
-                <a href="<?php echo e(route('enduser.create')); ?>" class="btn btn-primary">Create New End User</a>
-            </div>
+            
 
             <div class="row">
                 <div class="col-12 my-4">

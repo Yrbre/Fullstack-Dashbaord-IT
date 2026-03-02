@@ -168,7 +168,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    {{-- <div class="form-group col-md-6">
                         <label for="simple-select2">Location</label>
                         <select class="form-control select2 @error('location_id') is-invalid @enderror" id="select-location"
                             name="location_id">
@@ -184,7 +184,7 @@
                         @error('location_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="form-group col-md-6">
                         <label for="">Schedule Start</label>

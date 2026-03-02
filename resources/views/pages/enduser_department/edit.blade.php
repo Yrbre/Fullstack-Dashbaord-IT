@@ -1,33 +1,21 @@
 @extends('layouts.template')
-@section('menulocation', 'active')
+@section('menuenduserdepartment', 'active')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Edit Location</strong>
+            <strong class="card-title">Edit End User Department</strong>
         </div>
         <div class="card-body">
-            <form method="post" action="{{ route('location.update', $location->id) }}">
+            <form method="post" action="{{ route('enduser_department.update', $department->id) }}">
                 @csrf
                 @method('PUT')
                 <div class="form-row">
 
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Department</label>
-                        <input type="text" class="form-control @error('department') is-invalid @enderror" id="department"
-                            name="department" value="{{ old('department', $location->department ?? '') }}"
-                            placeholder="Enter custom department">
+                    <div class="form-group col-md-12">
+                        <label for="">Department</label>
+                        <input type="text" class="form-control @error('department') is-invalid @enderror"
+                            name="department" value="{{ old('department', $department->department ?? '') }}">
                         @error('department')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Location</label>
-                        <input type="text" class="form-control @error('location') is-invalid @enderror" id="location"
-                            name="location" value="{{ old('location', $location->location ?? '') }}"
-                            placeholder="Enter custom location">
-                        @error('location')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>

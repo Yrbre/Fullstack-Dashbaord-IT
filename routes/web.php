@@ -6,8 +6,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardManagementController;
 use App\Http\Controllers\DashboardOperatorController;
 use App\Http\Controllers\EndUserController;
+use App\Http\Controllers\EndUserDepartmentController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileNewController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPersonalController;
 use App\Http\Controllers\UserController;
@@ -36,6 +38,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('/activity', ActivityController::class)->names('activity');
     Route::resource('/location', LocationController::class)->names('location');
     Route::resource('/enduser', EndUserController::class)->names('enduser');
+    Route::resource('/enduser-department', EndUserDepartmentController::class)->names('enduser_department');
     Route::resource('/user', UserController::class)->names('user');
     Route::resource('/task/personal', TaskPersonalController::class)->names('task_personal');
     Route::resource('/task', TaskController::class)->names('task');
@@ -48,6 +51,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/active_task/{id}', [DashboardOperatorController::class, 'takeTask'])->name('active_task.index');
     Route::get('/task/active/{id}', [DashboardOperatorController::class, 'idleTask'])->name('dashboard_operator.idle_task');
     Route::put('/task/update/{id}', [DashboardOperatorController::class, 'updateTask'])->name('dashboard_operator.update_task');
+    Route::get('/profile/edit/{id}', [ProfileNewController::class, 'edit'])->name('profileNew.edit');
+    Route::put('/profile/update', [ProfileNewController::class, 'update'])->name('profileNew.update');
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT']], function () {
