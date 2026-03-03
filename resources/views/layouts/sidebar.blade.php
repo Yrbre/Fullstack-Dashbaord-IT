@@ -26,18 +26,29 @@
                 <li class="nav-item">
                     <a href="{{ route('dashboard_management.index') }}" class="nav-link">
                         <i class="fe fe-airplay fe-16"></i>
-                        <span class="ml-3 item-text">Dashboard Management</span><span class="sr-only">(current)</span>
+                        <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
                     </a>
                 </li>
             @elseif(Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
                 <li class="nav-item w-100">
                     <a class="nav-link @yield('menudashboard')" href="{{ route('dashboard_operator.index') }}">
                         <i class="fe fe-airplay fe-16"></i>
-                        <span class="ml-3 item-text">Dashboard Operator</span>
+                        <span class="ml-3 item-text">Dashboard</span>
                     </a>
                 </li>
             @elseif(Auth::check() && in_array(Auth::user()->role, ['ADMIN']))
-                {{-- DUA DUANYA DASHBAORD DIMASUKIN SINI --}}
+                <li class="nav-item">
+                    <a href="{{ route('dashboard_management.index') }}" class="nav-link">
+                        <i class="fe fe-airplay fe-16"></i>
+                        <span class="ml-3 item-text">Dashboard Management</span><span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item w-100">
+                    <a class="nav-link @yield('menudashboard')" href="{{ route('dashboard_operator.index') }}">
+                        <i class="fe fe-airplay fe-16"></i>
+                        <span class="ml-3 item-text">Dashboard Operator</span>
+                    </a>
+                </li>
             @endif
 
         </ul>
@@ -109,7 +120,7 @@
                     <span class="ml-3 item-text">Location</span>
                 </a>
             </li>
-            @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT']))
+            @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
                 <li class="nav-item w-100">
                     <a class="nav-link" href="{{ route('user.index') }}">
                         <i class="fe fe-user fe-16"></i>

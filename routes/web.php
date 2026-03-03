@@ -29,17 +29,19 @@ Route::get('/dashboard', function () {
         return redirect()->route('dashboard_operator.index');
     } elseif (Auth::user()->role === 'MANAGEMENT') {
         return redirect()->route('dashboard_management.index');
+    } elseif (Auth::user()->role === 'ADMIN') {
+        return redirect()->route('dashboard_management.index');
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'active.session']], function () {
     Route::resource('/category', CategoryController::class)->names('category');
     Route::resource('/activity', ActivityController::class)->names('activity');
     Route::resource('/location', LocationController::class)->names('location');
     Route::resource('/enduser', EndUserController::class)->names('enduser');
     Route::resource('/enduser-department', EndUserDepartmentController::class)->names('enduser_department');
-    Route::resource('/user', UserController::class)->names('user');
+
     Route::resource('/task/personal', TaskPersonalController::class)->names('task_personal');
     Route::resource('/task', TaskController::class)->names('task');
     Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
@@ -55,8 +57,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::put('/profile/update', [ProfileNewController::class, 'update'])->name('profileNew.update');
 });
 
-Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], function () {
     Route::get('/dashboard/management', [DashboardManagementController::class, 'index'])->name('dashboard_management.index');
+    Route::resource('/user', UserController::class)->names('user');
 });
 
 // Edit Activity History, Privilage only for Admin

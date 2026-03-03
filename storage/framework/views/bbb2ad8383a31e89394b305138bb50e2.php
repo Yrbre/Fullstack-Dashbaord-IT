@@ -245,12 +245,12 @@ unset($__errorArgs, $__bag); ?>" id="select-status"
                                 <option value="NEW" <?php echo e(old('status', $task->status) == 'NEW' ? 'selected' : ''); ?>>
                                     NEW
                                 </option>
+                                <option value="ON HOLD" <?php echo e(old('status', $task->status) == 'ON HOLD' ? 'selected' : ''); ?>>
+                                    ON HOLD
+                                </option>
                                 <option value="COMPLETED"
                                     <?php echo e(old('status', $task->status) == 'COMPLETED' ? 'selected' : ''); ?>>
                                     COMPLETED
-                                </option>
-                                <option value="ON HOLD" <?php echo e(old('status', $task->status) == 'ON HOLD' ? 'selected' : ''); ?>>
-                                    ON HOLD
                                 </option>
                                 <option value="CANCELLED"
                                     <?php echo e(old('status', $task->status) == 'CANCELLED' ? 'selected' : ''); ?>>

@@ -18,6 +18,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Relation Task</th>
                                         <th>Assign to</th>
@@ -33,6 +34,7 @@
                                     @foreach ($tasks as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->id }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->relation_name ?? '-' }}</td>
                                             <td>{{ $item->user->name ?? '-' }}</td>

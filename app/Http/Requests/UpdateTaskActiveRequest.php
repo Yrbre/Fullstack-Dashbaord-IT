@@ -23,8 +23,15 @@ class UpdateTaskActiveRequest extends FormRequest
     {
         return [
             'progress'      => 'sometimes|integer|min:0|max:100',
-            'status'        => 'sometimes|in:ON HOLD,COMPLETED,CANCELLED,ON DUTY',
+            'status'        => 'required|in:ON HOLD,COMPLETED,CANCELLED,ON DUTY|not_in:ON DUTY',
             'description'   => 'nullable|string',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'status.not_in' => 'Tidak bisa update dengan status ON DUTY. Pilih status COMPLETED, ON HOLD, atau CANCELLED.',
         ];
     }
 }

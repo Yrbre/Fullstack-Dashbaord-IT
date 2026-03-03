@@ -25,18 +25,29 @@
                 <li class="nav-item">
                     <a href="<?php echo e(route('dashboard_management.index')); ?>" class="nav-link">
                         <i class="fe fe-airplay fe-16"></i>
-                        <span class="ml-3 item-text">Dashboard Management</span><span class="sr-only">(current)</span>
+                        <span class="ml-3 item-text">Dashboard</span><span class="sr-only">(current)</span>
                     </a>
                 </li>
             <?php elseif(Auth::check() && in_array(Auth::user()->role, ['OPERATOR'])): ?>
                 <li class="nav-item w-100">
                     <a class="nav-link <?php echo $__env->yieldContent('menudashboard'); ?>" href="<?php echo e(route('dashboard_operator.index')); ?>">
                         <i class="fe fe-airplay fe-16"></i>
-                        <span class="ml-3 item-text">Dashboard Operator</span>
+                        <span class="ml-3 item-text">Dashboard</span>
                     </a>
                 </li>
             <?php elseif(Auth::check() && in_array(Auth::user()->role, ['ADMIN'])): ?>
-                
+                <li class="nav-item">
+                    <a href="<?php echo e(route('dashboard_management.index')); ?>" class="nav-link">
+                        <i class="fe fe-airplay fe-16"></i>
+                        <span class="ml-3 item-text">Dashboard Management</span><span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item w-100">
+                    <a class="nav-link <?php echo $__env->yieldContent('menudashboard'); ?>" href="<?php echo e(route('dashboard_operator.index')); ?>">
+                        <i class="fe fe-airplay fe-16"></i>
+                        <span class="ml-3 item-text">Dashboard Operator</span>
+                    </a>
+                </li>
             <?php endif; ?>
 
         </ul>
@@ -108,7 +119,7 @@
                     <span class="ml-3 item-text">Location</span>
                 </a>
             </li>
-            <?php if(Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT'])): ?>
+            <?php if(Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN'])): ?>
                 <li class="nav-item w-100">
                     <a class="nav-link" href="<?php echo e(route('user.index')); ?>">
                         <i class="fe fe-user fe-16"></i>

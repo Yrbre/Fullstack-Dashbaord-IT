@@ -141,12 +141,12 @@
                                 <option value="NEW" {{ old('status', $task->status) == 'NEW' ? 'selected' : '' }}>
                                     NEW
                                 </option>
+                                <option value="ON HOLD" {{ old('status', $task->status) == 'ON HOLD' ? 'selected' : '' }}>
+                                    ON HOLD
+                                </option>
                                 <option value="COMPLETED"
                                     {{ old('status', $task->status) == 'COMPLETED' ? 'selected' : '' }}>
                                     COMPLETED
-                                </option>
-                                <option value="ON HOLD" {{ old('status', $task->status) == 'ON HOLD' ? 'selected' : '' }}>
-                                    ON HOLD
                                 </option>
                                 <option value="CANCELLED"
                                     {{ old('status', $task->status) == 'CANCELLED' ? 'selected' : '' }}>

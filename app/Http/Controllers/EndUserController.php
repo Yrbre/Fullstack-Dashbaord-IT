@@ -22,7 +22,8 @@ class EndUserController extends Controller
                 ->orderBy('name', 'asc')
                 ->get();
         } else {
-            $endUser = EndUser::orderBy('name', 'asc')->get();
+            $endUser = EndUser::whereNotNull('name')
+                ->orderBy('name', 'asc')->get();
         }
 
 

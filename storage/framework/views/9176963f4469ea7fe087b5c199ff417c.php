@@ -29,8 +29,7 @@
 
 
                                                 <label for="simple-select2">Status</label>
-                                                <select
-                                                    class="form-control mb-4 select2 <?php $__errorArgs = ['status'];
+                                                <select class="form-control select2 <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -69,7 +68,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
 
-                                                <label for="simple-select2">Progress</label>
+                                                <label for="simple-select2" class="mt-4">Progress</label>
                                                 <select
                                                     class="form-control mb-4 select2 <?php $__errorArgs = ['progress'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

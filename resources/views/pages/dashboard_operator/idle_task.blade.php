@@ -30,8 +30,7 @@
 
 
                                                 <label for="simple-select2">Status</label>
-                                                <select
-                                                    class="form-control mb-4 select2 @error('status')is-invalid @enderror"
+                                                <select class="form-control select2 @error('status')is-invalid @enderror"
                                                     id="select-status" name="status">
                                                     <optgroup label="Select Status Type">
                                                         <option value="ON DUTY"
@@ -56,7 +55,7 @@
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
 
-                                                <label for="simple-select2">Progress</label>
+                                                <label for="simple-select2" class="mt-4">Progress</label>
                                                 <select
                                                     class="form-control mb-4 select2 @error('progress') is-invalid @enderror"
                                                     id="select-progress" name="progress">

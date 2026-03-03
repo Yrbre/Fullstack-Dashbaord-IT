@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateEndUserDepartmentRequest;
 use App\Models\EndUser;
-use Illuminate\Http\Request;
 
 class EndUserDepartmentController extends Controller
 {
