@@ -17,6 +17,7 @@ class ActivityHistory extends Model
         'reference_id',
         'reference_type',
         'location',
+        'status',
         'start_time',
         'end_time',
     ];

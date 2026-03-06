@@ -1,4 +1,4 @@
-<?php $__env->startSection('menuactivity', 'active'); ?>
+<?php $__env->startSection('judul', 'Activity Create'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="card shadow mb-4">
         <div class="card-header">

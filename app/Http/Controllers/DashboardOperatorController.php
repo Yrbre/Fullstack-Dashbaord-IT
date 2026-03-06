@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateTaskActiveRequest;
 use App\Models\Activity;
 use App\Models\ActivityHistory;
 use App\Models\Tasks;
+use Carbon\Carbon;
 
 class DashboardOperatorController extends Controller
 {
@@ -27,17 +28,6 @@ class DashboardOperatorController extends Controller
             ->latest()
             ->first();
 
-
-        // if ($activeSession) {
-        //     if ($activeSession->reference_type === 'TASK') {
-        //         return redirect()->route('dashboard_operator.idle_task', $activeSession->reference_id)
-        //             ->with('warning', 'Selesaikan task Anda sebelum mengambil yang baru.');
-        //     } else {
-        //         return redirect()->route('dashboard_operator.idle', $activeSession->id)
-        //             ->with('warning', 'Selesaikan activity Anda sebelum mengambil yang baru.');
-        //     }
-        // }
-
         $activityList = Activity::where('name', '!=', 'STAND BY')
             ->get();
 
@@ -50,6 +40,13 @@ class DashboardOperatorController extends Controller
 
     public function takeActivity(string $id)
     {
+        $activityHistory = ActivityHistory::where('user_id', auth()->id())
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+        $activityHistory->update([
+            'end_time' => now()->format('Y-m-d H:i:s'),
+        ]);
         $activity = Activity::findOrFail($id);
 
         $activityHistory = ActivityHistory::create([
@@ -65,16 +62,19 @@ class DashboardOperatorController extends Controller
 
     public function takeTask(string $id)
     {
+
+        $activityHistory = ActivityHistory::where('user_id', auth()->id())
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+        $activityHistory->update([
+            'end_time' => now()->format('Y-m-d H:i:s'),
+        ]);
         $task = Tasks::findOrFail($id);
 
         $task->update([
             'status' => 'ON DUTY',
         ]);
-
-
-
-
-
 
 
         $task->where('id', $task->id)
@@ -166,16 +166,14 @@ class DashboardOperatorController extends Controller
     public function updateTask(UpdateTaskActiveRequest $request, string $id,)
     {
         $task = Tasks::findOrFail($id);
+        $data = $request->validated();
         $activityHistory = ActivityHistory::where('reference_type', 'TASK')
             ->where('reference_id', $task->id)
             ->whereNull('end_time')
             ->firstOrFail();
 
-
-        $task->update([
-            'progress'      => $request['progress'] ?? $task->progress,
-            'status'        => $request['status'] ?? $task->status,
-            'description'   => $request['description'] ?? $task->description,
+        $activityHistory->update([
+            'status' => $request->status,
         ]);
 
         if ($request->status === 'COMPLETED') {
@@ -183,6 +181,30 @@ class DashboardOperatorController extends Controller
                 'actual_end' => now()->format('Y-m-d H:i:s'),
             ]);
         }
+
+        if ($task->actual_end && $task->schedule_end) {
+            $actualEnd = Carbon::parse($task->actual_end);
+            $scheduleEnd = Carbon::parse($task->schedule_end);
+            if ($actualEnd->greaterThan($scheduleEnd)) {
+                $task->update([
+                    'in_timeline' => false,
+                ]);
+            }
+        } else {
+            $task->update([
+                'in_timeline' => true,
+            ]);
+        }
+
+
+        $task->update([
+            'progress'      => $request['progress'] ?? $task->progress,
+            'status'        => $request['status'] ?? $task->status,
+            'description'   => $request['description'] ?? $task->description,
+            'in_timeline'   => $task->in_timeline,
+        ]);
+
+
 
 
         $activityHistory->update([

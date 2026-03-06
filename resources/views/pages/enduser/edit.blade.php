@@ -1,9 +1,8 @@
 @extends('layouts.template')
-@section('menuenduser', 'active')
+@section('judul', 'End User edit')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Edit End User</strong>
         </div>
         <div class="card-body">
             <form method="post" action="{{ route('enduser.update', $endUser->id) }}">

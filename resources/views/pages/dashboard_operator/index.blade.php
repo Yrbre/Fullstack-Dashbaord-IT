@@ -1,4 +1,5 @@
 @extends('layouts.template')
+@section('judul', 'DASHBOARD MONITORING')
 @section('content')
     <div class="container-fluid py-4">
         <div class="mx-auto">

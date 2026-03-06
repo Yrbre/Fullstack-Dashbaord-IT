@@ -1,10 +1,9 @@
 @extends('layouts.template')
-@section('menuactivity', 'active')
+@section('judul', 'Activity List')
 @section('content')
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Activity List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('activity.create') }}" class="btn btn-primary">Create New Activity</a>
             </div>

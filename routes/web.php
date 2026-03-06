@@ -44,8 +44,7 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
 
     Route::resource('/task/personal', TaskPersonalController::class)->names('task_personal');
     Route::resource('/task', TaskController::class)->names('task');
-    Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
-    Route::get('/activity_history/{id}', [ActivityHistoryController::class, 'show'])->name('activity_history.show');
+
     Route::get('/dashboard/operator', [DashboardOperatorController::class, 'index'])->name('dashboard_operator.index');
     Route::post('/dashboard_operator/take/{id}', [DashboardOperatorController::class, 'takeActivity'])->name('dashboard_operator.take');
     Route::put('/dashboard_operator/complete/{id}', [DashboardOperatorController::class, 'completeActivity'])->name('dashboard_operator.complete');
@@ -59,7 +58,13 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
 
 Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], function () {
     Route::get('/dashboard/management', [DashboardManagementController::class, 'index'])->name('dashboard_management.index');
+    Route::get('/user-inactive', [UserController::class, 'inactive'])->name('user.inactive');
+    Route::put('/user/{id}/restore', [UserController::class, 'restore'])->name('user.restore');
     Route::resource('/user', UserController::class)->names('user');
+    Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
+    Route::get('/activity_history/{id}', [ActivityHistoryController::class, 'show'])->name('activity_history.show');
+    Route::get('/activity_history/list/{id}', [ActivityHistoryController::class, 'list'])->name('activity_history.list');
+    Route::get('/activity_history/list/{id}/filter', [ActivityHistoryController::class, 'listFilter'])->name('activity_history.list.filter');
 });
 
 // Edit Activity History, Privilage only for Admin

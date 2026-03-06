@@ -1,4 +1,4 @@
-<?php $__env->startSection('menutask', 'active'); ?>
+<?php $__env->startSection('judul', 'Task Department Edit'); ?>
 <?php $__env->startSection('content'); ?>
     <style>
         .select2-container {
@@ -8,7 +8,6 @@
 
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Edit Task</strong>
         </div>
         <div class="card-body">
             <form method="post" action="<?php echo e(route('task.update', $task->id)); ?>" enctype="multipart/form-data">
@@ -218,12 +217,12 @@ unset($__errorArgs, $__bag); ?>" id="select-status"
                                     <?php echo e(old('status', $task->status) == 'ON PROGRESS' ? 'selected' : ''); ?>>
                                     ON PROGRESS
                                 </option>
+                                <option value="ON HOLD" <?php echo e(old('status', $task->status) == 'ON HOLD' ? 'selected' : ''); ?>>
+                                    ON HOLD
+                                </option>
                                 <option value="COMPLETED"
                                     <?php echo e(old('status', $task->status) == 'COMPLETED' ? 'selected' : ''); ?>>
                                     COMPLETED
-                                </option>
-                                <option value="ON HOLD" <?php echo e(old('status', $task->status) == 'ON HOLD' ? 'selected' : ''); ?>>
-                                    ON HOLD
                                 </option>
                                 <option value="CANCELLED"
                                     <?php echo e(old('status', $task->status) == 'CANCELLED' ? 'selected' : ''); ?>>

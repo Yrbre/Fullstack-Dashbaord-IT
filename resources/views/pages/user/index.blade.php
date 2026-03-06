@@ -1,10 +1,9 @@
 @extends('layouts.template')
-@section('menuuser', 'active')
+@section('judul', 'User List')
 @section('content')
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">User List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('user.create') }}" class="btn btn-primary">Create New User</a>
             </div>
@@ -56,6 +55,10 @@
                             </table>
                             @extends('pages.user.delete')
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <a class="btn btn-warning" href="{{ route('user.inactive') }}">List User
+                            Inactive</a>
                     </div>
                 </div>
             </div>

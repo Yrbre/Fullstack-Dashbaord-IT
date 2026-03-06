@@ -1,9 +1,8 @@
 @extends('layouts.template')
-@section('menutask', 'active')
+@section('judul', 'Task End User Create')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Create Task Personal</strong>
         </div>
         <div class="card-body">
             <form method="post" action="{{ route('task_personal.store') }}" enctype="multipart/form-data">
@@ -102,7 +101,7 @@
                         <label for="simple-select2">Personal</label>
                         <select class="form-control select2" id="select-personal" name="enduser_personal">
                             <optgroup label="Select Personal">
-                                <option value="" selected disabled>Select Personal</option>
+                                <option value="" selected disabled>Select User</option>
                                 @foreach ($endUser as $item)
                                     <option value="{{ $item->id }}" @if (old('enduser_personal') == $item->id) selected @endif>
                                         {{ $item->name }}</option>
@@ -112,7 +111,7 @@
                         </select>
                     </div>
                     <div class="form-group col-6" id="otherPersonalInput" style="display: none;">
-                        <label for="other_personal">Specify Personal</label>
+                        <label for="other_personal">Specify User</label>
                         <input type="text" class="form-control" id="other_personal" name="other_personal"
                             placeholder="Enter custom personal" value="{{ old('other_personal') }}">
                     </div>

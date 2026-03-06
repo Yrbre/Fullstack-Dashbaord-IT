@@ -1,10 +1,9 @@
 @extends('layouts.template')
-@section('menucategory', 'active')
+@section('judul', 'Category List')
 @section('content')
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Category List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('category.create') }}" class="btn btn-primary">Create New Category</a>
             </div>

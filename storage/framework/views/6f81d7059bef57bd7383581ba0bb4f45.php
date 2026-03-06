@@ -1,9 +1,8 @@
-<?php $__env->startSection('menutask', 'active'); ?>
+<?php $__env->startSection('judul', 'Task Department List'); ?>
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Task List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('task.create')); ?>" class="btn btn-primary">Create New Task</a>
             </div>

@@ -1,9 +1,8 @@
 @extends('layouts.template')
-@section('menuenduserdepartment', 'active')
+@section('judul', 'End User Department Edit')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Edit End User Department</strong>
         </div>
         <div class="card-body">
             <form method="post" action="{{ route('enduser_department.update', $department->id) }}">
@@ -13,8 +12,8 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Department</label>
-                        <input type="text" class="form-control @error('department') is-invalid @enderror"
-                            name="department" value="{{ old('department', $department->department ?? '') }}">
+                        <input type="text" class="form-control @error('department') is-invalid @enderror" name="department"
+                            value="{{ old('department', $department->department ?? '') }}">
                         @error('department')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

@@ -1,10 +1,9 @@
 @extends('layouts.template')
-@section('menuactivity_history', 'active')
+@section('judul', 'Activity History')
 @section('content')
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Activity History List</h2>
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">

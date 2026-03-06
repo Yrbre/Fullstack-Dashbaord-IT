@@ -12,7 +12,7 @@
     <?php echo $__env->make('layouts.style', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </head>
 
-<body class="vertical  dark  ">
+<body class="vertical  dark  collapsed">
 
     <?php echo $__env->yieldContent('content'); ?>
     <main role="main" class="main-content">

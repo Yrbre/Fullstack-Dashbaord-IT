@@ -1,8 +1,7 @@
-<?php $__env->startSection('menutask', 'active'); ?>
+<?php $__env->startSection('judul', 'Task Department Create'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Create Task</strong>
         </div>
         <div class="card-body">
             <form method="post" action="<?php echo e(route('task.store')); ?>" enctype="multipart/form-data">

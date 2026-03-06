@@ -1,4 +1,5 @@
 @extends('layouts.template')
+@section('judul', 'Task Department Detail')
 @section('content')
     <div class="container-fluid py-4">
 

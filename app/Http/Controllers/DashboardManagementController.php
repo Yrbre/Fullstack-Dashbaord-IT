@@ -10,6 +10,7 @@ class DashboardManagementController extends Controller
     public function index()
     {
         $standBy = ActivityHistory::with('activity', 'user')
+            ->whereHas('user')
             ->where('reference_type', 'ACTIVITY')
             ->whereHas('activity', function ($query) {
                 $query->where('location', 'IT OFFICE');
@@ -24,6 +25,7 @@ class DashboardManagementController extends Controller
             ->get();
 
         $outSide = ActivityHistory::with('activity', 'user', 'task')
+            ->whereHas('user')
             ->whereIn('id', function ($query) {
                 $query->selectRaw('MAX(id)')
                     ->from('activity_histories')
@@ -43,6 +45,7 @@ class DashboardManagementController extends Controller
             ->get();
 
         $taskProgress = Tasks::with('user')
+            ->whereHas('user')
             ->where('status', '!=', 'COMPLETED')
             ->where('task_level', 'DEPARTMENT')
             ->get();

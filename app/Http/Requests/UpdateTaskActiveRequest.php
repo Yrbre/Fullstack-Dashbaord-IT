@@ -25,6 +25,7 @@ class UpdateTaskActiveRequest extends FormRequest
             'progress'      => 'sometimes|integer|min:0|max:100',
             'status'        => 'required|in:ON HOLD,COMPLETED,CANCELLED,ON DUTY|not_in:ON DUTY',
             'description'   => 'nullable|string',
+            'in_timeline'   => 'sometimes|boolean',
         ];
     }
 

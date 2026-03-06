@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('menucategory', 'active')
+@section('judul', 'Category edit')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">

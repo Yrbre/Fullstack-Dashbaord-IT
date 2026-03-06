@@ -1,9 +1,8 @@
-<?php $__env->startSection('menuactivity', 'active'); ?>
+<?php $__env->startSection('judul', 'Activity List'); ?>
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Activity List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('activity.create')); ?>" class="btn btn-primary">Create New Activity</a>
             </div>

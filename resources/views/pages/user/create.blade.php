@@ -1,9 +1,8 @@
 @extends('layouts.template')
-@section('menuuser', 'active')
+@section('judul', 'User Create')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Create User</strong>
         </div>
         <div class="card-body">
             <form method="post" action="{{ route('user.store') }}" enctype="multipart/form-data">

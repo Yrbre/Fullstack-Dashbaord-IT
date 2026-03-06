@@ -1,10 +1,9 @@
 @extends('layouts.template')
-@section('menutask', 'active')
+@section('judul', 'Task Department List')
 @section('content')
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Task List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('task.create') }}" class="btn btn-primary">Create New Task</a>
             </div>

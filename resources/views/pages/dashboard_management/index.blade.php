@@ -1,7 +1,13 @@
 @extends('layouts.template')
+@section('judul', 'DASHBOARD MONITORING')
 @section('content')
+    <style>
+        .link-black {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+    </style>
     <meta http-equiv="refresh" content="60">
-    <h1>Monitoring Dashboard</h1>
     <div class="container-fluid py-4">
         <div class="row mx-auto justify-content-center">
             <div class="col-6">
@@ -23,7 +29,9 @@
                                     <tbody>
                                         @foreach ($standBy as $item)
                                             <tr>
-                                                <td>{{ $item->user->name }}</td>
+                                                <td><a class="link-black"
+                                                        href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                </td>
                                                 <td>{{ $item->location }}</td>
                                                 <td>{{ $item->activity->name }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}</td>
@@ -60,7 +68,9 @@
                                     <tbody>
                                         @foreach ($outSide as $item)
                                             <tr>
-                                                <td>{{ $item->user->name }}</td>
+                                                <td><a class="link-black"
+                                                        href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                </td>
                                                 <td>{{ $item->location }}</td>
                                                 @if ($item->reference_type === 'ACTIVITY')
                                                     <td>{{ $item->activity->name }}</td>
@@ -69,7 +79,8 @@
                                                 @else
                                                     <td> - </td>
                                                 @endif
-                                                <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
+                                                </td>
                                                 <td style="color:greenyellow">
                                                     <span class="live-duration"
                                                         data-start="{{ \Carbon\Carbon::parse($item->start_time)->toISOString() }}"></span>

@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('menutask', 'active')
+@section('judul', 'Task Department Edit')
 @section('content')
     <style>
         .select2-container {
@@ -9,7 +9,6 @@
 
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Edit Task</strong>
         </div>
         <div class="card-body">
             <form method="post" action="{{ route('task.update', $task->id) }}" enctype="multipart/form-data">
@@ -88,7 +87,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="simple-select2">Personal</label>
+                        <label for="simple-select2">User</label>
                         <input type="text" id="select-personal"
                             class="form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
                             value="{{ old('enduser_id', $task->enduser->name . ' - ' . $task->enduser->department) }}"

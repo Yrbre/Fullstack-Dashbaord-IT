@@ -112,4 +112,17 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('user.index')->with('success', 'User deleted successfully.');
     }
+
+    public function inactive()
+    {
+        $users = User::onlyTrashed()->orderBy('name', 'asc')->get();
+        return view('pages.user.inactive.index', compact('users'));
+    }
+
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+        return redirect()->route('user.inactive')->with('success', 'User restored successfully.');
+    }
 }

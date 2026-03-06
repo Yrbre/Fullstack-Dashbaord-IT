@@ -1,6 +1,12 @@
+<?php $__env->startSection('judul', 'DASHBOARD MONITORING'); ?>
 <?php $__env->startSection('content'); ?>
+    <style>
+        .link-black {
+            color: inherit !important;
+            text-decoration: none !important;
+        }
+    </style>
     <meta http-equiv="refresh" content="60">
-    <h1>Monitoring Dashboard</h1>
     <div class="container-fluid py-4">
         <div class="row mx-auto justify-content-center">
             <div class="col-6">
@@ -22,7 +28,9 @@
                                     <tbody>
                                         <?php $__currentLoopData = $standBy; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <td><?php echo e($item->user->name); ?></td>
+                                                <td><a class="link-black"
+                                                        href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                </td>
                                                 <td><?php echo e($item->location); ?></td>
                                                 <td><?php echo e($item->activity->name); ?></td>
                                                 <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?></td>
@@ -59,7 +67,9 @@
                                     <tbody>
                                         <?php $__currentLoopData = $outSide; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <td><?php echo e($item->user->name); ?></td>
+                                                <td><a class="link-black"
+                                                        href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                </td>
                                                 <td><?php echo e($item->location); ?></td>
                                                 <?php if($item->reference_type === 'ACTIVITY'): ?>
                                                     <td><?php echo e($item->activity->name); ?></td>
@@ -68,7 +78,9 @@
                                                 <?php else: ?>
                                                     <td> - </td>
                                                 <?php endif; ?>
-                                                <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?></td>
+                                                <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
+
+                                                </td>
                                                 <td style="color:greenyellow">
                                                     <span class="live-duration"
                                                         data-start="<?php echo e(\Carbon\Carbon::parse($item->start_time)->toISOString()); ?>"></span>

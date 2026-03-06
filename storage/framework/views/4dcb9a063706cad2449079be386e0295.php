@@ -1,3 +1,4 @@
+<?php $__env->startSection('judul', 'DASHBOARD MONITORING'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid py-4">
         <div class="mx-auto">

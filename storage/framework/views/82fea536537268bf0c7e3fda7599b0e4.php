@@ -1,3 +1,4 @@
+<?php $__env->startSection('judul', 'Task Department Detail'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid py-4">
 
