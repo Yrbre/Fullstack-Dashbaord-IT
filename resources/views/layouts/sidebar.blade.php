@@ -77,18 +77,30 @@
                     <i class="fe fe-home fe-16"></i>
                     <span class="ml-3 item-text">Task</span><span class="sr-only">(current)</span>
                 </a>
-                <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
-                    <li class="nav-item active">
-                        <a class="nav-link pl-3" href="{{ route('task.index') }}"> <i class="fe fe-home fe-16"></i>
-                            <span class="ml-1 item-text">Task
-                                Department</span></a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link pl-3" href="{{ route('task_personal.index') }}"><i
-                                class="fe fe-home fe-16"></i> <span class="ml-1 item-text">Task
-                                Pesonal</span></a>
-                    </li>
-                </ul>
+                @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
+                    <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
+                        <li class="nav-item active">
+                            <a class="nav-link pl-3" href="{{ route('task.index') }}"> <i class="fe fe-home fe-16"></i>
+                                <span class="ml-1 item-text">Task
+                                    Department</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link pl-3" href="{{ route('task_personal.index') }}"><i
+                                    class="fe fe-home fe-16"></i> <span class="ml-1 item-text">Task
+                                    Pesonal</span></a>
+                        </li>
+                    </ul>
+                @elseif (Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
+                    <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
+                        <li class="nav-item active">
+                            <a class="nav-link pl-3" href="{{ route('task_personal.index') }}"><i
+                                    class="fe fe-home fe-16"></i>
+                                <span class="ml-1 item-text">Task
+                                    Pesonal</span></a>
+                        </li>
+                    </ul>
+                @endif
+
             </li>
             @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
                 <li class="nav-item w-100">

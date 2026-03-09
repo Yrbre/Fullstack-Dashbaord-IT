@@ -83,14 +83,8 @@
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Level</label>
-                        <select class="form-control select2 @error('task_level') is-invalid @enderror" id="select-level"
-                            name="task_level">
-                            <optgroup label="Select Level Type">
-                                <option value="" selected disabled>Select Level</option>
-                                <option value="PERSONAL" @if (old('task_level') == 'PERSONAL') selected @endif>PERSONAL
-                                </option>
-                            </optgroup>
-                        </select>
+                        <input type="text" class="form-control @error('task_level') is-invalid @enderror"
+                            value="PERSONAL" readonly id="select-level" name="task_level">
                         @error('task_level')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

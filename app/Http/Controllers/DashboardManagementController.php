@@ -44,11 +44,25 @@ class DashboardManagementController extends Controller
             ->latest()
             ->get();
 
-        $taskProgress = Tasks::with('user')
+        $taskProgress = Tasks::with('user', 'enduser')
+            ->withCount([
+                'children',
+                'children as completed_children_count' => function ($query) {
+                    $query->where('status', 'COMPLETED');
+                }
+            ])
             ->whereHas('user')
             ->where('status', '!=', 'COMPLETED')
             ->where('task_level', 'DEPARTMENT')
-            ->get();
+            ->get()
+            ->map(function ($task) {
+                $task->progress = $task->children_count > 0
+                    ? round(($task->completed_children_count / $task->children_count) * 100)
+                    : 0;
+                $task->progress_label = $task->completed_children_count . '/' . $task->children_count;
+                $task->progress_color = $task->progress == 100 ? 'bg-success' : ($task->progress >= 50 ? 'bg-info' : 'bg-warning');
+                return $task;
+            });
 
         return view('pages.dashboard_management.index', compact('standBy', 'outSide', 'taskProgress'));
     }

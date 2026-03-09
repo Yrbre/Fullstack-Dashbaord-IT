@@ -83,14 +83,8 @@
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Level</label>
-                        <select class="form-control select2 @error('task_level') is-invalid @enderror" id="select-level"
-                            name="task_level">
-                            <optgroup label="Select Level Type">
-                                <option value="" selected disabled>Select Level</option>
-                                <option value="DEPARTMENT" @if (old('task_level') == 'DEPARTMENT') selected @endif>DEPARTMENT
-                                </option>
-                            </optgroup>
-                        </select>
+                        <input type="text" class="form-control @error('task_level') is-invalid @enderror"
+                            value="DEPARTMENT" readonly id="select-level" name="task_level">
                         @error('task_level')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -121,8 +115,7 @@
                             <optgroup label="Select Personal">
                                 <option value="" selected disabled>Select User</option>
                                 @foreach ($endUser as $item)
-                                    <option value="{{ $item->id }}"
-                                        @if (old('enduser_personal') == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}" @if (old('enduser_personal') == $item->id) selected @endif>
                                         {{ $item->name }}</option>
                                 @endforeach
                                 <option value="OTHER" @if (old('enduser_personal') == 'OTHER') selected @endif>OTHER</option>
@@ -160,7 +153,7 @@
                         @enderror
                     </div>
 
-                    {{-- <div class="form-group col-6">
+                    <div class="form-group col-6">
                         <label for="simple-select2">Location</label>
                         <select class="form-control select2 @error('location_id') is-invalid @enderror"
                             id="select-location" name="location_id">
@@ -177,7 +170,7 @@
                         @error('location_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div> --}}
+                    </div>
 
                     <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
                         <label for="other_department_location">Specify Department Location</label>

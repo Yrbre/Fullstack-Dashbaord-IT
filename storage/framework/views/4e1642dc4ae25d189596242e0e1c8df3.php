@@ -1,9 +1,8 @@
-<?php $__env->startSection('menulocation', 'active'); ?>
+<?php $__env->startSection('judul', 'Location List'); ?>
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Location List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('location.create')); ?>" class="btn btn-primary">Create New Location</a>
             </div>

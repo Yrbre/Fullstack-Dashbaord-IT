@@ -138,21 +138,15 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Level</label>
-                        <select class="form-control select2 <?php $__errorArgs = ['task_level'];
+                        <input type="text" class="form-control <?php $__errorArgs = ['task_level'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="select-level"
-                            name="task_level">
-                            <optgroup label="Select Level Type">
-                                <option value="" selected disabled>Select Level</option>
-                                <option value="DEPARTMENT" <?php if(old('task_level') == 'DEPARTMENT'): ?> selected <?php endif; ?>>DEPARTMENT
-                                </option>
-                            </optgroup>
-                        </select>
+unset($__errorArgs, $__bag); ?>"
+                            value="DEPARTMENT" readonly id="select-level" name="task_level">
                         <?php $__errorArgs = ['task_level'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -185,13 +179,12 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group col-6">
-                        <label for="simple-select2">Personal</label>
+                        <label for="simple-select2">User</label>
                         <select class="form-control select2" id="select-personal" name="enduser_personal">
                             <optgroup label="Select Personal">
-                                <option value="" selected disabled>Select Personal</option>
+                                <option value="" selected disabled>Select User</option>
                                 <?php $__currentLoopData = $endUser; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($item->id); ?>"
-                                        <?php if(old('enduser_personal') == $item->id): ?> selected <?php endif; ?>>
+                                    <option value="<?php echo e($item->id); ?>" <?php if(old('enduser_personal') == $item->id): ?> selected <?php endif; ?>>
                                         <?php echo e($item->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <option value="OTHER" <?php if(old('enduser_personal') == 'OTHER'): ?> selected <?php endif; ?>>OTHER</option>
@@ -199,7 +192,7 @@ unset($__errorArgs, $__bag); ?>
                         </select>
                     </div>
                     <div class="form-group col-6" id="otherPersonalInput" style="display: none;">
-                        <label for="other_personal">Specify Personal</label>
+                        <label for="other_personal">Specify User</label>
                         <input type="text" class="form-control" id="other_personal" name="other_personal"
                             placeholder="Enter custom personal" value="<?php echo e(old('other_personal')); ?>">
                     </div>
@@ -243,7 +236,38 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    
+                    <div class="form-group col-6">
+                        <label for="simple-select2">Location</label>
+                        <select class="form-control select2 <?php $__errorArgs = ['location_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            id="select-location" name="location_id">
+                            <optgroup label="Select Location">
+                                <option value="" selected disabled>Select Location</option>
+                                <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($item->id); ?>"
+                                        <?php if(old('location_id') == $item->id): ?> selected <?php endif; ?>>
+                                        <?php echo e($item->department); ?> - <?php echo e($item->location); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <option value="OTHER" <?php if(old('location_id') == 'OTHER'): ?> selected <?php endif; ?>>OTHER</option>
+                            </optgroup>
+                        </select>
+                        <?php $__errorArgs = ['location_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
 
                     <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
                         <label for="other_department_location">Specify Department Location</label>

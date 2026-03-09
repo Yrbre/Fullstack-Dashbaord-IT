@@ -1,9 +1,8 @@
-<?php $__env->startSection('menucategory', 'active'); ?>
+<?php $__env->startSection('judul', 'Category List'); ?>
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Category List</h2>
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('category.create')); ?>" class="btn btn-primary">Create New Category</a>
             </div>

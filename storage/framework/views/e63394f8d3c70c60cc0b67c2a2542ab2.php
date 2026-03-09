@@ -1,9 +1,8 @@
-<?php $__env->startSection('menuactivity_history', 'active'); ?>
+<?php $__env->startSection('judul', 'Activity History'); ?>
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
-            <h2 class="page-title">Activity History List</h2>
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">

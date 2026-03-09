@@ -121,7 +121,19 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->user->name }}</td>
                                         <td>{{ $item->enduser->department ?? '-' }}</td>
-                                        <td>{{ $item->progress }}%</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="progress flex-grow-1" style="height: 20px;">
+                                                    <div class="progress-bar {{ $item->progress_color }}"
+                                                        role="progressbar" style="width: {{ $item->progress }}%;"
+                                                        aria-valuenow="{{ $item->progress }}" aria-valuemin="0"
+                                                        aria-valuemax="100">
+                                                        {{ $item->progress }}%
+                                                    </div>
+                                                </div>
+                                                <small class="ms-2 text-muted">{{ $item->progress_label }}</small>
+                                            </div>
+                                        </td>
                                         <td>{{ $item->status }}</td>
                                         <td>
                                             <a href="{{ route('task.show', $item->id) }}"
@@ -185,4 +197,5 @@
             });
         @endif
     </script>
+
 @endsection

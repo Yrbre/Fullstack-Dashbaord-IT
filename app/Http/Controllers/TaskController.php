@@ -159,13 +159,15 @@ class TaskController extends Controller
     {
         $task = Tasks::with('user', 'enduser')->findOrFail($id);
         $relationTask = Tasks::where('relation_task', $task->id)->get();
+        $countRelationTask = $relationTask->count();
+        $completedRelationTask = $relationTask->where('status', 'COMPLETED')->count();
         $takenTask = Tasks::with('user')
             ->where('relation_task', $task->id)
             ->whereNotNull('assign_to')
             ->groupBy('assign_to')
             ->selectRaw('MIN(id) as id, assign_to')
             ->get();
-        return view('pages.task.show', compact('task', 'relationTask', 'takenTask'));
+        return view('pages.task.show', compact('task', 'relationTask', 'takenTask', 'countRelationTask', 'completedRelationTask'));
     }
 
     /**

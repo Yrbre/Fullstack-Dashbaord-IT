@@ -44,9 +44,11 @@ class DashboardOperatorController extends Controller
             ->whereNull('end_time')
             ->latest()
             ->first();
-        $activityHistory->update([
-            'end_time' => now()->format('Y-m-d H:i:s'),
-        ]);
+        if (!empty($activityHistory)) {
+            $activityHistory->update([
+                'end_time' => now()->format('Y-m-d H:i:s'),
+            ]);
+        }
         $activity = Activity::findOrFail($id);
 
         $activityHistory = ActivityHistory::create([
@@ -67,9 +69,11 @@ class DashboardOperatorController extends Controller
             ->whereNull('end_time')
             ->latest()
             ->first();
-        $activityHistory->update([
-            'end_time' => now()->format('Y-m-d H:i:s'),
-        ]);
+        if (!empty($activityHistory)) {
+            $activityHistory->update([
+                'end_time' => now()->format('Y-m-d H:i:s'),
+            ]);
+        }
         $task = Tasks::findOrFail($id);
 
         $task->update([

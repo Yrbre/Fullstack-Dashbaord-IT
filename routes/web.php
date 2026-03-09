@@ -43,7 +43,7 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::resource('/enduser-department', EndUserDepartmentController::class)->names('enduser_department');
 
     Route::resource('/task/personal', TaskPersonalController::class)->names('task_personal');
-    Route::resource('/task', TaskController::class)->names('task');
+
 
     Route::get('/dashboard/operator', [DashboardOperatorController::class, 'index'])->name('dashboard_operator.index');
     Route::post('/dashboard_operator/take/{id}', [DashboardOperatorController::class, 'takeActivity'])->name('dashboard_operator.take');
@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], fu
     Route::get('/activity_history/{id}', [ActivityHistoryController::class, 'show'])->name('activity_history.show');
     Route::get('/activity_history/list/{id}', [ActivityHistoryController::class, 'list'])->name('activity_history.list');
     Route::get('/activity_history/list/{id}/filter', [ActivityHistoryController::class, 'listFilter'])->name('activity_history.list.filter');
+    Route::resource('/task/department', TaskController::class)->names('task');
 });
 
 // Edit Activity History, Privilage only for Admin

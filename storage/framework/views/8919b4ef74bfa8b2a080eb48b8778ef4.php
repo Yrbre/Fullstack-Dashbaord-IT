@@ -121,7 +121,19 @@
                                         <td><?php echo e($item->name); ?></td>
                                         <td><?php echo e($item->user->name); ?></td>
                                         <td><?php echo e($item->enduser->department ?? '-'); ?></td>
-                                        <td><?php echo e($item->progress); ?>%</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="progress flex-grow-1" style="height: 20px;">
+                                                    <div class="progress-bar <?php echo e($item->progress_color); ?>"
+                                                        role="progressbar" style="width: <?php echo e($item->progress); ?>%;"
+                                                        aria-valuenow="<?php echo e($item->progress); ?>" aria-valuemin="0"
+                                                        aria-valuemax="100">
+                                                        <?php echo e($item->progress); ?>%
+                                                    </div>
+                                                </div>
+                                                <small class="ms-2 text-muted"><?php echo e($item->progress_label); ?></small>
+                                            </div>
+                                        </td>
                                         <td><?php echo e($item->status); ?></td>
                                         <td>
                                             <a href="<?php echo e(route('task.show', $item->id)); ?>"
@@ -185,6 +197,7 @@
             });
         <?php endif; ?>
     </script>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/dashboard_management/index.blade.php ENDPATH**/ ?>

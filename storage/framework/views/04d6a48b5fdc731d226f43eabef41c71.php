@@ -1,8 +1,7 @@
-<?php $__env->startSection('menuuser', 'active'); ?>
+<?php $__env->startSection('judul', 'User Create'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Create User</strong>
         </div>
         <div class="card-body">
             <form method="post" action="<?php echo e(route('user.store')); ?>" enctype="multipart/form-data">
