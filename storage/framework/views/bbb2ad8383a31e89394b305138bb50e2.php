@@ -174,7 +174,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="simple-select2">Personal</label>
+                        <label for="simple-select2">User</label>
                         <input type="text" id="select-personal"
                             class="form-control <?php $__errorArgs = ['enduser_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -222,10 +222,10 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-
-                    <div class="form-group col-md-6">
-                        <label for="simple-select2">Status</label>
-                        <select class="form-control select2 <?php $__errorArgs = ['status'];
+                    <?php if(Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN'])): ?>
+                        <div class="form-group col-md-6">
+                            <label for="simple-select2">Status</label>
+                            <select class="form-control select2 <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -233,31 +233,48 @@ $message = $__bag->first($__errorArgs[0]); ?>is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" id="select-status"
-                            name="status">
-                            <optgroup label="Select Status Type">
-                                <option value="" selected disabled>Select Status</option>
-                                <?php if($task->status === 'ON DUTY'): ?>
-                                    <option value="ON DUTY"
-                                        <?php echo e(old('status', $task->status) == 'ON DUTY' ? 'selected' : ''); ?>>
-                                        ON DUTY
+                                name="status">
+                                <optgroup label="Select Status Type">
+                                    <option value="" selected disabled>Select Status</option>
+                                    <?php if($task->status === 'ON DUTY'): ?>
+                                        <option value="ON DUTY"
+                                            <?php echo e(old('status', $task->status) == 'ON DUTY' ? 'selected' : ''); ?>>
+                                            ON DUTY
+                                        </option>
+                                    <?php endif; ?>
+                                    <option value="NEW" <?php echo e(old('status', $task->status) == 'NEW' ? 'selected' : ''); ?>>
+                                        NEW
                                     </option>
-                                <?php endif; ?>
-                                <option value="NEW" <?php echo e(old('status', $task->status) == 'NEW' ? 'selected' : ''); ?>>
-                                    NEW
-                                </option>
-                                <option value="ON HOLD" <?php echo e(old('status', $task->status) == 'ON HOLD' ? 'selected' : ''); ?>>
-                                    ON HOLD
-                                </option>
-                                <option value="COMPLETED"
-                                    <?php echo e(old('status', $task->status) == 'COMPLETED' ? 'selected' : ''); ?>>
-                                    COMPLETED
-                                </option>
-                                <option value="CANCELLED"
-                                    <?php echo e(old('status', $task->status) == 'CANCELLED' ? 'selected' : ''); ?>>
-                                    CANCELLED
-                                </option>
-                            </optgroup>
-                        </select>
+                                    <option value="ON HOLD"
+                                        <?php echo e(old('status', $task->status) == 'ON HOLD' ? 'selected' : ''); ?>>
+                                        ON HOLD
+                                    </option>
+                                    <option value="COMPLETED"
+                                        <?php echo e(old('status', $task->status) == 'COMPLETED' ? 'selected' : ''); ?>>
+                                        COMPLETED
+                                    </option>
+                                    <option value="CANCELLED"
+                                        <?php echo e(old('status', $task->status) == 'CANCELLED' ? 'selected' : ''); ?>>
+                                        CANCELLED
+                                    </option>
+                                </optgroup>
+                            </select>
+                            <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="form-group col-md-6">
+                        <label for="simple-select2">Status</label>
+                        <input type="text" class="form-control" value="<?php echo e($task->status); ?>" readonly>
+                        
                         <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

@@ -107,39 +107,49 @@
                         @enderror
                     </div>
 
-
+                    @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
+                        <div class="form-group col-md-6">
+                            <label for="simple-select2">Status</label>
+                            <select class="form-control select2 @error('status')is-invalid @enderror" id="select-status"
+                                name="status">
+                                <optgroup label="Select Status Type">
+                                    <option value="" selected disabled>Select Status</option>
+                                    @if ($task->status === 'ON DUTY')
+                                        <option value="ON DUTY"
+                                            {{ old('status', $task->status) == 'ON DUTY' ? 'selected' : '' }}>
+                                            ON DUTY
+                                        </option>
+                                    @endif
+                                    <option value="NEW" {{ old('status', $task->status) == 'NEW' ? 'selected' : '' }}>
+                                        NEW
+                                    </option>
+                                    <option value="ON PROGRESS"
+                                        {{ old('status', $task->status) == 'ON PROGRESS' ? 'selected' : '' }}>
+                                        ON PROGRESS
+                                    </option>
+                                    <option value="ON HOLD"
+                                        {{ old('status', $task->status) == 'ON HOLD' ? 'selected' : '' }}>
+                                        ON HOLD
+                                    </option>
+                                    <option value="COMPLETED"
+                                        {{ old('status', $task->status) == 'COMPLETED' ? 'selected' : '' }}>
+                                        COMPLETED
+                                    </option>
+                                    <option value="CANCELLED"
+                                        {{ old('status', $task->status) == 'CANCELLED' ? 'selected' : '' }}>
+                                        CANCELLED
+                                    </option>
+                                </optgroup>
+                            </select>
+                            @error('status')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endif
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Status</label>
-                        <select class="form-control select2 @error('status')is-invalid @enderror" id="select-status"
-                            name="status">
-                            <optgroup label="Select Status Type">
-                                <option value="" selected disabled>Select Status</option>
-                                @if ($task->status === 'ON DUTY')
-                                    <option value="ON DUTY"
-                                        {{ old('status', $task->status) == 'ON DUTY' ? 'selected' : '' }}>
-                                        ON DUTY
-                                    </option>
-                                @endif
-                                <option value="NEW" {{ old('status', $task->status) == 'NEW' ? 'selected' : '' }}>
-                                    NEW
-                                </option>
-                                <option value="ON PROGRESS"
-                                    {{ old('status', $task->status) == 'ON PROGRESS' ? 'selected' : '' }}>
-                                    ON PROGRESS
-                                </option>
-                                <option value="ON HOLD" {{ old('status', $task->status) == 'ON HOLD' ? 'selected' : '' }}>
-                                    ON HOLD
-                                </option>
-                                <option value="COMPLETED"
-                                    {{ old('status', $task->status) == 'COMPLETED' ? 'selected' : '' }}>
-                                    COMPLETED
-                                </option>
-                                <option value="CANCELLED"
-                                    {{ old('status', $task->status) == 'CANCELLED' ? 'selected' : '' }}>
-                                    CANCELLED
-                                </option>
-                            </optgroup>
-                        </select>
+                        <input type="text" id="select-status" class="form-control" name="status"
+                            value="{{ old('status', $task->status) }}" readonly>
                         @error('status')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -161,7 +171,8 @@
                                 </option>
                                 <option value="75" {{ old('progress', $task->progress) == 75 ? 'selected' : '' }}>75%
                                 </option>
-                                <option value="100" {{ old('progress', $task->progress) == 100 ? 'selected' : '' }}>100%
+                                <option value="100" {{ old('progress', $task->progress) == 100 ? 'selected' : '' }}>
+                                    100%
                                 </option>
                             </optgroup>
                         </select>
