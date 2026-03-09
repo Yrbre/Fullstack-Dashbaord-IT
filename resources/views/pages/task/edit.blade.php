@@ -145,15 +145,16 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
+                    @else
+                        <div class="form-group col-md-6">
+                            <label for="simple-select2">Status</label>
+                            <input type="text" class="form-control" name="status"
+                                value="{{ old('status', $task->status) }}" readonly>
+                            @error('status')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
                     @endif
-                    <div class="form-group col-md-6">
-                        <label for="simple-select2">Status</label>
-                        <input type="text" id="select-status" class="form-control" name="status"
-                            value="{{ old('status', $task->status) }}" readonly>
-                        @error('status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
 
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Progress</label>

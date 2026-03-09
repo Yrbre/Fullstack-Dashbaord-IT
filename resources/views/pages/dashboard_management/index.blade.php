@@ -111,7 +111,7 @@
                                     <td>Client</td>
                                     <td>Progress</td>
                                     <td>Status</td>
-                                    <td>Action</td>
+                                    <td class="text-center">Action</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -135,9 +135,17 @@
                                             </div>
                                         </td>
                                         <td>{{ $item->status }}</td>
-                                        <td>
+                                        <td class="text-center">
                                             <a href="{{ route('task.show', $item->id) }}"
                                                 class="btn btn-sm btn-primary">View</a>
+                                            @if ((int) $item->progress === 100)
+                                                <form action="{{ route('task.complete', $item->id) }}" method="POST"
+                                                    class="d-inline" onsubmit="return confirmComplete(event)">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="btn btn-sm btn-success">Completed</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -184,6 +192,27 @@
         setTimeout(function() {
             location.reload();
         }, 30000);
+    </script>
+    <script>
+        function confirmComplete(event) {
+            event.preventDefault();
+            const form = event.target;
+            Swal.fire({
+                icon: 'question',
+                title: 'Mark as Completed?',
+                text: 'Are you sure you want to mark this task as completed?',
+                theme: 'dark',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes, Complete',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+            return false;
+        }
     </script>
     <script>
         @if (session('success'))
