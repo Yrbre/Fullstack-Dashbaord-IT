@@ -46,7 +46,7 @@
         <div class="row mt-4 g-4">
 
             <!-- Kolom Kiri: Member -->
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
                 <div class="card shadow h-100">
                     <div class="card-header border-bottom">
                         <h2 class="title">Member Taken Relation Task</h2>
@@ -70,12 +70,12 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div> <!-- / .card-body -->
-                </div> <!-- .card -->
-            </div> <!-- .col-md-4 -->
+                    </div>
+                </div>
+            </div>  --}}
 
             <!-- Kolom Kanan: Relation Task -->
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card h-100">
                     <div class="card-body">
                         <h2 class="title">Relation Task</h2>
@@ -85,6 +85,8 @@
                                     <td>Task ID</td>
                                     <td>Task Name</td>
                                     <td>Assigned To</td>
+                                    <td>Schedule Start/End</td>
+                                    <td>Actual Start/End</td>
                                     <td>Status</td>
                                 </tr>
                             </thead>
@@ -94,6 +96,14 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->user->name ?? '-' }}</td>
+                                        <td>{{ $item->schedule_start ? \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:m:i') : '-' }}
+                                            -
+                                            {{ $item->schedule_end ? \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:m:i') : '-' }}
+                                        </td>
+                                        <td>{{ $item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d M Y H:m:i') : 'Null' }}
+                                            -
+                                            {{ $item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d M Y H:m:i') : 'Null' }}
+                                        </td>
                                         <td>{{ $item->status }}</td>
                                     </tr>
                                 @endforeach

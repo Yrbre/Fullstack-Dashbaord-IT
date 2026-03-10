@@ -19,6 +19,8 @@
                                         <th>Do Somegthing</th>
                                         <th>Location</th>
                                         <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,6 +42,9 @@
                                             </td>
                                             <td>{{ $item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-' }}
                                             </td>
+                                            <td>{{ $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-' }}
+                                            </td>
+                                            <td>{{ $item->status ?? '-' }}</td>
 
                                         </tr>
                                     @endforeach
