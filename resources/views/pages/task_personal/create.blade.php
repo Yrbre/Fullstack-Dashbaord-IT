@@ -116,8 +116,8 @@
                             value="{{ old('other_personal_department') }}">
                     </div>
 
-
-                    <div class="form-group col-6">
+                    <input type="hidden" name="status" value="NEW">
+                    {{-- <div class="form-group col-6">
                         <label for="simple-select2">Status</label>
                         <select class="form-control select2 @error('status')is-invalid @enderror" id="select-status"
                             name="status">
@@ -133,7 +133,7 @@
                         @error('status')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Location</label>
@@ -142,8 +142,7 @@
                             <optgroup label="Select Location">
                                 <option value="" selected disabled>Select Location</option>
                                 @foreach ($location as $item)
-                                    <option value="{{ $item->id }}"
-                                        @if (old('location_id') == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}" @if (old('location_id') == $item->id) selected @endif>
                                         {{ $item->department }} - {{ $item->location }}</option>
                                 @endforeach
                                 <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option>

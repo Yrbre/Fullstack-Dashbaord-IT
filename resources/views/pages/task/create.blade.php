@@ -134,8 +134,8 @@
                             value="{{ old('other_personal_department') }}">
                     </div>
 
-
-                    <div class="form-group col-6">
+                    <input type="hidden" name="status" value="NEW">
+                    {{-- <div class="form-group col-6">
                         <label for="simple-select2">Status</label>
                         <select class="form-control select2 @error('status')is-invalid @enderror" id="select-status"
                             name="status">
@@ -151,7 +151,7 @@
                         @error('status')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Location</label>
