@@ -61,6 +61,14 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
+                    <div class="form-group col-md-6" id="wrapper_schedule_start_parent" style="display: none;">
+                        <label for="">Schedule Start Task Parent</label>
+                        <input type="text" class="form-control" id="schedule_start_parent" readonly>
+                    </div>
+                    <div class="form-group col-md-6" id="wrapper_schedule_end_parent" style="display: none;">
+                        <label for="">Schedule End Task Parent</label>
+                        <input type="text" class="form-control" id="schedule_end_parent" readonly>
+                    </div>
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Priority</label>
@@ -202,7 +210,8 @@ unset($__errorArgs, $__bag); ?>"
                             <optgroup label="Select Location">
                                 <option value="" selected disabled>Select Location</option>
                                 <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($item->id); ?>" <?php if(old('location_id') == $item->id): ?> selected <?php endif; ?>>
+                                    <option value="<?php echo e($item->id); ?>"
+                                        <?php if(old('location_id') == $item->id): ?> selected <?php endif; ?>>
                                         <?php echo e($item->department); ?> - <?php echo e($item->location); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <option value="OTHER" <?php if(old('location_id') == 'OTHER'): ?> selected <?php endif; ?>>OTHER</option>
@@ -422,6 +431,43 @@ unset($__errorArgs, $__bag); ?>
         $('.select2-multi').select2({
             multiple: true,
             theme: 'bootstrap4',
+        });
+    </script>
+
+    <script>
+        function fetchParentSchedule(taskId) {
+            if (!taskId) {
+                $('#schedule_start_parent').val('');
+                $('#schedule_end_parent').val('');
+                $('#wrapper_schedule_start_parent').hide();
+                $('#wrapper_schedule_end_parent').hide();
+                return;
+            }
+
+            fetch('/task/' + taskId)
+                .then(response => response.json())
+                .then(data => {
+                    $('#schedule_start_parent').val(data.schedule_start ?? '-');
+                    $('#schedule_end_parent').val(data.schedule_end ?? '-');
+                    $('#wrapper_schedule_start_parent').show();
+                    $('#wrapper_schedule_end_parent').show();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        // Saat user mengubah pilihan relation task
+        $('#select-relation-task').on('change', function() {
+            fetchParentSchedule($(this).val());
+        });
+
+        // Saat page load (misal redirect back karena validasi gagal)
+        $(document).ready(function() {
+            let initialTaskId = $('#select-relation-task').val();
+            if (initialTaskId) {
+                fetchParentSchedule(initialTaskId);
+            }
         });
     </script>
 <?php $__env->stopSection(); ?>

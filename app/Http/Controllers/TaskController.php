@@ -231,4 +231,10 @@ class TaskController extends Controller
         ]);
         return redirect()->back()->with('success', 'Task marked as completed.');
     }
+
+    public function getTask(string $id)
+    {
+        $task = Tasks::findOrFail($id);
+        return response()->json($task);
+    }
 }

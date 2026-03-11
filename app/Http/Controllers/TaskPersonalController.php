@@ -45,7 +45,7 @@ class TaskPersonalController extends Controller
             ->where('status', '!=', 'COMPLETED')
             ->get();
 
-        return view('pages.task_personal.create', compact('assignTo', 'category', 'location', 'endUser', 'department', 'task'));
+        return view('pages.task_personal.create', compact('assignTo', 'category', 'location', 'endUser', 'department', 'task',));
     }
 
     /**

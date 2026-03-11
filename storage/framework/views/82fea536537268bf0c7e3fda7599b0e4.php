@@ -62,6 +62,7 @@
                                     <td>Task ID</td>
                                     <td>Task Name</td>
                                     <td>Assigned To</td>
+                                    <td>Progres</td>
                                     <td>Schedule Start/End</td>
                                     <td>Actual Start/End</td>
                                     <td>Status</td>
@@ -73,6 +74,7 @@
                                         <td><?php echo e($item->id); ?></td>
                                         <td><?php echo e($item->name); ?></td>
                                         <td><?php echo e($item->user->name ?? '-'); ?></td>
+                                        <td><?php echo e($item->progress); ?>%</td>
                                         <td><?php echo e($item->schedule_start ? \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:m:i') : '-'); ?>
 
                                             -

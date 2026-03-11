@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Tasks;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTaskPersonalRequest extends FormRequest
@@ -39,5 +41,40 @@ class UpdateTaskPersonalRequest extends FormRequest
             'in_timeline'           => 'sometimes|boolean',
             'description'           => 'nullable|string',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            if ($this->relation_task) {
+
+                $task = Tasks::find($this->relation_task);
+
+                if (!$task) {
+                    return;
+                }
+
+                $start = Carbon::parse($this->schedule_start);
+                $end   = Carbon::parse($this->schedule_end);
+
+                $taskStart = Carbon::parse($task->schedule_start);
+                $taskEnd   = Carbon::parse($task->schedule_end);
+
+                if ($start->lt($taskStart)) {
+                    $validator->errors()->add(
+                        'schedule_start',
+                        'Schedule start tidak boleh lebih awal dari schedule task parent.'
+                    );
+                }
+
+                if ($end->gt($taskEnd)) {
+                    $validator->errors()->add(
+                        'schedule_end',
+                        'Schedule end tidak boleh melebihi schedule task parent.'
+                    );
+                }
+            }
+        });
     }
 }

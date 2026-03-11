@@ -59,9 +59,8 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::resource('/location', LocationController::class)->names('location');
     Route::resource('/enduser', EndUserController::class)->names('enduser');
     Route::resource('/enduser-department', EndUserDepartmentController::class)->names('enduser_department');
-
     Route::resource('/task/personal', TaskPersonalController::class)->names('task_personal');
-
+    Route::get('/task/{id}', [TaskController::class, 'getTask'])->name('task.get');
 
     Route::get('/dashboard/operator', [DashboardOperatorController::class, 'index'])->name('dashboard_operator.index');
     Route::post('/dashboard_operator/take/{id}', [DashboardOperatorController::class, 'takeActivity'])->name('dashboard_operator.take');

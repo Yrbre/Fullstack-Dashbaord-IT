@@ -85,6 +85,7 @@
                                     <td>Task ID</td>
                                     <td>Task Name</td>
                                     <td>Assigned To</td>
+                                    <td>Progres</td>
                                     <td>Schedule Start/End</td>
                                     <td>Actual Start/End</td>
                                     <td>Status</td>
@@ -96,6 +97,7 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->user->name ?? '-' }}</td>
+                                        <td>{{ $item->progress }}%</td>
                                         <td>{{ $item->schedule_start ? \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:m:i') : '-' }}
                                             -
                                             {{ $item->schedule_end ? \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:m:i') : '-' }}

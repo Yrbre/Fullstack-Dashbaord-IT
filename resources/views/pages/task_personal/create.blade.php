@@ -34,6 +34,14 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-group col-md-6" id="wrapper_schedule_start_parent" style="display: none;">
+                        <label for="">Schedule Start Task Parent</label>
+                        <input type="text" class="form-control" id="schedule_start_parent" readonly>
+                    </div>
+                    <div class="form-group col-md-6" id="wrapper_schedule_end_parent" style="display: none;">
+                        <label for="">Schedule End Task Parent</label>
+                        <input type="text" class="form-control" id="schedule_end_parent" readonly>
+                    </div>
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Priority</label>
@@ -142,7 +150,8 @@
                             <optgroup label="Select Location">
                                 <option value="" selected disabled>Select Location</option>
                                 @foreach ($location as $item)
-                                    <option value="{{ $item->id }}" @if (old('location_id') == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}"
+                                        @if (old('location_id') == $item->id) selected @endif>
                                         {{ $item->department }} - {{ $item->location }}</option>
                                 @endforeach
                                 <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option>
@@ -313,6 +322,43 @@
         $('.select2-multi').select2({
             multiple: true,
             theme: 'bootstrap4',
+        });
+    </script>
+
+    <script>
+        function fetchParentSchedule(taskId) {
+            if (!taskId) {
+                $('#schedule_start_parent').val('');
+                $('#schedule_end_parent').val('');
+                $('#wrapper_schedule_start_parent').hide();
+                $('#wrapper_schedule_end_parent').hide();
+                return;
+            }
+
+            fetch('/task/' + taskId)
+                .then(response => response.json())
+                .then(data => {
+                    $('#schedule_start_parent').val(data.schedule_start ?? '-');
+                    $('#schedule_end_parent').val(data.schedule_end ?? '-');
+                    $('#wrapper_schedule_start_parent').show();
+                    $('#wrapper_schedule_end_parent').show();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        // Saat user mengubah pilihan relation task
+        $('#select-relation-task').on('change', function() {
+            fetchParentSchedule($(this).val());
+        });
+
+        // Saat page load (misal redirect back karena validasi gagal)
+        $(document).ready(function() {
+            let initialTaskId = $('#select-relation-task').val();
+            if (initialTaskId) {
+                fetchParentSchedule(initialTaskId);
+            }
         });
     </script>
 @endsection
