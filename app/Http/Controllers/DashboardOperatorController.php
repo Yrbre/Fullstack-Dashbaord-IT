@@ -35,7 +35,12 @@ class DashboardOperatorController extends Controller
             ->where('assign_to', Auth()->id())
             ->where('task_level', 'PERSONAL')
             ->get();
-        return view('pages.dashboard_operator.index', compact('activityList', 'taskReady'));
+
+        $taskCompleted = Tasks::where('status', 'COMPLETED')
+            ->where('assign_to', Auth()->id())
+            ->where('task_level', 'PERSONAL')
+            ->get();
+        return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted'));
     }
 
     public function takeActivity(string $id)
