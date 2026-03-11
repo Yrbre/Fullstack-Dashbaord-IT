@@ -20,6 +20,7 @@
                                         <th>Location</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
+                                        <th>Duration</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -43,6 +44,13 @@
                                             <td>{{ $item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-' }}
                                             </td>
                                             <td>{{ $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-' }}
+                                            </td>
+                                            <td>
+                                                @if ($item->start_time && $item->end_time)
+                                                    {{ \Carbon\Carbon::parse($item->start_time)->diffForHumans(\Carbon\Carbon::parse($item->end_time), true) }}
+                                                @else
+                                                    -
+                                                @endif
                                             </td>
                                             <td>{{ $item->status ?? '-' }}</td>
 

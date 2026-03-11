@@ -19,6 +19,7 @@
                                         <th>Location</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
+                                        <th>Duration</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -45,6 +46,14 @@
                                             </td>
                                             <td><?php echo e($item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-'); ?>
 
+                                            </td>
+                                            <td>
+                                                <?php if($item->start_time && $item->end_time): ?>
+                                                    <?php echo e(\Carbon\Carbon::parse($item->start_time)->diffForHumans(\Carbon\Carbon::parse($item->end_time), true)); ?>
+
+                                                <?php else: ?>
+                                                    -
+                                                <?php endif; ?>
                                             </td>
                                             <td><?php echo e($item->status ?? '-'); ?></td>
 
