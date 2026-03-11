@@ -20,6 +20,7 @@ class Tasks extends Model
         'enduser_id',
         'status',
         'progress',
+        'task_load',
         'delivered',
         'location_id',
         'in_timeline',

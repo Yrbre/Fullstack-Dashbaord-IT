@@ -34,6 +34,7 @@ class StoreTaskPersonalRequest extends FormRequest
             'other_personal'            => 'nullable|required_if:enduser_personal,OTHER|string|max:255',
             'other_personal_department' => 'nullable|required_if:enduser_personal,OTHER|string|max:255',
             'status'                    => 'required|string|in:NEW,ON DUTY,COMPLETED,ON HOLD,CANCELLED',
+            'task_load'                 => 'required|integer|min:1|max:100',
             'location_id'               => 'nullable|string',
             'other_location'            => 'nullable|required_if:location_id,OTHER|string|max:255',
             'other_department_location' => 'nullable|required_if:location_id,OTHER|string|max:255',

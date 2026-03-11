@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Tasks;
 use App\Models\Activity;
+use Carbon\Carbon;
 
 class ActivityHistory extends Model
 {
@@ -35,5 +36,25 @@ class ActivityHistory extends Model
     public function activity()
     {
         return $this->belongsTo(Activity::class, 'reference_id');
+    }
+
+    public function getDurationAttribute()
+    {
+        if (!$this->start_time || !$this->end_time) {
+            return null;
+        }
+
+        $start = Carbon::parse($this->start_time);
+        $end = Carbon::parse($this->end_time);
+
+        $totalMinutes = $start->diffInMinutes($end);
+        $hours = floor($totalMinutes / 60);
+        $minutes = $totalMinutes % 60;
+
+        if ($hours > 0) {
+            return "{$hours} hours {$minutes} minutes";
+        }
+
+        return "{$minutes} minutes";
     }
 }

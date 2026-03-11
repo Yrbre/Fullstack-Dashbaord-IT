@@ -44,22 +44,21 @@ class DashboardManagementController extends Controller
             ->latest()
             ->get();
 
-        $taskProgress = Tasks::with('user', 'enduser')
-            ->withCount([
-                'children',
-                'children as completed_children_count' => function ($query) {
-                    $query->where('status', 'COMPLETED');
-                }
-            ])
+        $taskProgress = Tasks::with(['user', 'enduser', 'children'])
             ->whereHas('user')
             ->where('status', '!=', 'COMPLETED')
             ->where('task_level', 'DEPARTMENT')
             ->get()
             ->map(function ($task) {
-                $task->progress = $task->children_count > 0
-                    ? round(($task->completed_children_count / $task->children_count) * 100)
+                $totalWeight = $task->children->sum(fn($child) => (float) $child->task_load);
+                $weightedProgress = $task->children->sum(fn($child) => (float) $child->task_load * ((float) $child->progress / 100));
+
+                $task->progress = $totalWeight > 0
+                    ? round(($weightedProgress / $totalWeight) * 100)
                     : 0;
-                $task->progress_label = $task->completed_children_count . '/' . $task->children_count;
+                $completedCount = $task->children->where('status', 'COMPLETED')->count();
+                $totalCount = $task->children->count();
+                $task->progress_label = $completedCount . '/' . $totalCount;
                 $task->progress_color = $task->progress == 100 ? 'bg-success' : ($task->progress >= 50 ? 'bg-info' : 'bg-warning');
                 return $task;
             });

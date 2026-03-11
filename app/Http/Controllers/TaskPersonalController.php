@@ -127,6 +127,7 @@ class TaskPersonalController extends Controller
             'enduser_id'    => $enduserId,
             'status'        => $data['status'],
             'progress'      => $data['progress'],
+            'task_load'     => $data['task_load'],
             'delivered'     => Auth::user()->name,
             'location_id'   => $location_ID,
             'in_timeline'   => $data['in_timeline'],

@@ -45,12 +45,8 @@
                                             </td>
                                             <td>{{ $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-' }}
                                             </td>
-                                            <td>
-                                                @if ($item->start_time && $item->end_time)
-                                                    {{ \Carbon\Carbon::parse($item->start_time)->diffForHumans(\Carbon\Carbon::parse($item->end_time), true) }}
-                                                @else
-                                                    -
-                                                @endif
+                                            <td style="color: greenyellow">
+                                                {{ $item->duration ?? '-' }}
                                             </td>
                                             <td>{{ $item->status ?? '-' }}</td>
 

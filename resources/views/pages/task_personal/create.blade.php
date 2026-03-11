@@ -176,6 +176,16 @@
                     </div>
 
                     <div class="form-group col-md-6">
+                        <label for="">Bobot Task</label>
+                        <input type="text" class="form-control @error('task_load') is-invalid @enderror"
+                            name="task_load" value="{{ old('task_load') }}"
+                            oninput="this.value = this.value.replace(/[^0-9]/g,'');if(this.value > 100) this.value = 100;">
+                        @error('task_load')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group col-md-6">
                         <label for="">Schedule Start</label>
                         <input type="datetime-local" class="form-control @error('schedule_start') is-invalid @enderror"
                             name="schedule_start" value="{{ old('schedule_start', now()->format('Y-m-d H:i')) }}">

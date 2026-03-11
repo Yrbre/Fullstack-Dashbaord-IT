@@ -121,13 +121,16 @@
                                         <td>{{ $item->enduser->department ?? '-' }}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="progress flex-grow-1" style="height: 20px;">
+                                                <div class="progress flex-grow-1 position-relative" style="height: 20px;">
                                                     <div class="progress-bar {{ $item->progress_color }}"
                                                         role="progressbar" style="width: {{ $item->progress }}%;"
                                                         aria-valuenow="{{ $item->progress }}" aria-valuemin="0"
                                                         aria-valuemax="100">
-                                                        {{ $item->progress }}%
                                                     </div>
+                                                    <span class="position-absolute w-100 text-center fw-bold"
+                                                        style="top: 0; left: 0; line-height: 20px; font-size: 12px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.7);">
+                                                        {{ $item->progress }}%
+                                                    </span>
                                                 </div>
                                                 <small class="ms-2 text-muted">{{ $item->progress_label }}</small>
                                             </div>

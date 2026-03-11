@@ -171,32 +171,6 @@
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Status</label>
                         <input type="text" class="form-control" value="{{ $task->status }}" readonly>
-                        {{-- <select class="form-control select2 @error('status')is-invalid @enderror" id="select-status"
-                            name="status">
-                            <optgroup label="Select Status Type">
-                                <option value="" selected disabled>Select Status</option>
-                                @if ($task->status === 'ON DUTY')
-                                    <option value="ON DUTY"
-                                        {{ old('status', $task->status) == 'ON DUTY' ? 'selected' : '' }}>
-                                        ON DUTY
-                                    </option>
-                                @endif
-                                <option value="NEW" {{ old('status', $task->status) == 'NEW' ? 'selected' : '' }}>
-                                    NEW
-                                </option>
-                                <option value="ON HOLD" {{ old('status', $task->status) == 'ON HOLD' ? 'selected' : '' }}>
-                                    ON HOLD
-                                </option>
-                                <option value="COMPLETED"
-                                    {{ old('status', $task->status) == 'COMPLETED' ? 'selected' : '' }}>
-                                    COMPLETED
-                                </option>
-                                <option value="CANCELLED"
-                                    {{ old('status', $task->status) == 'CANCELLED' ? 'selected' : '' }}>
-                                    CANCELLED
-                                </option>
-                            </optgroup>
-                        </select> --}}
                         @error('status')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -239,6 +213,16 @@
                             </optgroup>
                         </select>
                         @error('location_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="">Bobot Task</label>
+                        <input type="text" class="form-control @error('task_load') is-invalid @enderror"
+                            name="task_load" value="{{ old('task_load', $task->task_load ?? '') }}"
+                            oninput="this.value = this.value.replace(/[^0-9]/g,'');if(this.value > 100) this.value = 100;">
+                        @error('task_load')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
