@@ -92,7 +92,7 @@
 
 
                     <div class="form-group col-6">
-                        <label for="simple-select2">Personal</label>
+                        <label for="simple-select2">End User / Dept PIC</label>
                         <select class="form-control select2" id="select-personal" name="enduser_personal">
                             <optgroup label="Select Personal">
                                 <option value="" selected disabled>Select User</option>

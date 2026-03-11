@@ -105,7 +105,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="simple-select2">User</label>
+                        <label for="simple-select2">End User / Dept PIC</label>
                         <input type="text" id="select-personal"
                             class="form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
                             value="{{ old('enduser_id', $task->enduser->name . ' - ' . $task->enduser->department) }}"

@@ -174,7 +174,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="simple-select2">User</label>
+                        <label for="simple-select2">End User / Dept PIC</label>
                         <input type="text" id="select-personal"
                             class="form-control <?php $__errorArgs = ['enduser_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
