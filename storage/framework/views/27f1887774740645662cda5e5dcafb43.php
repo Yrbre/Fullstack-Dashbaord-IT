@@ -86,7 +86,7 @@
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="<?php echo e(route('task_personal.index')); ?>"><i
                                     class="fe fe-home fe-16"></i> <span class="ml-1 item-text">Task
-                                    Pesonal</span></a>
+                                    End User / Dept PIC</span></a>
                         </li>
                     </ul>
                 <?php elseif(Auth::check() && in_array(Auth::user()->role, ['OPERATOR'])): ?>
@@ -95,7 +95,7 @@
                             <a class="nav-link pl-3" href="<?php echo e(route('task_personal.index')); ?>"><i
                                     class="fe fe-home fe-16"></i>
                                 <span class="ml-1 item-text">Task
-                                    Pesonal</span></a>
+                                    End User / Dept PIC</span></a>
                         </li>
                     </ul>
                 <?php endif; ?>
@@ -132,15 +132,15 @@
 
                 <ul class="collapse list-unstyled pl-4 w-100" id="enduser">
                     <li class="nav-item active" id="enduser">
-                        <a class="nav-link" href="<?php echo e(route('enduser.index')); ?>">
-                            <i class="fe fe-users fe-16"></i>
-                            <span class="ml-1 item-text">End User</span>
-                        </a>
-                    </li>
-                    <li class="nav-item active" id="enduser">
                         <a class="nav-link" href="<?php echo e(route('enduser_department.index')); ?>">
                             <i class="fe fe-users fe-16"></i>
                             <span class="ml-1 item-text">End User Department</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active" id="enduser">
+                        <a class="nav-link" href="<?php echo e(route('enduser.index')); ?>">
+                            <i class="fe fe-users fe-16"></i>
+                            <span class="ml-1 item-text">End User / Dept PIC</span>
                         </a>
                     </li>
                 </ul>

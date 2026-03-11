@@ -22,25 +22,29 @@
             <table class="table datatables table-hover" id="dataTable-1">
                 <thead>
                     <tr>
-                        <th>Activity</th>
+                        <th>#</th>
+                        <th>Task Name</th>
+                        <th>End User</th>
                         <th>Location</th>
-                        <th>Do</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
+                        <th>Progress</th>
+                        <th>Scheduled Start/End</th>
+                        <th>Actual Start/End</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($activityHistory as $item)
+                    @foreach ($taskList as $item)
                         <tr>
-                            @if ($item->reference_type === 'ACTIVITY')
-                                <td>{{ $item->activity->name ?? '-' }}</td>
-                            @elseif ($item->reference_type === 'TASK')
-                                <td>{{ $item->task->name ?? '-' }}</td>
-                            @endif
-                            <td>{{ $item->location }}</td>
-                            <td>{{ $item->reference_type }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') }}</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->enduser->name ?? $item->enduser->department }}</td>
+                            <td>{{ $item->location->department }} - {{ $item->location->location }}</td>
+                            <td>{{ $item->progress }}%</td>
+                            <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i') }} <br>
+                                {{ \Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i') }}</td>
+                            <td>{{ $item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d-m-Y H:i') : '-' }}
+                                <br>
+                                {{ $item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-' }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

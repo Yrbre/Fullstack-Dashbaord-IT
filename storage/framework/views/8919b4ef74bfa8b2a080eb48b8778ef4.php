@@ -19,7 +19,6 @@
                                     <thead>
                                         <tr>
                                             <td>Member Name</td>
-                                            <td>Location</td>
                                             <td>Task/Activity</td>
                                             <td>Start Time</td>
                                             <td>Duration</td>
@@ -31,7 +30,6 @@
                                                 <td><a class="link-black"
                                                         href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
                                                 </td>
-                                                <td><?php echo e($item->location); ?></td>
                                                 <td><?php echo e($item->activity->name); ?></td>
                                                 <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?></td>
                                                 <td style="color:greenyellow">

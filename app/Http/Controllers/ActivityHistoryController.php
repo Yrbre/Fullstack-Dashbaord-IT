@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateActivityHistoryRequest;
 use App\Models\ActivityHistory;
+use App\Models\Tasks;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -47,11 +48,12 @@ class ActivityHistoryController extends Controller
     public function list(string $id)
     {
         $user = User::findOrFail($id);
-        $activityHistory = ActivityHistory::with('user', 'task', 'activity')
-            ->where('user_id', $user->id)
+        $taskList = Tasks::with('enduser', 'location')
+            ->where('assign_to', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('pages.activity_history.showListActivityUser', compact('activityHistory', 'user'));
+
+        return view('pages.activity_history.showListActivityUser', compact('taskList', 'user'));
     }
 
     public function listFilter(Request $request, string $id)

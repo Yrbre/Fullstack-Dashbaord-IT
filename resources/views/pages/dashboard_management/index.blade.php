@@ -20,7 +20,6 @@
                                     <thead>
                                         <tr>
                                             <td>Member Name</td>
-                                            <td>Location</td>
                                             <td>Task/Activity</td>
                                             <td>Start Time</td>
                                             <td>Duration</td>
@@ -32,7 +31,6 @@
                                                 <td><a class="link-black"
                                                         href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
                                                 </td>
-                                                <td>{{ $item->location }}</td>
                                                 <td>{{ $item->activity->name }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}</td>
                                                 <td style="color:greenyellow">
