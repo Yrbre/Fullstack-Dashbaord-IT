@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('judul', 'Task Department Edit')
+@section('judul', 'Edit Activity Department')
 @section('content')
     <style>
         .select2-container {
@@ -17,7 +17,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Task Name</label>
+                        <label for="">Activity Name</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                             value="{{ old('name', $task->name) }}">
                         @error('name')

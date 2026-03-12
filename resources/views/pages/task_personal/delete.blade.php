@@ -11,9 +11,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this task?</p>
+                <p>Are you sure you want to delete this Activity?</p>
                 <div class="" role="alert">
-                    <strong>Task Name :</strong> <span id="taskName"></span><br>
+                    <strong>Activity Name :</strong> <span id="taskName"></span><br>
                     <strong>Status : </strong> <span id="statusName"></span>
                 </div>
                 <p class="text-muted mb-0">

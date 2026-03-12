@@ -1,16 +1,16 @@
-<?php $__env->startSection('judul', 'Task Department List'); ?>
+<?php $__env->startSection('judul', 'Activity Department List'); ?>
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="<?php echo e(route('task.create')); ?>" class="btn btn-primary">Create New Task</a>
+                <a href="<?php echo e(route('task.create')); ?>" class="btn btn-primary">Create New Activity</a>
             </div>
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title">Table Task</h5>
+                            <h5 class="card-title">Table Activity Department</h5>
                             <p class="card-text"></p>
                             <table class="table datatables" id="dataTable-1">
                                 <thead>

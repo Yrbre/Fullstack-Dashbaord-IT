@@ -29,8 +29,11 @@
                                         <tr>
                                             <td><?php echo e($loop->iteration); ?></td>
                                             <td><?php echo e($item->user->name); ?></td>
-                                            <td><?php echo e($item->reference_type); ?> - <?php echo e($item->reference_id); ?></td>
-
+                                            <?php if($item->reference_type === 'TASK'): ?>
+                                                <td>ACTIVITY PERSONAL - <?php echo e($item->reference_id); ?></td>
+                                            <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                                <td>ACTIVITY - <?php echo e($item->reference_id); ?></td>
+                                            <?php endif; ?>
                                             <?php if($item->reference_type === 'TASK'): ?>
                                                 <td><?php echo e($item->task->name ?? '-'); ?></td>
                                             <?php elseif($item->reference_type === 'ACTIVITY'): ?>

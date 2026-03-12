@@ -30,8 +30,11 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->user->name }}</td>
-                                            <td>{{ $item->reference_type }} - {{ $item->reference_id }}</td>
-
+                                            @if ($item->reference_type === 'TASK')
+                                                <td>ACTIVITY PERSONAL - {{ $item->reference_id }}</td>
+                                            @elseif ($item->reference_type === 'ACTIVITY')
+                                                <td>ACTIVITY - {{ $item->reference_id }}</td>
+                                            @endif
                                             @if ($item->reference_type === 'TASK')
                                                 <td>{{ $item->task->name ?? '-' }}</td>
                                             @elseif ($item->reference_type === 'ACTIVITY')

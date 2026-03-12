@@ -23,7 +23,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Task Name</th>
+                        <th>Activity Name</th>
                         <th>End User</th>
                         <th>Location</th>
                         <th>Progress</th>

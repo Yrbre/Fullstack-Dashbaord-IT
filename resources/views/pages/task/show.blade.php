@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('judul', 'Task Department Detail')
+@section('judul', 'Activity Department Detail')
 @section('content')
     <div class="container-fluid py-4">
 
@@ -78,14 +78,14 @@
             <div class="col-md-12">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h2 class="title">Relation Task</h2>
+                        <h2 class="title">Relation Activity</h2>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <td>Task ID</td>
-                                    <td>Task Name</td>
+                                    <td>Activity ID</td>
+                                    <td>Activity Name</td>
                                     <td>Assigned To</td>
-                                    <td>Progres</td>
+                                    <td>Progress</td>
                                     <td>Schedule Start/End</td>
                                     <td>Actual Start/End</td>
                                     <td>Status</td>

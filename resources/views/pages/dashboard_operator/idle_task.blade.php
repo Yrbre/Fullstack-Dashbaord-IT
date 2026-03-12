@@ -17,7 +17,7 @@
                                                 action="{{ route('dashboard_operator.update_task', $task->id) }}">
                                                 @csrf
                                                 @method('PUT')
-                                                <label for="activitySelect">TASK ACTIVE</label>
+                                                <label for="activitySelect">ACTIVITY ACTIVE</label>
                                                 <input type="text" class="form-control mb-4" id="activitySelect"
                                                     placeholder="Enter idle activity" readonly
                                                     value="{{ $task->name ?? '-' }}">
@@ -102,7 +102,8 @@
                                                 <span class="live-duration" style="color:greenyellow"
                                                     data-start="{{ \Carbon\Carbon::parse($task->actual_start)->toISOString() }}"></span>
                                                 <div class="d-flex justify-content-end">
-                                                    <button type="submit" class="btn btn-primary mt-4">Update Task</button>
+                                                    <button type="submit" class="btn btn-primary mt-4">Update
+                                                        Activity</button>
                                                 </div>
                                             </form>
 

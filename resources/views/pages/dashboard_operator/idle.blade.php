@@ -14,7 +14,7 @@
                                 <div class="card-body">
                                     <div>
                                         <div class="form-group">
-                                            <label for="activitySelect">TASK/ACTIVITY</label>
+                                            <label for="activitySelect">ACTIVITY</label>
                                             <input type="text" class="form-control mb-4" id="activitySelect"
                                                 placeholder="Enter idle activity" readonly
                                                 value="@if ($activityHistory->reference_type == 'TASK') {{ $activityHistory->task->name }} @elseif ($activityHistory->reference_type == 'ACTIVITY') {{ $activityHistory->activity->name }} @else - @endif">

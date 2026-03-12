@@ -12,7 +12,7 @@
     @include('layouts.style')
 </head>
 
-<body class="vertical  dark  collapsed">
+<body class="vertical  dark  collapsed" data-simplebar>
 
     @include('layouts.navbar')
     @include('layouts.sidebar')

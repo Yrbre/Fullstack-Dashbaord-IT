@@ -20,7 +20,7 @@
                                     <thead>
                                         <tr>
                                             <td>Member Name</td>
-                                            <td>Task/Activity</td>
+                                            <td>Activity</td>
                                             <td>Start Time</td>
                                             <td>Duration</td>
                                         </tr>
@@ -58,7 +58,7 @@
                                         <tr>
                                             <td>Member Name</td>
                                             <td>Location</td>
-                                            <td>Task/Activity</td>
+                                            <td>Activity</td>
                                             <td>Start Time</td>
                                             <td>Duration</td>
                                         </tr>
@@ -98,13 +98,13 @@
         </div>
         <div class="row mx-auto my-4 justify-content-center">
             <div class="col-12">
-                <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Task Progress</h2>
+                <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Progress</h2>
                 <div class="card shadow">
                     <div class="card-body">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <td>Task Name</td>
+                                    <td>Activity Name</td>
                                     <td>Responsibility</td>
                                     <td>Client</td>
                                     <td>Progress</td>
@@ -201,7 +201,7 @@
             Swal.fire({
                 icon: 'question',
                 title: 'Mark as Completed?',
-                text: 'Are you sure you want to mark this task as completed?',
+                text: 'Are you sure you want to mark this Activity as completed?',
                 theme: 'dark',
                 showCancelButton: true,
                 confirmButtonColor: '#28a745',

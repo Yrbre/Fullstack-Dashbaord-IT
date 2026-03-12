@@ -75,19 +75,19 @@
             <li class="nav-item dropdown">
                 <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                     <i class="fe fe-home fe-16"></i>
-                    <span class="ml-3 item-text">Task</span><span class="sr-only">(current)</span>
+                    <span class="ml-3 item-text">Activity List</span><span class="sr-only">(current)</span>
                 </a>
                 @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
                     <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="{{ route('task.index') }}"> <i class="fe fe-home fe-16"></i>
-                                <span class="ml-1 item-text">Task
+                                <span class="ml-1 item-text">Activity
                                     Department</span></a>
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="{{ route('task_personal.index') }}"><i
-                                    class="fe fe-home fe-16"></i> <span class="ml-1 item-text">Task
-                                    End User / Dept PIC</span></a>
+                                    class="fe fe-home fe-16"></i> <span class="ml-1 item-text">Personal
+                                    Activity</span></a>
                         </li>
                     </ul>
                 @elseif (Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
@@ -95,21 +95,12 @@
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="{{ route('task_personal.index') }}"><i
                                     class="fe fe-home fe-16"></i>
-                                <span class="ml-1 item-text">Task
-                                    End User / Dept PIC</span></a>
+                                <span class="ml-1 item-text">Personal Activity</span></a>
                         </li>
                     </ul>
                 @endif
 
             </li>
-            @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
-                <li class="nav-item w-100">
-                    <a class="nav-link @yield('menuactivity')" href="{{ route('activity.index') }}">
-                        <i class="fe fe-activity fe-16"></i>
-                        <span class="ml-3 item-text">Activity</span>
-                    </a>
-                </li>
-            @endif
             @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
                 <li class="nav-item w-100">
                     <a class="nav-link" href="{{ route('activity_history.index') }}">
@@ -118,50 +109,55 @@
                     </a>
                 </li>
             @endif
-            <li class="nav-item w-100">
-                <a class="nav-link @yield('menucategory')" href="{{ route('category.index') }}">
-                    <i class="fe fe-grid fe-16"></i>
-                    <span class="ml-3 item-text">Category</span>
-                </a>
-            </li>
-
             <li class="nav-item dropdown">
-                <a href="#enduser" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
-                    <i class="fe fe-users fe-16"></i>
-                    <span class="ml-3 item-text">End User</span><span class="sr-only">(current)</span>
+                <a href="#settings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+                    <i class="fe fe-settings fe-16"></i>
+                    <span class="ml-3 item-text">Settings</span><span class="sr-only">(current)</span>
                 </a>
-
-                <ul class="collapse list-unstyled pl-4 w-100" id="enduser">
-                    <li class="nav-item active" id="enduser">
+                <ul class="collapse list-unstyled pl-4 w-100" id="settings">
+                    @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
+                        <li class="nav-item w-100">
+                            <a class="nav-link @yield('menuactivity')" href="{{ route('activity.index') }}">
+                                <i class="fe fe-activity fe-16"></i>
+                                <span class="ml-3 item-text">Activity</span>
+                            </a>
+                        </li>
+                    @endif
+                    <li class="nav-item w-100">
+                        <a class="nav-link @yield('menucategory')" href="{{ route('category.index') }}">
+                            <i class="fe fe-grid fe-16"></i>
+                            <span class="ml-3 item-text">Category</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
                         <a class="nav-link" href="{{ route('enduser_department.index') }}">
                             <i class="fe fe-users fe-16"></i>
-                            <span class="ml-1 item-text">End User Department</span>
+                            <span class="ml-3 item-text">End User Department</span>
                         </a>
                     </li>
-                    <li class="nav-item active" id="enduser">
+                    <li class="nav-item active">
                         <a class="nav-link" href="{{ route('enduser.index') }}">
                             <i class="fe fe-users fe-16"></i>
-                            <span class="ml-1 item-text">End User / Dept PIC</span>
+                            <span class="ml-3 item-text">End User Personal</span>
                         </a>
                     </li>
+                    <li class="nav-item w-100">
+                        <a class="nav-link @yield('menulocation')" href="{{ route('location.index') }}">
+                            <i class="fe fe-map-pin fe-16"></i>
+                            <span class="ml-3 item-text">Location</span>
+                        </a>
+                    </li>
+                    @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('user.index') }}">
+                                <i class="fe fe-user fe-16"></i>
+                                <span class="ml-3 item-text">User</span>
+                            </a>
+                        </li>
+                    @endif
+
                 </ul>
             </li>
-
-            <li class="nav-item w-100">
-                <a class="nav-link @yield('menulocation')" href="{{ route('location.index') }}">
-                    <i class="fe fe-map-pin fe-16"></i>
-                    <span class="ml-3 item-text">Location</span>
-                </a>
-            </li>
-            @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
-                <li class="nav-item w-100">
-                    <a class="nav-link" href="{{ route('user.index') }}">
-                        <i class="fe fe-user fe-16"></i>
-                        <span class="ml-3 item-text">User</span>
-                    </a>
-                </li>
-            @endif
         </ul>
-
     </nav>
 </aside>

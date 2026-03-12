@@ -6,20 +6,20 @@
                 <div class="col-8">
 
                     <h2 class="page-title justify-content-center"><i class="fe fe-send" style="color:orange"></i>
-                        Task Ready To Take</h2>
+                        Activity Ready To Take</h2>
                     <div class="">
                         <div class="card shadow">
                             <div class="card-body">
-                                <p class="mb-0">Please take the task/activity that you will do, and make sure to complete
+                                <p class="mb-0">Please take the activity that you will do, and make sure to complete
                                     it when you are done.</p>
 
                                 <!-- Div dengan scroll untuk tabel -->
-                                <div style="max-height:400px; overflow-y:auto;">
+                                <div style="max-height:400px; overflow-y:auto;" data-simplebar>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Task Name</th>
+                                                <th>Activity Name</th>
                                                 <th>Schedule Start</th>
                                                 <th>Schedule End</th>
                                                 <th>Progres</th>
@@ -63,7 +63,7 @@
                             <div class="card shadow">
                                 <div class="card-body">
 
-                                    <div style="max-height:400px; overflow-y:auto;">
+                                    <div style="max-height:400px; overflow-y:auto;"data-simplebar>
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -100,9 +100,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row mx-auto my-4 justify-content-center">
+            <div class="row mx-auto my-4 justify-content-center" data-simplebar>
                 <div class="col-12">
-                    <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Task Completed</h2>
+                    <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed</h2>
                     <div class="card shadow">
                         <div class="card-body">
                             <div style="max-height:400px; overflow-y:auto;">
@@ -110,7 +110,7 @@
                                     <thead>
                                         <tr>
                                             <td class="text-center">#</td>
-                                            <td class="text-center">Task Name</td>
+                                            <td class="text-center">Activity Name</td>
                                             <td class="text-center">Progress</td>
                                             <td class="text-center">Status</td>
                                         </tr>

@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('judul', 'Task End User Create')
+@section('judul', 'Create Activity Personal')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">
@@ -10,7 +10,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Task Name</label>
+                        <label for="">Activity Name</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                             value="{{ old('name') }}">
                         @error('name')
@@ -19,10 +19,10 @@
                     </div>
 
                     <div class="form-group col-6">
-                        <label for="simple-select2">Relation Task</label>
+                        <label for="simple-select2">Relation Activity</label>
                         <select class="form-control select2 @error('relation_task') is-invalid @enderror"
                             id="select-relation-task" name="relation_task">
-                            <optgroup label="Select Relation Task">
+                            <optgroup label="Select Relation Activity">
                                 <option value="" selected>Without Relation</option>
                                 @foreach ($task as $item)
                                     <option value="{{ $item->id }}" @if (old('relation_task') == $item->id) selected @endif>
@@ -35,11 +35,11 @@
                         @enderror
                     </div>
                     <div class="form-group col-md-6" id="wrapper_schedule_start_parent" style="display: none;">
-                        <label for="">Schedule Start Task Parent</label>
+                        <label for="">Schedule Start Parent Activity</label>
                         <input type="text" class="form-control" id="schedule_start_parent" readonly>
                     </div>
                     <div class="form-group col-md-6" id="wrapper_schedule_end_parent" style="display: none;">
-                        <label for="">Schedule End Task Parent</label>
+                        <label for="">Schedule End Parent Activity</label>
                         <input type="text" class="form-control" id="schedule_end_parent" readonly>
                     </div>
 
@@ -176,7 +176,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="">Bobot Task</label>
+                        <label for="">Activity Weight</label>
                         <input type="text" class="form-control @error('task_load') is-invalid @enderror"
                             name="task_load" value="{{ old('task_load') }}"
                             oninput="this.value = this.value.replace(/[^0-9]/g,'');if(this.value > 100) this.value = 100;">

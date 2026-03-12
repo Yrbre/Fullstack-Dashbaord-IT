@@ -1,17 +1,17 @@
 @extends('layouts.template')
-@section('judul', 'Task End User List')
+@section('judul', 'Activity Personal List')
 @section('content')
 
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="{{ route('task_personal.create') }}" class="btn btn-primary">Create New Task</a>
+                <a href="{{ route('task_personal.create') }}" class="btn btn-primary">Create New Activity</a>
             </div>
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title">Table Task User</h5>
+                            <h5 class="card-title">Table Activity Personal</h5>
                             <p class="card-text"></p>
                             <table class="table datatables" id="dataTable-1">
                                 <thead>
@@ -19,7 +19,7 @@
                                         <th>#</th>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Relation Task</th>
+                                        <th>Relation Activity</th>
                                         <th>Assign to</th>
                                         <th>Progress</th>
                                         <th>Schedule(S/N)</th>
