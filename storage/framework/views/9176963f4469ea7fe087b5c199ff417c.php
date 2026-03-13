@@ -157,54 +157,76 @@ unset($__errorArgs, $__bag); ?>" name="description" id="description"
                     showConfirmButton: false,
                 });
             <?php endif; ?>
+
+            $(function() {
+                const originalProgress = '<?php echo e((string) $task->progress); ?>';
+                const $status = $('#select-status');
+                const $progress = $('#select-progress');
+
+                if (!$status.length || !$progress.length) {
+                    return;
+                }
+
+                function setProgress(value) {
+                    $progress.val(String(value)).trigger('change.select2').trigger('change');
+                }
+
+                $status.on('change', function() {
+                    const selectedStatus = $(this).val();
+
+                    if (selectedStatus === 'COMPLETED') {
+                        setProgress(100);
+                    } else if (selectedStatus === 'CANCELLED') {
+                        setProgress(0);
+                    } else {
+                        setProgress(originalProgress);
+                    }
+                });
+            });
+
+            function formatDuration(seconds) {
+                const abs = Math.abs(seconds);
+                const isFuture = seconds < 0;
+                const days = Math.floor(abs / 86400);
+                const hours = Math.floor((abs % 86400) / 3600);
+                const minutes = Math.floor((abs % 3600) / 60);
+
+
+                let parts = [];
+                if (days > 0) parts.push(days + 'd');
+                if (hours > 0) parts.push(hours + 'h');
+                if (minutes > 0) parts.push(minutes + 'm');
+
+
+                return (isFuture ? 'in ' : '') + parts.join(' ') + (isFuture ? '' : ' ago');
+            }
+
+            function updateDurations() {
+                document.querySelectorAll('.live-duration').forEach(function(el) {
+                    const start = new Date(el.dataset.start);
+                    const now = new Date();
+                    const diffSeconds = (now - start) / 1000;
+                    el.textContent = formatDuration(diffSeconds);
+                });
+            }
+
+            updateDurations();
+            setInterval(updateDurations, 1000);
+
+            // Blokir tombol back browser
+            history.pushState(null, null, location.href);
+            window.addEventListener('popstate', function() {
+                history.pushState(null, null, location.href);
+            });
+
+            // Blokir keyboard shortcut Alt+Left (back)
+            document.addEventListener('keydown', function(e) {
+                if ((e.altKey && e.key === 'ArrowLeft') || e.key === 'BrowserBack') {
+                    e.preventDefault();
+                }
+            });
         </script>
     <?php $__env->stopPush(); ?>
-
-
-
-    <script>
-        function formatDuration(seconds) {
-            const abs = Math.abs(seconds);
-            const isFuture = seconds < 0;
-            const days = Math.floor(abs / 86400);
-            const hours = Math.floor((abs % 86400) / 3600);
-            const minutes = Math.floor((abs % 3600) / 60);
-
-
-            let parts = [];
-            if (days > 0) parts.push(days + 'd');
-            if (hours > 0) parts.push(hours + 'h');
-            if (minutes > 0) parts.push(minutes + 'm');
-
-
-            return (isFuture ? 'in ' : '') + parts.join(' ') + (isFuture ? '' : ' ago');
-        }
-
-        function updateDurations() {
-            document.querySelectorAll('.live-duration').forEach(function(el) {
-                const start = new Date(el.dataset.start);
-                const now = new Date();
-                const diffSeconds = (now - start) / 1000;
-                el.textContent = formatDuration(diffSeconds);
-            });
-        }
-
-        updateDurations();
-        setInterval(updateDurations, 1000);
-
-        // Blokir tombol back browser
-        history.pushState(null, null, location.href);
-        window.addEventListener('popstate', function() {
-            history.pushState(null, null, location.href);
-        });
-
-        // Blokir keyboard shortcut Alt+Left (back)
-        document.addEventListener('keydown', function(e) {
-            if ((e.altKey && e.key === 'ArrowLeft') || e.key === 'BrowserBack') {
-                e.preventDefault();
-            }
-        });
-    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.idletemplate', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/dashboard_operator/idle_task.blade.php ENDPATH**/ ?>
