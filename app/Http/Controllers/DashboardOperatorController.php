@@ -38,8 +38,9 @@ class DashboardOperatorController extends Controller
             ->where('status', '!=', 'COMPLETED')
             ->get();
 
-        $taskCompleted = Tasks::where('status', 'COMPLETED')
-            ->where('assign_to', Auth()->id())
+        $taskCompleted = Auth::user()
+            ->user_task()
+            ->where('status', 'COMPLETED')
             ->where('task_level', 'PERSONAL')
             ->get();
         return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted'));
