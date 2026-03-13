@@ -61,4 +61,10 @@ class Tasks extends Model
     {
         return $this->hasMany(Tasks::class, 'relation_task');
     }
+
+    public function task_user()
+    {
+        return $this->belongsToMany(User::class, 'task_user')
+            ->withTimestamps();
+    }
 }

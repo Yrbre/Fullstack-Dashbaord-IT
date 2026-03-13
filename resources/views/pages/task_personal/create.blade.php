@@ -78,8 +78,19 @@
                     </div>
 
                     <div class="form-group col-6">
-                        <label for="simple-select2">Assign to</label>
-                        <select class="form-control select2" id="select-assign" name="assign_to">
+                        <label for="simple-select2">Responsibility</label>
+                        <select class="form-control select2" id="select2" name="assign_to">
+                            <optgroup label="Select User">
+                                @foreach ($assignTo as $id => $name)
+                                    <option value="{{ $id }}" @if (old('assign_to', Auth::user()->id) == $id) selected @endif>
+                                        {{ $name }}</option>
+                                @endforeach
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="simple-select2">Member</label>
+                        <select class="form-control select2-multi" id="multi-select2" name="member[]">
                             <optgroup label="Select User">
                                 @foreach ($assignTo as $id => $name)
                                     <option value="{{ $id }}" @if (old('assign_to', Auth::user()->id) == $id) selected @endif>

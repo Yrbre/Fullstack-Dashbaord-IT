@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\ActivityHistory;
 use App\Models\Tasks;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardOperatorController extends Controller
 {
@@ -31,9 +32,10 @@ class DashboardOperatorController extends Controller
         $activityList = Activity::where('name', '!=', 'STAND BY')
             ->get();
 
-        $taskReady = Tasks::where('status', '!=', 'COMPLETED')
-            ->where('assign_to', Auth()->id())
+        $taskReady = Auth::user()
+            ->user_task()
             ->where('task_level', 'PERSONAL')
+            ->where('status', '!=', 'COMPLETED')
             ->get();
 
         $taskCompleted = Tasks::where('status', 'COMPLETED')
@@ -178,7 +180,8 @@ class DashboardOperatorController extends Controller
         $data = $request->validated();
         $activityHistory = ActivityHistory::where('reference_type', 'TASK')
             ->where('reference_id', $task->id)
-            ->whereNull('end_time')
+            ->where('user_id', auth()->id())
+            ->latest()
             ->firstOrFail();
 
         $activityHistory->update([

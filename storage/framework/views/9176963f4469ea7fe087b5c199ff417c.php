@@ -16,7 +16,7 @@
                                                 action="<?php echo e(route('dashboard_operator.update_task', $task->id)); ?>">
                                                 <?php echo csrf_field(); ?>
                                                 <?php echo method_field('PUT'); ?>
-                                                <label for="activitySelect">TASK ACTIVE</label>
+                                                <label for="activitySelect">ACTIVITY ACTIVE</label>
                                                 <input type="text" class="form-control mb-4" id="activitySelect"
                                                     placeholder="Enter idle activity" readonly
                                                     value="<?php echo e($task->name ?? '-'); ?>">
@@ -129,7 +129,8 @@ unset($__errorArgs, $__bag); ?>" name="description" id="description"
                                                 <span class="live-duration" style="color:greenyellow"
                                                     data-start="<?php echo e(\Carbon\Carbon::parse($task->actual_start)->toISOString()); ?>"></span>
                                                 <div class="d-flex justify-content-end">
-                                                    <button type="submit" class="btn btn-primary mt-4">Update Task</button>
+                                                    <button type="submit" class="btn btn-primary mt-4">Update
+                                                        Activity</button>
                                                 </div>
                                             </form>
 

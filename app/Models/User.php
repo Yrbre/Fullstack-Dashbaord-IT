@@ -51,4 +51,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tasks::class, 'assign_to', 'id');
     }
+
+    public function user_task()
+    {
+        return $this->belongsToMany(Tasks::class, 'task_user')
+            ->withTimestamps();
+    }
 }

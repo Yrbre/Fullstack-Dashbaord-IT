@@ -30,6 +30,8 @@ class StoreTaskPersonalRequest extends FormRequest
             'priority'                  => 'required|string|in:LOW,MEDIUM,HIGH,CRITICAL',
             'category_id'               => 'required|exists:category_lists,id',
             'assign_to'                 => 'required|exists:users,id',
+            'member'                    => 'nullable|array',
+            'member.*'                  => 'exists:users,id',
             'task_level'                => 'required|string',
             'other_personal'            => 'nullable|required_if:enduser_personal,OTHER|string|max:255',
             'other_personal_department' => 'nullable|required_if:enduser_personal,OTHER|string|max:255',

@@ -13,6 +13,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TaskPersonalController extends Controller
 {
@@ -117,38 +118,43 @@ class TaskPersonalController extends Controller
             $data['in_timeline'] = true;
         }
 
-        $task = Tasks::create([
-            'relation_task' => $data['relation_task'] ?? null,
-            'name'          => $data['name'],
-            'priority'      => $data['priority'],
-            'category_id'   => $data['category_id'],
-            'assign_to'     => $data['assign_to'],
-            'task_level'    => $data['task_level'],
-            'enduser_id'    => $enduserId,
-            'status'        => $data['status'],
-            'progress'      => $data['progress'],
-            'task_load'     => $data['task_load'],
-            'delivered'     => Auth::user()->name,
-            'location_id'   => $location_ID,
-            'in_timeline'   => $data['in_timeline'],
-            'schedule_start' => $data['schedule_start'],
-            'schedule_end'  => $data['schedule_end'],
-            'actual_start'  => $data['actual_start'],
-            'actual_end'    => $data['actual_end'],
-            'description'   => $data['description'],
-        ]);
+        DB::transaction(function () use ($data, $enduserId, $location_ID) {
 
-        // Logic create activity history when status ON DUTY
-        if ($data['status'] === 'ON DUTY') {
-            $locationName = Location::find($location_ID)->location;
-            ActivityHistory::create([
-                'user_id'           => $data['assign_to'],
-                'reference_id'      => $task->id,
-                'reference_type'    => 'TASK',
-                'location'          => $locationName,
-                'start_time'        => now()->format('Y-m-d H:i'),
+
+            $task = Tasks::create([
+                'relation_task' => $data['relation_task'] ?? null,
+                'name'          => $data['name'],
+                'priority'      => $data['priority'],
+                'category_id'   => $data['category_id'],
+                'assign_to'     => $data['assign_to'],
+                'task_level'    => $data['task_level'],
+                'enduser_id'    => $enduserId,
+                'status'        => $data['status'],
+                'progress'      => $data['progress'],
+                'task_load'     => $data['task_load'],
+                'delivered'     => Auth::user()->name,
+                'location_id'   => $location_ID,
+                'in_timeline'   => $data['in_timeline'],
+                'schedule_start' => $data['schedule_start'],
+                'schedule_end'  => $data['schedule_end'],
+                'actual_start'  => $data['actual_start'],
+                'actual_end'    => $data['actual_end'],
+                'description'   => $data['description'],
             ]);
-        }
+
+            // Logic create activity history when status ON DUTY
+            if ($data['status'] === 'ON DUTY') {
+                $locationName = Location::find($location_ID)->location;
+                ActivityHistory::create([
+                    'user_id'           => $data['assign_to'],
+                    'reference_id'      => $task->id,
+                    'reference_type'    => 'TASK',
+                    'location'          => $locationName,
+                    'start_time'        => now()->format('Y-m-d H:i'),
+                ]);
+            }
+            $task->task_user()->sync($data['member'] ?? []);
+        });
 
         return redirect()->route('task_personal.index')->with('success', 'Task Personal created successfully.');
     }
