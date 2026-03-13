@@ -1,4 +1,4 @@
-<?php $__env->startSection('judul', 'Task Department Create'); ?>
+<?php $__env->startSection('judul', 'Create Activity Department'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="card shadow mb-4">
         <div class="card-header">
@@ -9,7 +9,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Task Name</label>
+                        <label for="">Activity Name</label>
                         <input type="text" class="form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -32,7 +32,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group col-6">
-                        <label for="simple-select2">Relation Task</label>
+                        <label for="simple-select2">Parent Activity</label>
                         <select class="form-control select2 <?php $__errorArgs = ['relation_task'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -42,7 +42,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                             id="select-relation-task" name="relation_task">
-                            <optgroup label="Select Relation Task">
+                            <optgroup label="Select Relation Activity">
                                 <option value="" selected>Without Relation</option>
                                 <?php $__currentLoopData = $task; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>" <?php if(old('relation_task') == $item->id): ?> selected <?php endif; ?>>

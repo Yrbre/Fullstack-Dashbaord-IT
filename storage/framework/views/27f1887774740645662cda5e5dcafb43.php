@@ -80,8 +80,7 @@
                     <ul class="collapse list-unstyled pl-4 w-100" id="dashboard">
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="<?php echo e(route('task.index')); ?>"> <i class="fe fe-home fe-16"></i>
-                                <span class="ml-1 item-text">Activity
-                                    Department</span></a>
+                                <span class="ml-1 item-text">Department Activity</span></a>
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="<?php echo e(route('task_personal.index')); ?>"><i
