@@ -1,4 +1,4 @@
-<?php $__env->startSection('judul', 'Task Department Edit'); ?>
+<?php $__env->startSection('judul', 'Edit Activity Department'); ?>
 <?php $__env->startSection('content'); ?>
     <style>
         .select2-container {
@@ -16,7 +16,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Task Name</label>
+                        <label for="">Activity Name</label>
                         <input type="text" class="form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

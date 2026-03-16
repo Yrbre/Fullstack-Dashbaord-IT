@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TaskDepartment;
 use App\Http\Requests\GetTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
@@ -13,6 +14,7 @@ use App\Models\Tasks;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
 {
@@ -236,5 +238,10 @@ class TaskController extends Controller
     {
         $task = Tasks::findOrFail($id);
         return response()->json($task);
+    }
+
+    public function export()
+    {
+        return (new TaskDepartment)->download('Activity List' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx');
     }
 }

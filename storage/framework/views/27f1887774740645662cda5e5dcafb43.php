@@ -153,9 +153,25 @@
                             </a>
                         </li>
                     <?php endif; ?>
-
+                </ul>
+                <?php if(Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN'])): ?>
+            <li class="nav-item dropdown">
+                <a href="#export" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+                    <i class="fe fe-download-cloud fe-16"></i>
+                    <span class="ml-3 item-text">Export</span><span class="sr-only">(current)</span>
+                </a>
+                <ul class="collapse list-unstyled pl-4 w-100" id="export">
+                    <li class="nav-item w-100">
+                        <a class="nav-link <?php echo $__env->yieldContent('menulocation'); ?>" href="#" id="export-data">
+                            <i class="fe fe-download fe-16"></i>
+                            <span class="ml-3 item-text">Export Activity List</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
+            <?php endif; ?>
+            </li>
+
         </ul>
     </nav>
 </aside>

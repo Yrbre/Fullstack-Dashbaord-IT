@@ -6,6 +6,7 @@
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
                 <a href="{{ route('task.create') }}" class="btn btn-primary">Create New Activity</a>
+                {{-- <a href="#" id="export-data" class="btn btn-secondary">Export</a> --}}
             </div>
             <div class="row">
                 <div class="col-12 my-4">
@@ -124,4 +125,6 @@
             });
         @endif
     </script>
+
+
 @endsection

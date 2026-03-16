@@ -22,6 +22,35 @@
         @stack('scripts')
     </main> <!-- main -->
     </div> <!-- .wrapper -->
+
 </body>
+<script>
+    $('#export-data').on('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You Want Export Data Activity List!",
+            icon: "warning",
+            theme: "dark",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, export it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Exporting!",
+                    text: "Your data is being exported.",
+                    icon: "success",
+                    theme: "dark",
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = "/export-task-department";
+                });
+            }
+        });
+    });
+</script>
 
 </html>

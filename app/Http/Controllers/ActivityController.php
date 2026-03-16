@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ActivityListExport;
 use App\Http\Requests\GetActivityRequest;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivtiyRequest;
 use App\Models\Activity;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ActivityController extends Controller
 {
@@ -97,5 +100,10 @@ class ActivityController extends Controller
         $activity = Activity::findOrFail($id);
         $activity->delete();
         return redirect()->route('activity.index')->with('success', 'Activity deleted successfully.');
+    }
+
+    public function export()
+    {
+        return Excel::download(new ActivityListExport, 'ActivityList' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx');
     }
 }

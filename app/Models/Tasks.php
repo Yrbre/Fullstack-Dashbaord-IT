@@ -32,6 +32,14 @@ class Tasks extends Model
     ];
     protected $table = 'tasks';
 
+    protected $casts = [
+        'schedule_start' => 'datetime',
+        'schedule_end' => 'datetime',
+        'actual_start' => 'datetime',
+        'actual_end' => 'datetime',
+        'in_timeline' => 'boolean',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');

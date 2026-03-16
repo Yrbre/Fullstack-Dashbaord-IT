@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::put('/task/update/{id}', [DashboardOperatorController::class, 'updateTask'])->name('dashboard_operator.update_task');
     Route::get('/profile/edit/{id}', [ProfileNewController::class, 'edit'])->name('profileNew.edit');
     Route::put('/profile/update', [ProfileNewController::class, 'update'])->name('profileNew.update');
+    Route::get('/export-activity', [ActivityController::class, 'export']);
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], function () {
@@ -84,6 +85,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], fu
     Route::get('/activity_history/list/{id}/filter', [ActivityHistoryController::class, 'listFilter'])->name('activity_history.list.filter');
     Route::resource('/task/department', TaskController::class)->names('task');
     Route::put('/task/{id}/complete', [TaskController::class, 'complete'])->name('task.complete');
+    Route::get('/export-task-department', [TaskController::class, 'export']);
 });
 
 // Edit Activity History, Privilage only for Admin

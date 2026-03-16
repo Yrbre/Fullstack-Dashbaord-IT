@@ -5,6 +5,7 @@
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('task.create')); ?>" class="btn btn-primary">Create New Activity</a>
+                
             </div>
             <div class="row">
                 <div class="col-12 my-4">
@@ -127,6 +128,8 @@
             });
         <?php endif; ?>
     </script>
+
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('pages.task.delete', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
