@@ -22,8 +22,8 @@ Route::get('/test-email', function () {
     try {
 
         Mail::raw('Ini adalah test email dari Laravel', function ($message) {
-            $message->from('NOREPLY.DASHBOARD-IT@tifico.co.id', 'NOREPLY.DASHBOARD-IT@tifico.co.id');
-            $message->to('bariqfajar60@gmail.com');
+            $message->from('noreply.actmon@intra.tifico.co.id', 'noreply.actmon@intra.tifico.co.id');
+            $message->to('b-fajar@intra.tifico.co.id');
             $message->subject('Test SMTP Laravel');
         });
 
