@@ -84,8 +84,7 @@
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="<?php echo e(route('task_personal.index')); ?>"><i
-                                    class="fe fe-home fe-16"></i> <span class="ml-1 item-text">Personal
-                                    Activity</span></a>
+                                    class="fe fe-home fe-16"></i> <span class="ml-1 item-text">Job Assignment</span></a>
                         </li>
                     </ul>
                 <?php elseif(Auth::check() && in_array(Auth::user()->role, ['OPERATOR'])): ?>
@@ -93,7 +92,7 @@
                         <li class="nav-item active">
                             <a class="nav-link pl-3" href="<?php echo e(route('task_personal.index')); ?>"><i
                                     class="fe fe-home fe-16"></i>
-                                <span class="ml-1 item-text">Personal Activity</span></a>
+                                <span class="ml-1 item-text">Job Assignment</span></a>
                         </li>
                     </ul>
                 <?php endif; ?>
@@ -117,14 +116,14 @@
                         <li class="nav-item w-100">
                             <a class="nav-link <?php echo $__env->yieldContent('menuactivity'); ?>" href="<?php echo e(route('activity.index')); ?>">
                                 <i class="fe fe-activity fe-16"></i>
-                                <span class="ml-3 item-text">Activity</span>
+                                <span class="ml-3 item-text">Personal Activity</span>
                             </a>
                         </li>
                     <?php endif; ?>
                     <li class="nav-item w-100">
                         <a class="nav-link <?php echo $__env->yieldContent('menucategory'); ?>" href="<?php echo e(route('category.index')); ?>">
                             <i class="fe fe-grid fe-16"></i>
-                            <span class="ml-3 item-text">Category</span>
+                            <span class="ml-3 item-text">Activity Category</span>
                         </a>
                     </li>
                     <li class="nav-item active">

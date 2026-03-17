@@ -12,7 +12,7 @@
                                 <div class="card-body">
                                     <div>
                                         <div class="form-group">
-                                            <label for="activitySelect">TASK/ACTIVITY</label>
+                                            <label for="activitySelect">ACTIVITY</label>
                                             <input type="text" class="form-control mb-4" id="activitySelect"
                                                 placeholder="Enter idle activity" readonly
                                                 value="<?php if($activityHistory->reference_type == 'TASK'): ?> <?php echo e($activityHistory->task->name); ?> <?php elseif($activityHistory->reference_type == 'ACTIVITY'): ?> <?php echo e($activityHistory->activity->name); ?> <?php else: ?> - <?php endif; ?>">

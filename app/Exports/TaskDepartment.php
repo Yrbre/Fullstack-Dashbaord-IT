@@ -26,7 +26,7 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
             $task->id,
             $task->name,
             $task->parent->name ?? '-',
-            $task->category->type . ' - ' . $task->category->name,
+            $task->category->type ?? '-' . ' - ' . $task->category->name,
             $task->user->name,
             $task->task_level,
             $task->enduser->name,

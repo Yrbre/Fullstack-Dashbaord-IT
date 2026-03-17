@@ -78,21 +78,20 @@
                                                         <td class="text-center"><?php echo e($item->name); ?></td>
                                                         <td class="text-center"><?php echo e($item->location); ?></td>
                                                         <td class="text-center">
-                                                            <a class="btn btn-sm btn-primary" data-id="<?php echo e($item->id); ?>"
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-primary btn-take-activity"
+                                                                data-id="<?php echo e($item->id); ?>"
                                                                 data-name="<?php echo e($item->name); ?>"
-                                                                data-location="<?php echo e($item->location); ?>" data-toggle="modal"
-                                                                data-target="#takeModal"
+                                                                data-location="<?php echo e($item->location); ?>"
                                                                 data-url="<?php echo e(route('dashboard_operator.take', $item->id)); ?>">
                                                                 Take
-                                                            </a>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </tbody>
                                         </table>
                                     </div>
-
-                                    
 
                                 </div>
                             </div>
@@ -136,21 +135,43 @@
         </div>
     </div>
 
+    <form id="takeForm" method="POST" style="display:none;">
+        <?php echo csrf_field(); ?>
+    </form>
+
 
     <script>
-        // Handle take modal
-        $('#takeModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
+        function escapeHtml(text) {
+            return $('<div>').text(text || '-').html();
+        }
+
+        $(document).on('click', '.btn-take-activity', function() {
+            var button = $(this);
             var activityName = button.data('name');
             var activityLocation = button.data('location');
             var takeUrl = button.data('url');
 
-
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#activityName').text(activityName);
-            modal.find('#activityLocation').text(activityLocation);
-            modal.find('#takeForm').attr('action', takeUrl);
+            Swal.fire({
+                icon: 'question',
+                title: 'Confirm Take Activity',
+                theme: 'dark',
+                html: '<div class="text-center">' +
+                    '<p class="mb-2">Are you sure you want to take this activity?</p>' +
+                    '<p class="mb-1"><strong>Activity Name:</strong> &nbsp;' + escapeHtml(activityName) +
+                    '</p>' +
+                    '<p class="mb-0"><strong>Location:</strong> &nbsp;' + escapeHtml(activityLocation) +
+                    '</p>' +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Take Activity',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#2f7cf6',
+                cancelButtonColor: '#6c757d'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#takeForm').attr('action', takeUrl).trigger('submit');
+                }
+            });
         });
     </script>
     <script>
@@ -167,5 +188,4 @@
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('pages.dashboard_operator.modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/dashboard_operator/index.blade.php ENDPATH**/ ?>

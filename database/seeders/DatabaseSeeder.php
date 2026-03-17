@@ -26,5 +26,55 @@ class DatabaseSeeder extends Seeder
             'name' => 'STAND BY',
             'location' => 'IT OFFICE',
         ]);
+        \App\Models\Activity::create([
+            'name' => 'MUSHALLA',
+            'location' => 'MUSHALLA',
+        ]);
+        \App\Models\Activity::create([
+            'name' => 'TOILET',
+            'location' => 'TOILET',
+        ]);
+        \App\Models\Activity::create([
+            'name' => 'MASJID',
+            'location' => 'MASJID',
+        ]);
+        \App\Models\Activity::create([
+            'name' => 'PANTRY',
+            'location' => 'PANTRY',
+        ]);
+        \App\Models\Activity::create([
+            'name' => 'KANTIN',
+            'location' => 'KANTIN',
+        ]);
+        \App\Models\Activity::create([
+            'name' => 'OUT OF OFFICE',
+            'location' => 'OUT OF OFFICE',
+        ]);
+
+        \App\Models\Category::create([
+            'name' => 'ADMINISTRATION',
+        ]);
+
+        \App\Models\Category::create([
+            'name' => 'HARDWARE INSTALLATION',
+        ]);
+        \App\Models\Category::create([
+            'name' => 'SOFTWARE DEVELOPMENT',
+        ]);
+        \App\Models\Category::create([
+            'name' => 'SUPERVISORY',
+        ]);
+        \App\Models\Category::create([
+            'name' => 'MEETING',
+        ]);
+        \App\Models\Category::create([
+            'name' => 'ROUTINE WORK',
+        ]);
+        \App\Models\Category::create([
+            'name' => 'TROUBLESHOOTING',
+        ]);
+        \App\Models\Category::create([
+            'name' => 'OTHERS',
+        ]);
     }
 }
