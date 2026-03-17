@@ -25,6 +25,24 @@
                         @enderror
                     </div>
 
+                    <div class="form-group col-6">
+                        <label for="simple-select2">Parent Activity</label>
+                        <select class="form-control select2 @error('relation_task') is-invalid @enderror"
+                            id="select-relation-task" name="relation_task">
+                            <optgroup label="Select Relation Activity">
+                                <option value="" selected>Without Relation</option>
+                                @foreach ($tasks as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('relation_task', $task->relation_task) === $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }}</option>
+                                @endforeach
+                            </optgroup>
+                        </select>
+                        @error('relation_task')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Priority</label>
                         <select class="form-control select2 @error('priority') is-invalid @enderror" id="select-priority"
@@ -37,7 +55,8 @@
                                     HIGH</option>
                                 <option value="MEDIUM" {{ old('priority', $task->priority) == 'MEDIUM' ? 'selected' : '' }}>
                                     MEDIUM</option>
-                                <option value="LOW" {{ old('priority', $task->priority) == 'LOW' ? 'selected' : '' }}>LOW
+                                <option value="LOW" {{ old('priority', $task->priority) == 'LOW' ? 'selected' : '' }}>
+                                    LOW
                                 </option>
                             </optgroup>
                         </select>

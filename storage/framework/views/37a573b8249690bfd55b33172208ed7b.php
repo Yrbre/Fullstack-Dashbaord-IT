@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="<?php echo e(route('task_personal.create')); ?>" class="btn btn-primary">Create New Activity</a>
+                <a href="<?php echo e(route('task_personal.create')); ?>" class="btn btn-primary">Create New</a>
             </div>
             <div class="row">
                 <div class="col-12 my-4">
@@ -18,11 +18,11 @@
                                         <th>#</th>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Relation Activity</th>
+                                        <th>Parent Activity</th>
                                         <th>Assign to</th>
                                         <th>Progress</th>
-                                        <th>Schedule(S/N)</th>
-                                        <th>Actual (S/N)</th>
+                                        <th>Schedule(S/E)</th>
+                                        <th>Actual (S/E)</th>
                                         <th>On Timeline</th>
                                         <th>Status</th>
                                         <th class="text-center">Action</th>
@@ -49,7 +49,7 @@
                                                 <?php echo e($item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-'); ?>
 
                                             </td>
-                                            <td><?php echo e($item->in_timeline ? 'On Schedule' : 'Late'); ?></td>
+                                            <td><?php echo e($item->diffTime ?? '-'); ?></td>
                                             <td>
                                                 <?php if($item->status === 'COMPLETED'): ?>
                                                     <span class="badge badge-success"><?php echo e($item->status); ?></span>

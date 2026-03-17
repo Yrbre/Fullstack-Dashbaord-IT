@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="{{ route('enduser.create') }}" class="btn btn-primary">Create New End User</a>
+                <a href="{{ route('enduser.create') }}" class="btn btn-primary">Create New</a>
             </div>
 
             <div class="row">

@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="form-group col-6">
-                        <label for="simple-select2">Relation Activity</label>
+                        <label for="simple-select2">Parent Activity</label>
                         <select class="form-control select2 @error('relation_task') is-invalid @enderror"
                             id="select-relation-task" name="relation_task">
                             <optgroup label="Select Relation Activity">

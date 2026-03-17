@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="{{ route('activity.create') }}" class="btn btn-primary">Create New Activity</a>
+                <a href="{{ route('activity.create') }}" class="btn btn-primary">Create New</a>
             </div>
             <div class="row">
                 <div class="col-12 my-4">

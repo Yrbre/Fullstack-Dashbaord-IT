@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('judul', 'DASHBOARD MONITORING')
+@section('judul', 'DEPARTMENT ACTIVITY MONITORING')
 @section('content')
     <style>
         .link-black {

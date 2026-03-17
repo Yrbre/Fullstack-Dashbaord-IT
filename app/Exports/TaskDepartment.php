@@ -13,10 +13,27 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
     use Exportable;
 
     private int $rowNumber = 0;
+    private ?string $startDate;
+    private ?string $endDate;
+
+    public function __construct(?string $startDate = null, ?string $endDate = null)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
 
     public function query()
     {
-        return Tasks::query();
+        $query = Tasks::query();
+
+        if ($this->startDate && $this->endDate) {
+            $query->whereBetween('created_at', [
+                $this->startDate . ' 00:00:00',
+                $this->endDate . ' 23:59:59',
+            ]);
+        }
+
+        return $query;
     }
 
     public function map($task): array

@@ -16,7 +16,7 @@
                                         <th>#</th>
                                         <th>Member</th>
                                         <th>Reference Type</th>
-                                        <th>Do Somegthing</th>
+                                        <th>Description</th>
                                         <th>Location</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>

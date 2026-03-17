@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="<?php echo e(route('location.create')); ?>" class="btn btn-primary">Create New Location</a>
+                <a href="<?php echo e(route('location.create')); ?>" class="btn btn-primary">Create New</a>
             </div>
 
             <div class="row">

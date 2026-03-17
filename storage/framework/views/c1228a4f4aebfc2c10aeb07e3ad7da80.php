@@ -28,14 +28,44 @@
     $('#export-data').on('click', function(e) {
         e.preventDefault();
         Swal.fire({
-            title: "Are you sure?",
-            text: "You Want Export Data Activity List!",
-            icon: "warning",
+            title: "Export Activity List",
+            html: `
+            <div class="d-flex justify-content-center">
+                <div class="text-left">
+                    <label for="swal-start-date" class="mb-1">Start Date</label>
+                    <input type="date" id="swal-start-date" class="swal2-input" style="margin:.25em auto 1em;">
+                    <div class="mt-2 p-2">
+                    <label for="swal-end-date" class="mb-1">End Date</label>
+                    <input type="date" id="swal-end-date" class="swal2-input" style="margin:.25em auto;">
+                    </div>
+                    <small style="display:block;opacity:.8;margin-top:.75em;">Kosongkan jika ingin export semua data.</small>
+                </div>
+            </div>
+            `,
             theme: "dark",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, export it!"
+            confirmButtonText: "Export",
+            preConfirm: () => {
+                const startDate = document.getElementById('swal-start-date').value;
+                const endDate = document.getElementById('swal-end-date').value;
+
+                if ((startDate && !endDate) || (!startDate && endDate)) {
+                    Swal.showValidationMessage('Start Date dan End Date harus diisi keduanya.');
+                    return false;
+                }
+
+                if (startDate && endDate && startDate > endDate) {
+                    Swal.showValidationMessage('End Date tidak boleh lebih kecil dari Start Date.');
+                    return false;
+                }
+
+                return {
+                    startDate,
+                    endDate
+                };
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
@@ -46,7 +76,16 @@
                     timer: 2000,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "/export-task-department";
+                    const params = new URLSearchParams();
+                    if (result.value?.startDate && result.value?.endDate) {
+                        params.append('start_date', result.value.startDate);
+                        params.append('end_date', result.value.endDate);
+                    }
+
+                    const queryString = params.toString();
+                    window.location.href = queryString ?
+                        `/export-task-department?${queryString}` :
+                        '/export-task-department';
                 });
             }
         });

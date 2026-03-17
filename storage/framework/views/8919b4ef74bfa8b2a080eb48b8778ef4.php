@@ -1,4 +1,4 @@
-<?php $__env->startSection('judul', 'DASHBOARD MONITORING'); ?>
+<?php $__env->startSection('judul', 'DEPARTMENT ACTIVITY MONITORING'); ?>
 <?php $__env->startSection('content'); ?>
     <style>
         .link-black {

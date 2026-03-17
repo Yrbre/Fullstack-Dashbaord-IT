@@ -13,6 +13,7 @@ use App\Models\Location;
 use App\Models\Tasks;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -240,8 +241,16 @@ class TaskController extends Controller
         return response()->json($task);
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return (new TaskDepartment)->download('Activity List' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx');
+        $validated = $request->validate([
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+        ]);
+
+        return (new TaskDepartment(
+            $validated['start_date'] ?? null,
+            $validated['end_date'] ?? null
+        ))->download('Activity List' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx');
     }
 }

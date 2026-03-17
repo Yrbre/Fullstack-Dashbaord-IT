@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -74,5 +75,25 @@ class Tasks extends Model
     {
         return $this->belongsToMany(User::class, 'task_user')
             ->withTimestamps();
+    }
+
+    public function getDiffTimeAttribute()
+    {
+        if ($this->schedule_end && $this->actual_end) {
+            $scheduleEnd = Carbon::parse($this->schedule_end);
+            $actualEnd = Carbon::parse($this->actual_end);
+
+            $diffInMinutes = $scheduleEnd->diffInMinutes($actualEnd, false);
+            $days = floor(abs($diffInMinutes) / 1440);
+            $hours = floor(abs($diffInMinutes) / 60);
+            $minutes = abs($diffInMinutes) % 60;
+
+            if ($diffInMinutes < 0) {
+                return "-{$days}d {$hours}h {$minutes}m";
+            }
+
+            return "+{$days}d {$hours}h {$minutes}m";
+        }
+        return null;
     }
 }

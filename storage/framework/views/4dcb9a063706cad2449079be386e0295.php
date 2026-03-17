@@ -1,17 +1,15 @@
-<?php $__env->startSection('judul', 'DASHBOARD MONITORING'); ?>
+<?php $__env->startSection('judul', 'MY JOB ASSIGNMENT'); ?>
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid py-4">
         <div class="mx-auto">
             <div class="row">
                 <div class="col-8">
 
-                    <h2 class="page-title justify-content-center"><i class="fe fe-send" style="color:orange"></i>
-                        Activity Ready To Take</h2>
+                    <h4 class="page-title justify-content-center"><i class="fe fe-send" style="color:orange"></i>
+                        JOB ASSIGNMENT</h4>
                     <div class="">
                         <div class="card shadow">
                             <div class="card-body">
-                                <p class="mb-0">Please take the activity that you will do, and make sure to complete
-                                    it when you are done.</p>
 
                                 <!-- Div dengan scroll untuk tabel -->
                                 <div style="max-height:400px; overflow-y:auto;" data-simplebar>
@@ -54,85 +52,95 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <h2 class="page-title justify-content-center"> <i class="fe fe-list" style="color:aqua"> </i> ACTIVITY
-                        LIST
-                    </h2>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card shadow">
-                                <div class="card-body">
-
-                                    <div style="max-height:400px; overflow-y:auto;"data-simplebar>
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <td class="text-center">Activity</td>
-                                                    <td class="text-center">Location</td>
-                                                    <td class="text-center">Action</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $__currentLoopData = $activityList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <tr>
-                                                        <td class="text-center"><?php echo e($item->name); ?></td>
-                                                        <td class="text-center"><?php echo e($item->location); ?></td>
-                                                        <td class="text-center">
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-primary btn-take-activity"
-                                                                data-id="<?php echo e($item->id); ?>"
-                                                                data-name="<?php echo e($item->name); ?>"
-                                                                data-location="<?php echo e($item->location); ?>"
-                                                                data-url="<?php echo e(route('dashboard_operator.take', $item->id)); ?>">
-                                                                Take
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
+                <div class="col-4 justify-content-center">
+                    <div class="d-flex flex-column align-items-center text-center  h-100">
+                        <!-- Icon dan Judul -->
+                        <div class="mb-4">
+                            <div class="activity-icon-wrapper rounded-circle mb-3">
                             </div>
+
+                            <h4 class="page-title font-weight-bold mb-0"> <i class="fe fe-list text-primary"></i> PERSONAL
+                                ACTIVITY
+                            </h4>
                         </div>
+
+                        <!-- Button -->
+                        <button type="button" id="btnChooseActivity" class="btn btn-primary px-4 py-2 shadow-sm">
+                            SELECT
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="row mx-auto my-4 justify-content-center" data-simplebar>
-                <div class="col-12">
-                    <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed</h2>
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div style="max-height:400px; overflow-y:auto;">
-                                <table class="table table-hover">
-                                    <thead>
+
+            <div id="activityListTemplate" style="display: none;">
+                <div style="max-height:400px; overflow-y:auto;" data-simplebar>
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <td class="text-center">Activity</td>
+                                <td class="text-center">Location</td>
+                                <td class="text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $__currentLoopData = $activityList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr>
+                                    <td class="text-center"><?php echo e($item->name); ?></td>
+                                    <td class="text-center"><?php echo e($item->location); ?></td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-primary btn-take-activity"
+                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
+                                            data-location="<?php echo e($item->location); ?>"
+                                            data-url="<?php echo e(route('dashboard_operator.take', $item->id)); ?>">
+                                            Take
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+
+        </div>
+        <div class="row
+                            my-4 justify-content-center" data-simplebar>
+            <div class="col-12">
+                <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed
+                </h2>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div style="max-height:400px; overflow-y:auto;">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center">#</td>
+                                        <td class="text-center">Activity Name</td>
+                                        <td class="text-center">Progress</td>
+                                        <td class="text-center">Status</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $__currentLoopData = $taskCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-                                            <td class="text-center">#</td>
-                                            <td class="text-center">Activity Name</td>
-                                            <td class="text-center">Progress</td>
-                                            <td class="text-center">Status</td>
+                                            <td class="text-center"><?php echo e($loop->iteration); ?></td>
+                                            <td class="text-center"><?php echo e($task->name); ?></td>
+                                            <td class="text-center"><?php echo e($task->progress); ?>%</td>
+                                            <td class="text-center">
+                                                <span class="badge badge-success">Completed</span>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $__currentLoopData = $taskCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <tr>
-                                                <td class="text-center"><?php echo e($loop->iteration); ?></td>
-                                                <td class="text-center"><?php echo e($task->name); ?></td>
-                                                <td class="text-center"><?php echo e($task->progress); ?>%</td>
-                                                <td class="text-center">
-                                                    <span class="badge badge-success">Completed</span>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <form id="takeForm" method="POST" style="display:none;">
@@ -141,6 +149,17 @@
 
 
     <script>
+        $(document).on('click', '#btnChooseActivity', function() {
+            Swal.fire({
+                title: 'Choose Activity',
+                theme: 'dark',
+                width: '900px',
+                html: $('#activityListTemplate').html(),
+                showConfirmButton: false,
+                showCloseButton: true
+            });
+        });
+
         function escapeHtml(text) {
             return $('<div>').text(text || '-').html();
         }

@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="{{ route('task.create') }}" class="btn btn-primary">Create New Activity</a>
+                <a href="{{ route('task.create') }}" class="btn btn-primary">Create New</a>
                 {{-- <a href="#" id="export-data" class="btn btn-secondary">Export</a> --}}
             </div>
             <div class="row">
@@ -22,8 +22,8 @@
                                         <th>Level</th>
                                         <th>Assign to</th>
                                         <th>Progress</th>
-                                        <th>Schedule(S/N)</th>
-                                        <th>Actual (S/N)</th>
+                                        <th>Schedule(S/E)</th>
+                                        <th>Actual (S/E)</th>
                                         <th>On Timeline</th>
                                         <th>Status</th>
                                         <th class="text-center">Action</th>
@@ -45,7 +45,7 @@
                                                 <br />
                                                 {{ $item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-' }}
                                             </td>
-                                            <td>{{ $item->in_timeline ? 'On Schedule' : 'Late' }}</td>
+                                            <td>{{ $item->diffTime ?? '-' }}</td>
                                             <td>
                                                 @if ($item->status === 'COMPLETED')
                                                     <span class="badge badge-success">{{ $item->status }}</span>
