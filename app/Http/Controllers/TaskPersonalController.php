@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskPersonalRequest;
 use App\Http\Requests\UpdateTaskPersonalRequest;
+use App\Mail\NotifCreate;
 use App\Models\ActivityHistory;
 use App\Models\Category;
 use App\Models\EndUser;
@@ -11,9 +12,12 @@ use App\Models\Location;
 use App\Models\Tasks;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Throwable;
 
 class TaskPersonalController extends Controller
 {
@@ -56,6 +60,11 @@ class TaskPersonalController extends Controller
     {
 
         $data = $request->validated();
+        $members = $data['member'] ?? [];
+        $emails = User::whereIn('id', $members)->pluck('email')->toArray();
+
+
+
 
         // Logic Set Progress, Actual End & Start
         $data['actual_start'] = null;
@@ -155,8 +164,44 @@ class TaskPersonalController extends Controller
             }
             $task->task_user()->sync($data['member'] ?? []);
         });
+        $emails = array_values(array_unique(array_filter($emails)));
 
-        return redirect()->route('task_personal.index')->with('success', 'Task Personal created successfully.');
+        $fromAddress = (string) config('mail.from.address');
+        $fromDomain = strtolower(Str::after($fromAddress, '@'));
+        $configuredAllowedDomains = collect(explode(',', (string) env('MAIL_ALLOWED_DOMAINS', $fromDomain)))
+            ->map(fn($domain) => strtolower(trim($domain)))
+            ->filter()
+            ->values();
+
+        $deliverableEmails = collect($emails)
+            ->filter(function ($email) use ($configuredAllowedDomains) {
+                $emailDomain = strtolower(Str::after((string) $email, '@'));
+
+                return $configuredAllowedDomains->contains(function ($allowedDomain) use ($emailDomain) {
+                    return $emailDomain === $allowedDomain || Str::endsWith($emailDomain, '.' . $allowedDomain);
+                });
+            })
+            ->values()
+            ->all();
+
+        $mailData = (object) $data;
+        if (!empty($deliverableEmails)) {
+            try {
+                Mail::to($deliverableEmails)->send(new NotifCreate($mailData));
+            } catch (Throwable $e) {
+                Log::error('Failed to send task notification email.', [
+                    'error' => $e->getMessage(),
+                    'recipients' => $deliverableEmails,
+                ]);
+            }
+        }
+
+        $redirect = redirect()->route('task_personal.index')->with('success', 'Task Personal created successfully.');
+        if (count($deliverableEmails) < count($emails)) {
+            $redirect->with('warning', 'Some email recipients were skipped because they are not allowed by SMTP relay policy.');
+        }
+
+        return $redirect;
     }
 
     /**

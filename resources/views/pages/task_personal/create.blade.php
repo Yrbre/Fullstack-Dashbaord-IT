@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('judul', 'Create Activity Personal')
+@section('judul', 'Create Job Assignment')
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header">

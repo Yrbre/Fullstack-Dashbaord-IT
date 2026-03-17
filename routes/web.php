@@ -15,24 +15,11 @@ use App\Http\Controllers\TaskPersonalController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Mail;
 
-Route::get('/test-email', function () {
+// Route::get('/test-email', function () {
 
-    try {
-
-        Mail::raw('Ini adalah test email dari Laravel', function ($message) {
-            $message->from('noreply.actmon@intra.tifico.co.id', 'noreply.actmon@intra.tifico.co.id');
-            $message->to('b-fajar@intra.tifico.co.id');
-            $message->subject('Test SMTP Laravel');
-        });
-
-        return "SMTP berhasil menerima email";
-    } catch (\Exception $e) {
-
-        return $e->getMessage();
-    }
-});
+//     Mail::to('b-fajar@intra.tifico.co.id')->send(new NotifCreate());
+// });
 
 
 Route::get('/', function () {
