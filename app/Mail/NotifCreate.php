@@ -30,7 +30,7 @@ class NotifCreate extends Mailable
         return new Envelope(
             from: new Address('noreply.actmon@intra.tifico.co.id', 'Activity Monitoring'),
             replyTo: [new Address('support@tifico.co.id', 'IT Support')],
-            subject: 'New Job Assignment',
+            subject: $this->data->priority . '-' . $this->data->name,
         );
     }
 

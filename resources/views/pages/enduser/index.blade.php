@@ -40,9 +40,8 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
                                                             href="{{ route('enduser.edit', $item->id) }}">Edit</a>
-                                                        <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="{{ $item->id }}"
-                                                            data-name="{{ $item->name }}"
+                                                        <a class="dropdown-item js-delete-enduser"
+                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
                                                             data-department="{{ $item->department }}"
                                                             data-url="{{ route('enduser.destroy', $item->id) }}"
                                                             href="#">Remove</a>
@@ -52,7 +51,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            @extends('pages.enduser.delete')
+                            <form method="POST" id="deleteForm">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -61,18 +63,35 @@
     </div>
     <script>
         // Handle delete modal
-        $('#deleteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var endUserName = button.data('name');
-            var departmentName = button.data('department');
-            var deleteUrl = button.data('url');
+        $(document).on('click', '.js-delete-enduser', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            var name = button.data('name');
+            var department = button.data('department');
+            var url = button.data('url');
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#endUserName').text(endUserName);
-            modal.find('#departmentName').text(departmentName);
-            modal.find('#deleteForm').attr('action', deleteUrl);
-        });
+            Swal.fire({
+                title: 'Confirm Delete',
+                icon: 'warning',
+                theme: 'dark',
+                html: '<p>Are you sure you want to delete this End User?</p>' +
+                    '<div class="justify-content-center">' +
+                    '<strong>Name :</strong> ' + name + '<br>' +
+                    '<strong>Department :</strong> ' + department +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#deleteForm');
+                    form.attr('action', url);
+                    form.submit();
+                }
+            });
+        })
     </script>
     <script>
         @if (session('success'))

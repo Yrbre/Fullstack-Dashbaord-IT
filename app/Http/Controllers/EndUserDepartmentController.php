@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEndUserDepartmentRequest;
 use App\Http\Requests\UpdateEndUserDepartmentRequest;
 use App\Models\EndUser;
 
@@ -11,6 +12,19 @@ class EndUserDepartmentController extends Controller
     {
         $department = EndUser::whereNull('name')->get();
         return view('pages.enduser_department.index', compact('department'));
+    }
+
+    public function create()
+    {
+        $department = EndUser::whereNull('name')->get();
+        return view('pages.enduser_department.create', compact('department'));
+    }
+
+    public function store(StoreEndUserDepartmentRequest $request)
+    {
+        EndUser::create($request->validated());
+
+        return redirect()->route('enduser_department.index')->with('success', 'Department created successfully.');
     }
 
     public function edit(string $id)

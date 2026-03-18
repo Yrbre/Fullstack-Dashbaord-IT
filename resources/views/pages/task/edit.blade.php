@@ -31,7 +31,7 @@
                             id="select-relation-task" name="relation_task">
                             <optgroup label="Select Relation Activity">
                                 <option value="" selected>Without Relation</option>
-                                @foreach ($tasks as $item)
+                                @foreach ($allTasks as $item)
                                     <option value="{{ $item->id }}"
                                         {{ old('relation_task', $task->relation_task) === $item->id ? 'selected' : '' }}>
                                         {{ $item->name }}</option>

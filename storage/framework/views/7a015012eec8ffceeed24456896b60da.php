@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="<?php echo e(route('activity.create')); ?>" class="btn btn-primary">Create New Activity</a>
+                <a href="<?php echo e(route('activity.create')); ?>" class="btn btn-primary">Create New</a>
             </div>
             <div class="row">
                 <div class="col-12 my-4">
@@ -39,9 +39,9 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
                                                             href="<?php echo e(route('activity.edit', $item->id)); ?>">Edit</a>
-                                                        <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
-                                                            data-name="<?php echo e($item->name); ?>"
+                                                        <a class="dropdown-item js-delete-activity"
+                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
+                                                            data-location="<?php echo e($item->location); ?>"
                                                             data-url="<?php echo e(route('activity.destroy', $item->id)); ?>"
                                                             href="#">Remove</a>
                                                     </div>
@@ -50,7 +50,10 @@
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
-                            
+                            <form id="deleteForm" method="POST" action="">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -60,15 +63,34 @@
     
     <script>
         // Handle delete modal
-        $('#deleteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var activityName = button.data('name');
-            var deleteUrl = button.data('url');
+        $(document).on('click', '.js-delete-activity', function(e) {
+            e.preventDefault();
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#activityName').text(activityName);
-            modal.find('#deleteForm').attr('action', deleteUrl);
+            var button = $(this);
+            var name = button.data('name');
+            var location = button.data('location');
+            var url = button.data('url');
+
+            Swal.fire({
+                title: 'Confirm Delete',
+                icon: 'warning',
+                theme: 'dark',
+                html: '<p>Are you sure you want to delete this Activity?</p>' +
+                    '<div class="justify-content-center">' +
+                    '<strong>Activity Name :</strong> ' + name + '<br>' +
+                    '<strong>Location :</strong> ' + location +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteForm').attr('action', url).submit();
+                }
+
+            });
         });
     </script>
     
@@ -96,5 +118,4 @@
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('pages.activity.delete', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/activity/index.blade.php ENDPATH**/ ?>

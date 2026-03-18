@@ -39,9 +39,9 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
                                                             href="{{ route('activity.edit', $item->id) }}">Edit</a>
-                                                        <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="{{ $item->id }}"
-                                                            data-name="{{ $item->name }}"
+                                                        <a class="dropdown-item js-delete-activity"
+                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                            data-location="{{ $item->location }}"
                                                             data-url="{{ route('activity.destroy', $item->id) }}"
                                                             href="#">Remove</a>
                                                     </div>
@@ -50,7 +50,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            @extends('pages.activity.delete')
+                            <form id="deleteForm" method="POST" action="">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -60,15 +63,34 @@
     {{-- Modal Delete --}}
     <script>
         // Handle delete modal
-        $('#deleteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var activityName = button.data('name');
-            var deleteUrl = button.data('url');
+        $(document).on('click', '.js-delete-activity', function(e) {
+            e.preventDefault();
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#activityName').text(activityName);
-            modal.find('#deleteForm').attr('action', deleteUrl);
+            var button = $(this);
+            var name = button.data('name');
+            var location = button.data('location');
+            var url = button.data('url');
+
+            Swal.fire({
+                title: 'Confirm Delete',
+                icon: 'warning',
+                theme: 'dark',
+                html: '<p>Are you sure you want to delete this Activity?</p>' +
+                    '<div class="justify-content-center">' +
+                    '<strong>Activity Name :</strong> ' + name + '<br>' +
+                    '<strong>Location :</strong> ' + location +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteForm').attr('action', url).submit();
+                }
+
+            });
         });
     </script>
     {{-- SweetAlert --}}

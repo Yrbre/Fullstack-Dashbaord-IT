@@ -38,6 +38,38 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
+                    <div class="form-group col-6">
+                        <label for="simple-select2">Parent Activity</label>
+                        <select class="form-control select2 <?php $__errorArgs = ['relation_task'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            id="select-relation-task" name="relation_task">
+                            <optgroup label="Select Relation Activity">
+                                <option value="" selected>Without Relation</option>
+                                <?php $__currentLoopData = $allTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($item->id); ?>"
+                                        <?php echo e(old('relation_task', $task->relation_task) === $item->id ? 'selected' : ''); ?>>
+                                        <?php echo e($item->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </optgroup>
+                        </select>
+                        <?php $__errorArgs = ['relation_task'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Priority</label>
                         <select class="form-control select2 <?php $__errorArgs = ['priority'];
@@ -57,7 +89,8 @@ unset($__errorArgs, $__bag); ?>" id="select-priority"
                                     HIGH</option>
                                 <option value="MEDIUM" <?php echo e(old('priority', $task->priority) == 'MEDIUM' ? 'selected' : ''); ?>>
                                     MEDIUM</option>
-                                <option value="LOW" <?php echo e(old('priority', $task->priority) == 'LOW' ? 'selected' : ''); ?>>LOW
+                                <option value="LOW" <?php echo e(old('priority', $task->priority) == 'LOW' ? 'selected' : ''); ?>>
+                                    LOW
                                 </option>
                             </optgroup>
                         </select>

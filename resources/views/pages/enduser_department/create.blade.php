@@ -5,36 +5,22 @@
         <div class="card-header">
         </div>
         <div class="card-body">
-            <form method="post" action="{{ route('enduser.store') }}">
+            <form method="post" action="{{ route('enduser_department.store') }}">
                 @csrf
                 <div class="form-row">
 
-                    <div class="form-group col-md-12">
-                        <label for="">Name End User</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ old('name') }}">
-                        @error('name')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                    <div class="form-group col-12">
+                        <label for="simple-select2">Department</label>
+                        <input type="text" class="form-control @error('department') is-invalid @enderror"
+                            id="simple-select2" name="department" placeholder="Enter department name"
+                            value="{{ old('department') }}">
+                        @error('department')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
 
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Department</label>
-                        <select class="form-control select2" id="simple-select3" name="department">
-                            <optgroup label="Select Department Type">
-                                <option value="" selected disabled>Select Department</option>
-                                @foreach ($department as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
-                                @endforeach
-                                <option value="other">Other</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group col-12" id="otherDepartmentInput" style="display: none;">
-                        <label for="other_department">Specify Department</label>
-                        <input type="text" class="form-control" id="other_department" name="other_department"
-                            placeholder="Enter custom department">
-                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

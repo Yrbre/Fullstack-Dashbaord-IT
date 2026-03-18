@@ -69,9 +69,8 @@
                                                             href="{{ route('task.show', $item->id) }}">View</a>
                                                         <a class="dropdown-item"
                                                             href="{{ route('task.edit', $item->id) }}">Edit</a>
-                                                        <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="{{ $item->id }}"
-                                                            data-name="{{ $item->name }}"
+                                                        <a class="dropdown-item js-delete-task"
+                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
                                                             data-status="{{ $item->status }}"
                                                             data-url="{{ route('task.destroy', $item->id) }}"
                                                             href="#">Remove</a>
@@ -82,7 +81,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            @extends('pages.task.delete')
+                            <form id="deleteForm" method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -90,18 +92,36 @@
         </div>
     </div>
     <script>
-        // Handle delete modal
-        $('#deleteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
+        $(document).on('click', '.js-delete-task', function(e) {
+            e.preventDefault();
+
+            var button = $(this);
             var taskName = button.data('name');
             var statusName = button.data('status');
             var deleteUrl = button.data('url');
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#taskName').text(taskName);
-            modal.find('#statusName').text(statusName);
-            modal.find('#deleteForm').attr('action', deleteUrl);
+            Swal.fire({
+                title: 'Confirm Delete',
+                icon: 'warning',
+                theme: 'dark',
+                html: '<p>Are you sure you want to delete this Activity?</p>' +
+                    '<div class="justify-content-center">' +
+                    '<strong>Activity Name :</strong> ' + taskName + '<br>' +
+                    '<strong>Status :</strong> ' + statusName +
+                    '</div>' +
+                    '<p class="mt-3 mb-0 text-muted">This action cannot be undone.</p>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#deleteForm');
+                    form.attr('action', deleteUrl);
+                    form.trigger('submit');
+                }
+            });
         });
     </script>
     <script>

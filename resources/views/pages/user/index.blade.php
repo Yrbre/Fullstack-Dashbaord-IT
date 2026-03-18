@@ -42,9 +42,9 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
                                                             href="{{ route('user.edit', $item->id) }}">Edit</a>
-                                                        <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="{{ $item->id }}"
-                                                            data-name="{{ $item->name }}" data-role="{{ $item->role }}"
+                                                        <a class="dropdown-item js-delete-user"
+                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                            data-role="{{ $item->role }}"
                                                             data-url="{{ route('user.destroy', $item->id) }}"
                                                             href="#">Remove</a>
                                                     </div>
@@ -53,7 +53,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            @extends('pages.user.delete')
+                            <form method="POST" id="deleteForm">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end mt-2">
@@ -66,17 +69,34 @@
     </div>
     <script>
         // Handle delete modal
-        $('#deleteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var userName = button.data('name');
-            var roleName = button.data('role');
-            var deleteUrl = button.data('url');
+        $(document).on('click', '.js-delete-user', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            var name = button.data('name');
+            var role = button.data('role');
+            var url = button.data('url');
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#userName').text(userName);
-            modal.find('#roleName').text(roleName);
-            modal.find('#deleteForm').attr('action', deleteUrl);
+            Swal.fire({
+                title: 'Confirm Delete',
+                icon: 'warning',
+                theme: 'dark',
+                html: '<p>Are you sure you want to delete this User?</p>' +
+                    '<div class="justify-content-center">' +
+                    '<strong>User Name :</strong> ' + name + '<br>' +
+                    '<strong>Role :</strong> ' + role +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#deleteForm');
+                    form.attr('action', url);
+                    form.submit();
+                }
+            });
         });
     </script>
     <script>

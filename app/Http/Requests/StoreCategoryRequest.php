@@ -23,7 +23,7 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name'          => 'required|string|max:255',
-            'type'          => 'required|string|max:255',
+            'type'          => 'nullable|string|max:255',
             'other_type'    => 'nullable|required_if:type,other|string|max:255',
         ];
     }

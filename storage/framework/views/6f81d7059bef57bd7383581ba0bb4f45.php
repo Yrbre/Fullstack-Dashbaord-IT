@@ -72,9 +72,8 @@
                                                             href="<?php echo e(route('task.show', $item->id)); ?>">View</a>
                                                         <a class="dropdown-item"
                                                             href="<?php echo e(route('task.edit', $item->id)); ?>">Edit</a>
-                                                        <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
-                                                            data-name="<?php echo e($item->name); ?>"
+                                                        <a class="dropdown-item js-delete-task"
+                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
                                                             data-status="<?php echo e($item->status); ?>"
                                                             data-url="<?php echo e(route('task.destroy', $item->id)); ?>"
                                                             href="#">Remove</a>
@@ -85,7 +84,10 @@
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
-                            
+                            <form id="deleteForm" method="POST" style="display: none;">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -93,18 +95,36 @@
         </div>
     </div>
     <script>
-        // Handle delete modal
-        $('#deleteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
+        $(document).on('click', '.js-delete-task', function(e) {
+            e.preventDefault();
+
+            var button = $(this);
             var taskName = button.data('name');
             var statusName = button.data('status');
             var deleteUrl = button.data('url');
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#taskName').text(taskName);
-            modal.find('#statusName').text(statusName);
-            modal.find('#deleteForm').attr('action', deleteUrl);
+            Swal.fire({
+                title: 'Confirm Delete',
+                icon: 'warning',
+                theme: 'dark',
+                html: '<p>Are you sure you want to delete this Activity?</p>' +
+                    '<div class="justify-content-center">' +
+                    '<strong>Activity Name :</strong> ' + taskName + '<br>' +
+                    '<strong>Status :</strong> ' + statusName +
+                    '</div>' +
+                    '<p class="mt-3 mb-0 text-muted">This action cannot be undone.</p>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#deleteForm');
+                    form.attr('action', deleteUrl);
+                    form.trigger('submit');
+                }
+            });
         });
     </script>
     <script>
@@ -132,5 +152,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('pages.task.delete', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/task/index.blade.php ENDPATH**/ ?>

@@ -6,6 +6,7 @@ use App\Exports\TaskDepartment;
 use App\Http\Requests\GetTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Mail\NotifCreateActivityDept;
 use App\Models\ActivityHistory;
 use App\Models\Category;
 use App\Models\EndUser;
@@ -15,6 +16,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
@@ -152,6 +155,17 @@ class TaskController extends Controller
             ]);
         }
 
+        $mailData = (object) $data;
+        $email = User::find($data['assign_to'])->email;
+
+        try {
+            Mail::to($email)->send(new NotifCreateActivityDept($mailData));
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to send email: ' . $e->getMessage());
+        }
+
+
         return redirect()->route('task.index')->with('success', 'Task created successfully.');
     }
 
@@ -179,13 +193,16 @@ class TaskController extends Controller
     public function edit(string $id)
     {
         $task           = Tasks::findOrFail($id);
+        $allTasks       = Tasks::where('id', '!=', $id)
+            ->where('task_level', 'DEPARTMENT')
+            ->where('status', '!=', 'COMPLETED')
+            ->get();
         $assignTo       = User::orderBy('name', 'asc')->pluck('name', 'id');
         $category       = Category::orderBy('name', 'asc')->distinct()->get();
         $location       = Location::orderBy('department', 'asc')->distinct('department')->get();
         $endUser        = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
         $department     = EndUser::whereNull('name')->orderBy('department', 'asc')->distinct()->get();
-
-        return view('pages.task.edit', compact('task', 'assignTo', 'category', 'location', 'endUser', 'department'));
+        return view('pages.task.edit', compact('task', 'allTasks', 'assignTo', 'category', 'location', 'endUser', 'department'));
     }
 
     /**
