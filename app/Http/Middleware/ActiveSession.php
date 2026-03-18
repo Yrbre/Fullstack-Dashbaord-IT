@@ -31,7 +31,7 @@ class ActiveSession
                     ->orWhere(function ($query) {
                         $query->where('reference_type', 'ACTIVITY')
                             ->whereHas('activity', function ($q) {
-                                $q->where('name', '!=', 'STAND BY');
+                                $q->where('id', '!=', 1);
                             });
                     });
             })
