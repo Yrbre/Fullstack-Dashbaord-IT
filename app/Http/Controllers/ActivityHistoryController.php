@@ -16,7 +16,15 @@ class ActivityHistoryController extends Controller
     public function index()
     {
         $activity_history = ActivityHistory::with(['user', 'task.enduser', 'activity'])->orderBy('created_at', 'desc')->get();
-        return view('pages.activity_history.index', compact('activity_history'));
+        $priority = $activity_history->map(function ($item) {
+            if ($item->reference_type === 'TASK') {
+                return $item->task->priority ?? '-';
+            } elseif ($item->reference_type === 'ACTIVITY') {
+                return '-';
+            }
+            return '-';
+        });
+        return view('pages.activity_history.index', compact('activity_history', 'priority'));
     }
 
     public function show(string $id)

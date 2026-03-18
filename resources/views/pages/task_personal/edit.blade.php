@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('judul', 'Edit Activity Personal')
+@section('judul', 'Edit Job Assignment')
 @section('content')
     <style>
         .select2-container {
@@ -9,7 +9,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Edit Activity</strong>
+            <strong class="card-title">Edit Job Assignment</strong>
         </div>
         <div class="card-body">
             <form method="post" action="{{ route('task_personal.update', $task->id) }}" enctype="multipart/form-data">

@@ -1,4 +1,4 @@
-<?php $__env->startSection('judul', 'Activity Personal List'); ?>
+<?php $__env->startSection('judul', 'Job Assignment List'); ?>
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
@@ -10,7 +10,7 @@
                 <div class="col-12 my-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title">Table Activity Personal</h5>
+                            <h5 class="card-title">Table Job Assignment</h5>
                             <p class="card-text"></p>
                             <table class="table datatables" id="dataTable-1">
                                 <thead>
@@ -20,6 +20,7 @@
                                         <th>Name</th>
                                         <th>Parent Activity</th>
                                         <th>Assign to</th>
+                                        <th>Priority</th>
                                         <th>Progress</th>
                                         <th>Schedule(S/E)</th>
                                         <th>Actual (S/E)</th>
@@ -36,6 +37,17 @@
                                             <td><?php echo e($item->name); ?></td>
                                             <td><?php echo e($item->relation_name ?? '-'); ?></td>
                                             <td><?php echo e($item->user->name ?? '-'); ?></td>
+                                            <td>
+                                                <?php if($item->priority === 'CRITICAL'): ?>
+                                                    <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                <?php elseif($item->priority === 'HIGH'): ?>
+                                                    <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                    <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                <?php elseif($item->priority === 'LOW'): ?>
+                                                    <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                <?php endif; ?>
+                                            </td>
                                             <td><?php echo e($item->progress); ?>%</td>
                                             <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i')); ?>
 

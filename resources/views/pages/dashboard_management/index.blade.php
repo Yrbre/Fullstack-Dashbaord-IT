@@ -107,6 +107,7 @@
                                     <td>Activity Name</td>
                                     <td>Responsibility</td>
                                     <td>Client</td>
+                                    <td>Priority</td>
                                     <td>Progress</td>
                                     <td>Status</td>
                                     <td class="text-center">Action</td>
@@ -119,6 +120,15 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->user->name }}</td>
                                         <td>{{ $item->enduser->department ?? '-' }}</td>
+                                        @if ($item->priority === 'CRITICAL')
+                                            <td><span class="badge badge-danger">{{ $item->priority }}</span></td>
+                                        @elseif ($item->priority === 'HIGH')
+                                            <td><span class="badge badge-warning">{{ $item->priority }}</span></td>
+                                        @elseif ($item->priority === 'MEDIUM')
+                                            <td><span class="badge badge-info">{{ $item->priority }}</span></td>
+                                        @elseif ($item->priority === 'LOW')
+                                            <td><span class="badge badge-secondary">{{ $item->priority }}</span></td>
+                                        @endif
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="progress flex-grow-1 position-relative" style="height: 20px;">

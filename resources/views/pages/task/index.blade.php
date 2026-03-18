@@ -21,6 +21,7 @@
                                         <th>Name</th>
                                         <th>Level</th>
                                         <th>Assign to</th>
+                                        <th>Priority</th>
                                         <th>Progress</th>
                                         <th>Schedule(S/E)</th>
                                         <th>Actual (S/E)</th>
@@ -36,6 +37,17 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->task_level }}</td>
                                             <td>{{ $item->user->name ?? '-' }}</td>
+                                            <td>
+                                                @if ($item->priority === 'CRITICAL')
+                                                    <span class="badge badge-danger">{{ $item->priority }}</span>
+                                                @elseif ($item->priority === 'HIGH')
+                                                    <span class="badge badge-warning">{{ $item->priority }}</span>
+                                                @elseif ($item->priority === 'MEDIUM')
+                                                    <span class="badge badge-info">{{ $item->priority }}</span>
+                                                @elseif ($item->priority === 'LOW')
+                                                    <span class="badge badge-secondary">{{ $item->priority }}</span>
+                                                @endif
+                                            </td>
                                             <td>{{ $item->progress }}%</td>
                                             <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i') }}
                                                 <br />

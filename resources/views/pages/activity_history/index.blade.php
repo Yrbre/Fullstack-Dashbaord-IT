@@ -17,6 +17,7 @@
                                         <th>Member</th>
                                         <th>Reference Type</th>
                                         <th>Description</th>
+                                        <th>Priority</th>
                                         <th>Location</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
@@ -42,7 +43,27 @@
                                             @else
                                                 <td>-</td>
                                             @endif
-                                            <td>{{ $item->task->enduser->department ?? '-' }} - {{ $item->location ?? '-' }}
+
+                                            <td>{{ $item->task->enduser->department ?? '-' }} -
+                                                {{ $item->location ?? '-' }}
+                                            </td>
+                                            <td>
+                                                @if ($item->reference_type === 'TASK')
+                                                    @if ($item->task->priority === 'CRITICAL')
+                                                        <span class="badge badge-danger">{{ $item->task->priority }}</span>
+                                                    @elseif ($item->task->priority === 'HIGH')
+                                                        <span class="badge badge-warning">{{ $item->task->priority }}</span>
+                                                    @elseif ($item->task->priority === 'MEDIUM')
+                                                        <span class="badge badge-info">{{ $item->task->priority }}</span>
+                                                    @elseif ($item->task->priority === 'LOW')
+                                                        <span
+                                                            class="badge badge-secondary">{{ $item->task->priority }}</span>
+                                                    @endif
+                                                @elseif ($item->reference_type === 'ACTIVITY')
+                                                    -
+                                                @else
+                                                    -
+                                                @endif
                                             </td>
                                             <td>{{ $item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-' }}
                                             </td>

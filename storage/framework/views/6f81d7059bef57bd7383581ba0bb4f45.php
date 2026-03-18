@@ -20,6 +20,7 @@
                                         <th>Name</th>
                                         <th>Level</th>
                                         <th>Assign to</th>
+                                        <th>Priority</th>
                                         <th>Progress</th>
                                         <th>Schedule(S/E)</th>
                                         <th>Actual (S/E)</th>
@@ -35,6 +36,17 @@
                                             <td><?php echo e($item->name); ?></td>
                                             <td><?php echo e($item->task_level); ?></td>
                                             <td><?php echo e($item->user->name ?? '-'); ?></td>
+                                            <td>
+                                                <?php if($item->priority === 'CRITICAL'): ?>
+                                                    <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                <?php elseif($item->priority === 'HIGH'): ?>
+                                                    <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                    <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                <?php elseif($item->priority === 'LOW'): ?>
+                                                    <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                <?php endif; ?>
+                                            </td>
                                             <td><?php echo e($item->progress); ?>%</td>
                                             <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i')); ?>
 

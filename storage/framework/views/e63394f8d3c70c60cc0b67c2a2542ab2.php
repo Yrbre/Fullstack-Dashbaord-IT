@@ -16,6 +16,7 @@
                                         <th>Member</th>
                                         <th>Reference Type</th>
                                         <th>Description</th>
+                                        <th>Priority</th>
                                         <th>Location</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
@@ -41,8 +42,28 @@
                                             <?php else: ?>
                                                 <td>-</td>
                                             <?php endif; ?>
-                                            <td><?php echo e($item->task->enduser->department ?? '-'); ?> - <?php echo e($item->location ?? '-'); ?>
 
+                                            <td><?php echo e($item->task->enduser->department ?? '-'); ?> -
+                                                <?php echo e($item->location ?? '-'); ?>
+
+                                            </td>
+                                            <td>
+                                                <?php if($item->reference_type === 'TASK'): ?>
+                                                    <?php if($item->task->priority === 'CRITICAL'): ?>
+                                                        <span class="badge badge-danger"><?php echo e($item->task->priority); ?></span>
+                                                    <?php elseif($item->task->priority === 'HIGH'): ?>
+                                                        <span class="badge badge-warning"><?php echo e($item->task->priority); ?></span>
+                                                    <?php elseif($item->task->priority === 'MEDIUM'): ?>
+                                                        <span class="badge badge-info"><?php echo e($item->task->priority); ?></span>
+                                                    <?php elseif($item->task->priority === 'LOW'): ?>
+                                                        <span
+                                                            class="badge badge-secondary"><?php echo e($item->task->priority); ?></span>
+                                                    <?php endif; ?>
+                                                <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                                    -
+                                                <?php else: ?>
+                                                    -
+                                                <?php endif; ?>
                                             </td>
                                             <td><?php echo e($item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-'); ?>
 

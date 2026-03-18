@@ -1,4 +1,4 @@
-<?php $__env->startSection('judul', 'Edit Activity Personal'); ?>
+<?php $__env->startSection('judul', 'Edit Job Assignment'); ?>
 <?php $__env->startSection('content'); ?>
     <style>
         .select2-container {
@@ -8,7 +8,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header">
-            <strong class="card-title">Edit Activity</strong>
+            <strong class="card-title">Edit Job Assignment</strong>
         </div>
         <div class="card-body">
             <form method="post" action="<?php echo e(route('task_personal.update', $task->id)); ?>" enctype="multipart/form-data">

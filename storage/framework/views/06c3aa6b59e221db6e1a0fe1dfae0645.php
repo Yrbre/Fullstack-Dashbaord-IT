@@ -466,26 +466,36 @@
                         </span>
                     </div>
 
-                    <!-- Status Alert -->
+                    <div class="schedule-header">
+                        <span>📝</span> Description
+                    </div>
+                    <div class="timeline">
+                        <!-- Start Time -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-label">Description</div>
+                            <div class="timeline-date"><?php echo e($data->description); ?></div>
+                        </div>
+                    </div>
 
                 </div>
+
+
+                <!-- Additional Info -->
+
             </div>
 
-            <!-- Additional Info -->
-
+            <!-- Footer dengan CTA -->
+            <div class="footer">
+                <div class="footer-note">
+                    <strong>Need help?</strong> Contact your supervisor<br>
+                </div>
+                <div class="company-info">
+                    © <?php echo e(date('Y')); ?> PT.TIFICO FIBER INDONESIA,Tbk . All rights reserved.<br>
+                    IT Department
+                </div>
+            </div>
         </div>
-
-        <!-- Footer dengan CTA -->
-        <div class="footer">
-            <div class="footer-note">
-                <strong>Need help?</strong> Contact your supervisor<br>
-            </div>
-            <div class="company-info">
-                © <?php echo e(date('Y')); ?> PT.TIFICO FIBER INDONESIA,Tbk . All rights reserved.<br>
-                IT Department
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>

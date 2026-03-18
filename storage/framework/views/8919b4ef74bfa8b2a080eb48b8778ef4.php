@@ -107,6 +107,7 @@
                                     <td>Activity Name</td>
                                     <td>Responsibility</td>
                                     <td>Client</td>
+                                    <td>Priority</td>
                                     <td>Progress</td>
                                     <td>Status</td>
                                     <td class="text-center">Action</td>
@@ -119,6 +120,15 @@
                                         <td><?php echo e($item->name); ?></td>
                                         <td><?php echo e($item->user->name); ?></td>
                                         <td><?php echo e($item->enduser->department ?? '-'); ?></td>
+                                        <?php if($item->priority === 'CRITICAL'): ?>
+                                            <td><span class="badge badge-danger"><?php echo e($item->priority); ?></span></td>
+                                        <?php elseif($item->priority === 'HIGH'): ?>
+                                            <td><span class="badge badge-warning"><?php echo e($item->priority); ?></span></td>
+                                        <?php elseif($item->priority === 'MEDIUM'): ?>
+                                            <td><span class="badge badge-info"><?php echo e($item->priority); ?></span></td>
+                                        <?php elseif($item->priority === 'LOW'): ?>
+                                            <td><span class="badge badge-secondary"><?php echo e($item->priority); ?></span></td>
+                                        <?php endif; ?>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="progress flex-grow-1 position-relative" style="height: 20px;">

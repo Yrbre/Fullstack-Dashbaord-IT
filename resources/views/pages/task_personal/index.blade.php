@@ -1,5 +1,5 @@
 @extends('layouts.template')
-@section('judul', 'Activity Personal List')
+@section('judul', 'Job Assignment List')
 @section('content')
 
     <div class="container-fluid">
@@ -11,7 +11,7 @@
                 <div class="col-12 my-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title">Table Activity Personal</h5>
+                            <h5 class="card-title">Table Job Assignment</h5>
                             <p class="card-text"></p>
                             <table class="table datatables" id="dataTable-1">
                                 <thead>
@@ -21,6 +21,7 @@
                                         <th>Name</th>
                                         <th>Parent Activity</th>
                                         <th>Assign to</th>
+                                        <th>Priority</th>
                                         <th>Progress</th>
                                         <th>Schedule(S/E)</th>
                                         <th>Actual (S/E)</th>
@@ -37,6 +38,17 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->relation_name ?? '-' }}</td>
                                             <td>{{ $item->user->name ?? '-' }}</td>
+                                            <td>
+                                                @if ($item->priority === 'CRITICAL')
+                                                    <span class="badge badge-danger">{{ $item->priority }}</span>
+                                                @elseif ($item->priority === 'HIGH')
+                                                    <span class="badge badge-warning">{{ $item->priority }}</span>
+                                                @elseif ($item->priority === 'MEDIUM')
+                                                    <span class="badge badge-info">{{ $item->priority }}</span>
+                                                @elseif ($item->priority === 'LOW')
+                                                    <span class="badge badge-secondary">{{ $item->priority }}</span>
+                                                @endif
+                                            </td>
                                             <td>{{ $item->progress }}%</td>
                                             <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i') }}
                                                 <br />

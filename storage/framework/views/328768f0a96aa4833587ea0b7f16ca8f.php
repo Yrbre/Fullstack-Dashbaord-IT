@@ -25,6 +25,7 @@
                         <th>Activity Name</th>
                         <th>End User</th>
                         <th>Location</th>
+                        <th>Priority</th>
                         <th>Progress</th>
                         <th>Scheduled Start/End</th>
                         <th>Actual Start/End</th>
@@ -37,6 +38,17 @@
                             <td><?php echo e($item->name); ?></td>
                             <td><?php echo e($item->enduser->name ?? $item->enduser->department); ?></td>
                             <td><?php echo e($item->location->department); ?> - <?php echo e($item->location->location); ?></td>
+                            <td>
+                                <?php if($item->priority === 'CRITICAL'): ?>
+                                    <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                <?php elseif($item->priority === 'HIGH'): ?>
+                                    <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                <?php elseif($item->priority === 'MEDIUM'): ?>
+                                    <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                <?php elseif($item->priority === 'LOW'): ?>
+                                    <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                <?php endif; ?>
+                            </td>
                             <td><?php echo e($item->progress); ?>%</td>
                             <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i')); ?> <br>
                                 <?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i')); ?></td>

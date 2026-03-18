@@ -26,6 +26,7 @@
                         <th>Activity Name</th>
                         <th>End User</th>
                         <th>Location</th>
+                        <th>Priority</th>
                         <th>Progress</th>
                         <th>Scheduled Start/End</th>
                         <th>Actual Start/End</th>
@@ -38,6 +39,17 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->enduser->name ?? $item->enduser->department }}</td>
                             <td>{{ $item->location->department }} - {{ $item->location->location }}</td>
+                            <td>
+                                @if ($item->priority === 'CRITICAL')
+                                    <span class="badge badge-danger">{{ $item->priority }}</span>
+                                @elseif ($item->priority === 'HIGH')
+                                    <span class="badge badge-warning">{{ $item->priority }}</span>
+                                @elseif ($item->priority === 'MEDIUM')
+                                    <span class="badge badge-info">{{ $item->priority }}</span>
+                                @elseif ($item->priority === 'LOW')
+                                    <span class="badge badge-secondary">{{ $item->priority }}</span>
+                                @endif
+                            </td>
                             <td>{{ $item->progress }}%</td>
                             <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i') }} <br>
                                 {{ \Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i') }}</td>
