@@ -90,12 +90,18 @@ Aplikasi web **Dashboard IT** untuk monitoring dan manajemen aktivitas harian ti
 -   **Location** — lokasi kerja (departemen, lokasi).
 -   **End User** — pengguna akhir / peminta (nama, departemen).
 -   **End User Department** — departemen end user.
--   **Priority** — level prioritas task.
--   **Status** — status referensi.
+
+Catatan implementasi saat ini:
+
+-   Model & controller **Priority** dan **Status** tersedia di kode.
+-   Route CRUD untuk **Priority** dan **Status** belum dipublikasikan di `routes/web.php`, sehingga belum bisa diakses dari menu utama.
+-   Kolom `tasks.priority` saat ini disimpan sebagai nilai string langsung, bukan foreign key ke tabel `priority`.
 
 ### 8. Email Notification
 
--   Notifikasi email via SMTP saat task dibuat (`NotifCreateTask` Mailable).
+-   Notifikasi email via SMTP saat task dibuat.
+-   Mailable task umum: `NotifCreate.php`.
+-   Mailable task departemen: `NotifCreateActivityDept.php`.
 
 ---
 
@@ -124,7 +130,8 @@ dashboard-it/
 │   │   │   └── RoleMiddleware.php     # Otorisasi berdasarkan role
 │   │   └── Requests/                  # Form Request Validation
 │   ├── Mail/
-│   │   └── NotifCreateTask.php        # Mailable notifikasi task
+│   │   ├── NotifCreate.php            # Mailable notifikasi task umum
+│   │   └── NotifCreateActivityDept.php # Mailable notifikasi task departemen
 │   ├── Models/
 │   │   ├── User.php                   # User (SoftDeletes)
 │   │   ├── Tasks.php                  # Task (parent-child, SoftDeletes)
@@ -172,17 +179,17 @@ dashboard-it/
 
 ### Tabel Utama
 
-| Tabel                | Deskripsi                                                                                                           |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `users`              | Data user (name, email, password, phone, role, photo) — Soft Delete                                                 |
-| `tasks`              | Data task (name, priority, category, assign_to, task_level, status, progress, schedule, actual, dll.) — Soft Delete |
-| `activities`         | Master aktivitas (name, location, description) — Soft Delete                                                        |
-| `activity_histories` | Log riwayat aktivitas (user_id, reference_id, reference_type, location, status, start_time, end_time) — Soft Delete |
-| `category_lists`     | Master kategori (name, type) — Soft Delete                                                                          |
-| `location_lists`     | Master lokasi (department, location) — Soft Delete                                                                  |
-| `endusers`           | Master end user (name, department) — Soft Delete                                                                    |
-| `priority`           | Master prioritas (name) — Soft Delete                                                                               |
-| `status`             | Master status (name) — Soft Delete                                                                                  |
+| Tabel                | Deskripsi                                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `users`              | Data user (name, email, password, phone, role, photo) — Soft Delete                                                             |
+| `tasks`              | Data task (name, priority [string], category, assign_to, task_level, status, progress, schedule, actual, dll.) — Soft Delete    |
+| `activities`         | Master aktivitas (name, location, description) — Soft Delete                                                                    |
+| `activity_histories` | Log riwayat aktivitas (user_id, reference_id, reference_type, location, status, start_time, end_time, deleted_at) — Soft Delete |
+| `category_lists`     | Master kategori (name, type) — Soft Delete                                                                                      |
+| `location_lists`     | Master lokasi (department, location) — Soft Delete                                                                              |
+| `endusers`           | Master end user (name, department) — Soft Delete                                                                                |
+| `priority`           | Master prioritas (name) — Soft Delete (controller tersedia, route CRUD belum aktif)                                             |
+| `status`             | Master status (name) — Soft Delete (controller tersedia, route CRUD belum aktif)                                                |
 
 ### Relasi Antar Tabel
 
@@ -243,6 +250,12 @@ EndUser  ──── hasMany ──> Tasks (enduser_id)
 | ------ | --- | --------------------------- |
 | GET    | `/` | Redirect ke login/dashboard |
 
+### Authenticated Redirect
+
+| Method | URI          | Keterangan                                                                                          |
+| ------ | ------------ | --------------------------------------------------------------------------------------------------- |
+| GET    | `/dashboard` | Redirect otomatis berdasarkan role: OPERATOR -> dashboard operator, lainnya -> dashboard management |
+
 ### Authenticated — Semua Role
 
 | Method   | URI                                 | Controller                                     | Keterangan             |
@@ -263,6 +276,7 @@ EndUser  ──── hasMany ──> Tasks (enduser_id)
 | PUT      | `/task/update/{id}`                 | `DashboardOperatorController@updateTask`       | Update task aktif      |
 | GET      | `/profile/edit/{id}`                | `ProfileNewController@edit`                    | Edit profil            |
 | PUT      | `/profile/update`                   | `ProfileNewController@update`                  | Update profil          |
+| GET      | `/export-activity`                  | `ActivityController@export`                    | Export activity list   |
 
 ### Management & Admin Only
 
@@ -278,6 +292,7 @@ EndUser  ──── hasMany ──> Tasks (enduser_id)
 | GET      | `/activity_history/{id}`             | `ActivityHistoryController@show`       | Detail history          |
 | GET      | `/activity_history/list/{id}`        | `ActivityHistoryController@list`       | Task list per user      |
 | GET      | `/activity_history/list/{id}/filter` | `ActivityHistoryController@listFilter` | Filter history per user |
+| GET      | `/export-task-department`            | `TaskController@export`                | Export task department  |
 
 ### Admin Only
 
@@ -286,6 +301,14 @@ EndUser  ──── hasMany ──> Tasks (enduser_id)
 | GET    | `/activity_history/{id}/edit` | `ActivityHistoryController@edit`    | Edit history   |
 | PUT    | `/activity_history/{id}`      | `ActivityHistoryController@update`  | Update history |
 | DELETE | `/activity_history/{id}`      | `ActivityHistoryController@destroy` | Hapus history  |
+
+### Authenticated Profile (Breeze Default)
+
+| Method | URI        | Controller                  | Keterangan            |
+| ------ | ---------- | --------------------------- | --------------------- |
+| GET    | `/profile` | `ProfileController@edit`    | Edit profil (default) |
+| PATCH  | `/profile` | `ProfileController@update`  | Update profil         |
+| DELETE | `/profile` | `ProfileController@destroy` | Hapus akun            |
 
 ---
 
@@ -325,7 +348,7 @@ php artisan key:generate
 # 8. Jalankan migrasi database
 php artisan migrate
 
-# 9. Jalankan seeder (membuat admin & aktivitas STAND BY)
+# 9. Jalankan seeder (membuat admin, activity default, dan category default)
 php artisan db:seed
 
 # 10. Buat symbolic link untuk storage
@@ -397,10 +420,16 @@ Akses aplikasi:
 
 Seeder membuat data awal berikut:
 
-| Data           | Detail                                                                   |
-| -------------- | ------------------------------------------------------------------------ |
-| **User Admin** | Name: `admin`, Email: `admin@tifico.co.id`, Password: `1`, Role: `ADMIN` |
-| **Activity**   | Name: `STAND BY`, Location: `IT OFFICE`                                  |
+| Data           | Detail                                                                                                                                   |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **User Admin** | Name: `admin`, Email: `admin@tifico.co.id`, Password: `1`, Role: `ADMIN`                                                                 |
+| **Activity**   | `STAND BY`, `MUSHALLA`, `TOILET`, `MASJID`, `PANTRY`, `KANTIN`, `OUT OF OFFICE`                                                          |
+| **Category**   | `ADMINISTRATION`, `HARDWARE INSTALLATION`, `SOFTWARE DEVELOPMENT`, `SUPERVISORY`, `MEETING`, `ROUTINE WORK`, `TROUBLESHOOTING`, `OTHERS` |
+
+Catatan implementasi saat ini:
+
+-   Seeder default belum membuat user role **MANAGEMENT** dan **OPERATOR**.
+-   Seeder default belum mengisi tabel **priority** dan **status**.
 
 ```bash
 php artisan db:seed
