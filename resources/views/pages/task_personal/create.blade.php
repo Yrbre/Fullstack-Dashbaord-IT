@@ -68,7 +68,7 @@
                                 <option value="" selected disabled>Select Category</option>
                                 @foreach ($category as $item)
                                     <option value="{{ $item->id }}" @if (old('category_id') == $item->id) selected @endif>
-                                        {{ $item->type }} - {{ $item->name }}</option>
+                                        {{ $item->name }}</option>
                                 @endforeach
                             </optgroup>
                         </select>
@@ -163,7 +163,7 @@
                                 @foreach ($location as $item)
                                     <option value="{{ $item->id }}"
                                         @if (old('location_id') == $item->id) selected @endif>
-                                        {{ $item->department }} - {{ $item->location }}</option>
+                                        {{ $item->location }}</option>
                                 @endforeach
                                 <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option>
                             </optgroup>

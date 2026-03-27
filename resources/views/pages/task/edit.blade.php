@@ -74,7 +74,7 @@
                                 @foreach ($category as $item)
                                     <option value="{{ $item->id }}"
                                         {{ old('category_id', $task->category_id) == $item->id ? 'selected' : '' }}>
-                                        {{ $item->type }} - {{ $item->name }}</option>
+                                        {{ $item->name }}</option>
                                 @endforeach
                             </optgroup>
                         </select>
