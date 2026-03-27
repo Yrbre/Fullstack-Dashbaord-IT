@@ -28,6 +28,8 @@ class UpdateTaskPersonalRequest extends FormRequest
             'relation_task'         => 'nullable|exists:tasks,id',
             'priority'              => 'sometimes|string|in:LOW,MEDIUM,HIGH,CRITICAL',
             'category_id'           => 'sometimes|exists:category_lists,id',
+            'member'                => 'sometimes|array',
+            'member.*'              => 'exists:users,id',
             'assign_to'             => 'sometimes|exists:users,id',
             'enduser_department'    => 'sometimes|exists:endusers,id',
             'enduser_personal'      => 'sometimes|exists:endusers,id',

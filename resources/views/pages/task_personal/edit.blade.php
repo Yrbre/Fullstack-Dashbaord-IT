@@ -91,12 +91,27 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="simple-select2">Assign to</label>
+                        <label for="simple-select2">Responsibility</label>
                         <select class="form-control select2" id="select-assign" name="assign_to">
                             <optgroup label="Select User">
                                 @foreach ($assignTo as $id => $name)
                                     <option value="{{ $id }}"
                                         {{ old('assign_to', $task->assign_to) == $id ? 'selected' : '' }}>
+                                        {{ $name }}</option>
+                                @endforeach
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label for="simple-select2">Member</label>
+                        @php
+                            $selectedMembers = old('member', $memberIds ?? []);
+                        @endphp
+                        <select class="form-control select2-multi" id="multi-select2" name="member[]" multiple>
+                            <optgroup label="Select User">
+                                @foreach ($assignTo as $id => $name)
+                                    <option value="{{ $id }}" @if (in_array($id, $selectedMembers)) selected @endif>
                                         {{ $name }}</option>
                                 @endforeach
                             </optgroup>

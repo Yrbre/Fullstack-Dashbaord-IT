@@ -116,14 +116,13 @@
             
 
         </div>
-        <div class="row
-                            my-4 justify-content-center" data-simplebar>
+        <div class="row my-4 justify-content-center" data-simplebar>
             <div class="col-12">
                 <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed
                 </h2>
                 <div class="card shadow">
                     <div class="card-body">
-                        <div style="max-height:400px; overflow-y:auto;">
+                        <div style="max-height:100%; overflow-y:auto;">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>

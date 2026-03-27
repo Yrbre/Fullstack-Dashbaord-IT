@@ -90,14 +90,18 @@
                     </div>
                     <div class="form-group col-6">
                         <label for="simple-select2">Member</label>
-                        <select class="form-control select2-multi" id="multi-select2" name="member[]">
+                        <select class="form-control select2-multi @error('member') is-invalid @enderror" id="multi-select2"
+                            name="member[]" multiple>
                             <optgroup label="Select User">
                                 @foreach ($assignTo as $id => $name)
-                                    <option value="{{ $id }}" @if (old('assign_to', Auth::user()->id) == $id) selected @endif>
+                                    <option value="{{ $id }}" @if (old('member', []) == $id) selected @endif>
                                         {{ $name }}</option>
                                 @endforeach
                             </optgroup>
                         </select>
+                        @error('member')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="form-group col-6">

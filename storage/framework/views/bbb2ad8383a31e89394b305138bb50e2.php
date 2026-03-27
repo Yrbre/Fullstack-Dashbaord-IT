@@ -146,12 +146,27 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="simple-select2">Assign to</label>
+                        <label for="simple-select2">Responsibility</label>
                         <select class="form-control select2" id="select-assign" name="assign_to">
                             <optgroup label="Select User">
                                 <?php $__currentLoopData = $assignTo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($id); ?>"
                                         <?php echo e(old('assign_to', $task->assign_to) == $id ? 'selected' : ''); ?>>
+                                        <?php echo e($name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label for="simple-select2">Member</label>
+                        <?php
+                            $selectedMembers = old('member', $memberIds ?? []);
+                        ?>
+                        <select class="form-control select2-multi" id="multi-select2" name="member[]" multiple>
+                            <optgroup label="Select User">
+                                <?php $__currentLoopData = $assignTo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($id); ?>" <?php if(in_array($id, $selectedMembers)): ?> selected <?php endif; ?>>
                                         <?php echo e($name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </optgroup>

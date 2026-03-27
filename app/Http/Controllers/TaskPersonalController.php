@@ -225,8 +225,9 @@ class TaskPersonalController extends Controller
         $relationTask   = Tasks::where('task_level', 'DEPARTMENT')
             ->where('status', '!=', 'COMPLETED')
             ->get();
+        $memberIds = $task->task_user()->pluck('user_id')->toArray();
 
-        return view('pages.task_personal.edit', compact('task', 'assignTo', 'category', 'location', 'endUser', 'department', 'relationTask'));
+        return view('pages.task_personal.edit', compact('task', 'assignTo', 'category', 'location', 'endUser', 'department', 'relationTask', 'memberIds'));
     }
 
     /**
@@ -253,6 +254,28 @@ class TaskPersonalController extends Controller
         } else {
             $data['in_timeline'] = true;
         }
+
+        if (isset($data['member'])) {
+            $changes = $task->task_user()->sync($data['member']);
+        } else {
+            $changes = $task->task_user()->sync([]);
+        }
+
+        $newMembers = $changes['attached'];
+
+        if (!empty($newMembers)) {
+            $newMemberEmails = User::whereIn('id', $newMembers)->pluck('email')->toArray();
+            $mailData = (object) $data;
+            try {
+                Mail::to($newMemberEmails)->send(new NotifCreate($mailData));
+            } catch (Throwable $e) {
+                Log::error('Failed to send task update notification email.', [
+                    'error' => $e->getMessage(),
+                    'recipients' => $newMemberEmails,
+                ]);
+            }
+        }
+
 
         $task->update($data);
         return redirect()->route('task_personal.index')->with('success', 'Task Personal updated successfully.');
