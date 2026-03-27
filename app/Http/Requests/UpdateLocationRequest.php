@@ -22,10 +22,7 @@ class UpdateLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'department'        => 'sometimes|string|max:255',
             'location'          => 'sometimes|string|max:255',
-            'other_department'  => 'nullable|string|max:255',
-            'other_location'    => 'nullable|string|max:255',
         ];
     }
 }

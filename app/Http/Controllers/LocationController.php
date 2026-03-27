@@ -15,18 +15,11 @@ class LocationController extends Controller
      */
     public function index(GetLocationRequest $request)
     {
-        $search = $request->validated();
 
-        if (isset($search['search'])) {
-            $location = Location::where('department', 'like', '%' . $search['search'] . '%')
-                ->orWhere('location', 'like', '%' . $search['search'] . '%')
-                ->orderBy('department', 'asc')
-                ->get();
-        } else {
-            $location = Location::orderBy('department', 'asc')->get();
-        }
+        $location = Location::orderBy('location', 'asc')->get();
 
-        return view('pages.location.index', compact('location', 'search'));
+
+        return view('pages.location.index', compact('location'));
     }
 
     /**
@@ -34,10 +27,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        $department = Location::select('department')->distinct()->orderBy('department', 'asc')->pluck('department');
-        $location   = Location::select('location')->distinct()->orderBy('location', 'asc')->pluck('location');
-
-        return view('pages.location.create', compact('department', 'location'));
+        return view('pages.location.create');
     }
 
     /**
@@ -45,17 +35,11 @@ class LocationController extends Controller
      */
     public function store(StoreLocationRequest $request)
     {
-        $departmentOther = $request->validated()['department'] === 'other'
-            ? $request->validated()['other_department']
-            : $request->validated()['department'];
 
-        $locationOther = $request->validated()['location'] === 'other'
-            ? $request->validated()['other_location']
-            : $request->validated()['location'];
+        $request->validated();
 
         Location::firstOrCreate([
-            'department' => $departmentOther,
-            'location' => $locationOther
+            'location' => $request->location
         ]);
 
         return redirect()->route('location.index')->with('success', 'Location created successfully.');
@@ -75,9 +59,8 @@ class LocationController extends Controller
     public function edit(string $id)
     {
         $location       = Location::findOrFail($id);
-        $department     = Location::select('department')->distinct()->orderBy('department', 'asc')->pluck('department');
-        $locationList   = Location::select('location')->distinct()->orderBy('location', 'asc')->pluck('location');
-        return view('pages.location.edit', compact('location', 'department', 'locationList'));
+
+        return view('pages.location.edit', compact('location'));
     }
 
     /**
@@ -86,18 +69,11 @@ class LocationController extends Controller
     public function update(UpdateLocationRequest $request, string $id)
     {
         $location = Location::findOrFail($id);
+        $request->validated();
 
-        $departmentOther = $request->validated()['department'] === 'other'
-            ? $request->validated()['other_department']
-            : $request->validated()['department'];
-
-        $locationOther = $request->validated()['location'] === 'other'
-            ? $request->validated()['other_location']
-            : $request->validated()['location'];
 
         $location->update([
-            'department' => $departmentOther,
-            'location' => $locationOther
+            'location' => $request->location
         ]);
         return redirect()->route('location.index')->with('success', 'Location updated successfully.');
     }

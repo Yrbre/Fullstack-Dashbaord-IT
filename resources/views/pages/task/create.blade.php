@@ -18,7 +18,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6">
                         <label for="simple-select2">Parent Activity</label>
                         <select class="form-control select2 @error('relation_task') is-invalid @enderror"
                             id="select-relation-task" name="relation_task">
@@ -35,7 +35,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6">
                         <label for="simple-select2">Priority</label>
                         <select class="form-control select2 @error('priority') is-invalid @enderror" id="select-priority"
                             name="priority">
@@ -135,23 +135,7 @@
                     </div>
 
                     <input type="hidden" name="status" value="NEW">
-                    {{-- <div class="form-group col-6">
-                        <label for="simple-select2">Status</label>
-                        <select class="form-control select2 @error('status')is-invalid @enderror" id="select-status"
-                            name="status">
-                            <optgroup label="Select Status Type">
-                                <option value="" selected disabled>Select Status</option>
-                                <option value="NEW" @if (old('status') == 'NEW') selected @endif>NEW</option>
-                                <option value="ON PROGRESS" @if (old('status') == 'ON PROGRESS') selected @endif>IN PROGRESS
-                                </option>
-                                <option value="COMPLETED" @if (old('status') == 'COMPLETED') selected @endif>COMPLETED
-                                </option>
-                            </optgroup>
-                        </select>
-                        @error('status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div> --}}
+
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Location</label>
@@ -172,12 +156,6 @@
                         @enderror
                     </div>
 
-                    <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
-                        <label for="other_department_location">Specify Department Location</label>
-                        <input type="text" class="form-control" id="other_department_location"
-                            name="other_department_location" placeholder="Enter custom department location"
-                            value="{{ old('other_department_location') }}">
-                    </div>
 
                     <div class="form-group col-6" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
@@ -328,10 +306,12 @@
         $('.select2').select2({
             theme: 'bootstrap4',
             minimumResultsForSearch: 0,
+            width: '100%',
         });
         $('.select2-multi').select2({
             multiple: true,
             theme: 'bootstrap4',
+            width: '100%',
         });
     </script>
 @endsection

@@ -9,43 +9,14 @@
             <form method="post" action="{{ route('location.store') }}">
                 @csrf
                 <div class="form-row">
-
                     <div class="form-group col-12">
-                        <label for="simple-select2">Department</label>
-                        <select class="form-control select2" id="simple-select3" name="department">
-                            <optgroup label="Select Department Type">
-                                <option value="" selected disabled>Select Department</option>
-                                @foreach ($department as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
-                                @endforeach
-                                <option value="other">Other</option>
-                            </optgroup>
-                        </select>
+                        <label for="simple-select2">Select Location</label>
+                        <input type="text" class="form-control @error('location') is-invalid @enderror"
+                            id="simple-select2" name="location" placeholder="Enter location">
                     </div>
-                    <div class="form-group col-12" id="otherDepartmentInput" style="display: none;">
-                        <label for="other_department">Specify Department</label>
-                        <input type="text" class="form-control" id="other_department" name="other_department"
-                            placeholder="Enter custom department">
-                    </div>
-
-
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Location</label>
-                        <select class="form-control select2" id="simple-select2" name="location">
-                            <optgroup label="Select Location Type">
-                                <option value="" selected disabled>Select Type</option>
-                                @foreach ($location as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
-                                @endforeach
-                                <option value="other">Other</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group col-12" id="otherLocationInput" style="display: none;">
-                        <label for="other_location">Specify Location</label>
-                        <input type="text" class="form-control" id="other_location" name="other_location"
-                            placeholder="Enter custom location">
-                    </div>
+                    @error('location')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

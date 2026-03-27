@@ -8,43 +8,28 @@
             <form method="post" action="<?php echo e(route('location.store')); ?>">
                 <?php echo csrf_field(); ?>
                 <div class="form-row">
-
                     <div class="form-group col-12">
-                        <label for="simple-select2">Department</label>
-                        <select class="form-control select2" id="simple-select3" name="department">
-                            <optgroup label="Select Department Type">
-                                <option value="" selected disabled>Select Department</option>
-                                <?php $__currentLoopData = $department; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($item); ?>"><?php echo e($item); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <option value="other">Other</option>
-                            </optgroup>
-                        </select>
+                        <label for="simple-select2">Select Location</label>
+                        <input type="text" class="form-control <?php $__errorArgs = ['location'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            id="simple-select2" name="location" placeholder="Enter location">
                     </div>
-                    <div class="form-group col-12" id="otherDepartmentInput" style="display: none;">
-                        <label for="other_department">Specify Department</label>
-                        <input type="text" class="form-control" id="other_department" name="other_department"
-                            placeholder="Enter custom department">
-                    </div>
-
-
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Location</label>
-                        <select class="form-control select2" id="simple-select2" name="location">
-                            <optgroup label="Select Location Type">
-                                <option value="" selected disabled>Select Type</option>
-                                <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($item); ?>"><?php echo e($item); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <option value="other">Other</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group col-12" id="otherLocationInput" style="display: none;">
-                        <label for="other_location">Specify Location</label>
-                        <input type="text" class="form-control" id="other_location" name="other_location"
-                            placeholder="Enter custom location">
-                    </div>
+                    <?php $__errorArgs = ['location'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

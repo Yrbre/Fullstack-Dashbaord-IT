@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('location_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('department');
             $table->string('location');
             $table->softDeletes();
             $table->timestamps();

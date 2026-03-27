@@ -459,17 +459,6 @@ unset($__errorArgs, $__bag); ?>
         });
     </script>
     <script>
-        $('.select2').select2({
-            theme: 'bootstrap4',
-            minimumResultsForSearch: 0,
-        });
-        $('.select2-multi').select2({
-            multiple: true,
-            theme: 'bootstrap4',
-        });
-    </script>
-
-    <script>
         function fetchParentSchedule(taskId) {
             if (!taskId) {
                 $('#schedule_start_parent').val('');
@@ -488,6 +477,7 @@ unset($__errorArgs, $__bag); ?>
                     $('#wrapper_schedule_end_parent').show();
                 })
                 .catch(error => {
+
                     console.error(error);
                 });
         }
@@ -503,6 +493,18 @@ unset($__errorArgs, $__bag); ?>
             if (initialTaskId) {
                 fetchParentSchedule(initialTaskId);
             }
+        });
+    </script>
+    <script>
+        $('.select2').select2({
+            theme: 'bootstrap4',
+            minimumResultsForSearch: 0,
+            width: '100%',
+        });
+        $('.select2-multi').select2({
+            multiple: true,
+            theme: 'bootstrap4',
+            width: '100%',
         });
     </script>
 <?php $__env->stopSection(); ?>

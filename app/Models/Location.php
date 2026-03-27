@@ -11,7 +11,6 @@ class Location extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'department',
         'location',
     ];
 

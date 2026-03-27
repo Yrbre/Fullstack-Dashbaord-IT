@@ -41,8 +41,8 @@ class TaskController extends Controller
     {
         $assignTo       = User::orderBy('name', 'asc')->pluck('name', 'id');
         $category       = Category::orderBy('name', 'asc')->distinct()->get();
-        $location       = Location::orderBy('department', 'asc')->distinct('department')->get();
         $endUser        = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
+        $location       = Location::orderBy('location', 'asc')->distinct('location')->get();
         $department     = EndUser::whereNull('name')->orderBy('department', 'asc')->distinct()->get();
         $task           = Tasks::where('task_level', 'DEPARTMENT')
             ->where('status', '!=', 'COMPLETED')
@@ -94,7 +94,6 @@ class TaskController extends Controller
         $location_ID = null;
         if (($data['location_id'] ?? null) === 'OTHER') {
             $location = Location::firstOrCreate([
-                'department' => $data['other_department_location'] ?? null,
                 'location'   => $data['other_location'],
             ]);
             $location_ID = $location->id;
@@ -199,7 +198,7 @@ class TaskController extends Controller
             ->get();
         $assignTo       = User::orderBy('name', 'asc')->pluck('name', 'id');
         $category       = Category::orderBy('name', 'asc')->distinct()->get();
-        $location       = Location::orderBy('department', 'asc')->distinct('department')->get();
+        $location       = Location::orderBy('location', 'asc')->distinct('location')->get();
         $endUser        = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
         $department     = EndUser::whereNull('name')->orderBy('department', 'asc')->distinct()->get();
         return view('pages.task.edit', compact('task', 'allTasks', 'assignTo', 'category', 'location', 'endUser', 'department'));

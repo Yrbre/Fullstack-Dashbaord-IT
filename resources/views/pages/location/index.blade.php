@@ -18,7 +18,6 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Department</th>
                                         <th>Location</th>
                                         <th>Create at</th>
                                         <th class="text-center">Action</th>
@@ -28,7 +27,6 @@
                                     @foreach ($location as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->department }}</td>
                                             <td>{{ $item->location }}</td>
                                             <td>{{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
                                             </td>

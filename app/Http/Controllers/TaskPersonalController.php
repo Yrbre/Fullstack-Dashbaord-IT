@@ -43,7 +43,7 @@ class TaskPersonalController extends Controller
     {
         $assignTo       = User::orderBy('name', 'asc')->pluck('name', 'id');
         $category       = Category::orderBy('name', 'asc')->distinct()->get();
-        $location       = Location::orderBy('department', 'asc')->distinct('department')->get();
+        $location       = Location::orderBy('location', 'asc')->distinct('location')->get();
         $endUser        = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
         $department     = EndUser::whereNull('name')->orderBy('department', 'asc')->distinct()->get();
         $task           = Tasks::where('task_level', 'DEPARTMENT')
@@ -102,7 +102,6 @@ class TaskPersonalController extends Controller
         $location_ID = null;
         if (($data['location_id'] ?? null) === 'OTHER') {
             $location = Location::firstOrCreate([
-                'department' => $data['other_department_location'] ?? null,
                 'location'   => $data['other_location'],
             ]);
             $location_ID = $location->id;
@@ -220,7 +219,7 @@ class TaskPersonalController extends Controller
         $task           = Tasks::findOrFail($id);
         $assignTo       = User::orderBy('name', 'asc')->pluck('name', 'id');
         $category       = Category::orderBy('name', 'asc')->distinct()->get();
-        $location       = Location::orderBy('department', 'asc')->distinct('department')->get();
+        $location       = Location::orderBy('location', 'asc')->distinct('location')->get();
         $endUser        = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
         $department     = EndUser::whereNull('name')->orderBy('department', 'asc')->distinct()->get();
         $relationTask   = Tasks::where('task_level', 'DEPARTMENT')

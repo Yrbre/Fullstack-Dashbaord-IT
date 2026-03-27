@@ -31,7 +31,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6">
                         <label for="simple-select2">Parent Activity</label>
                         <select class="form-control select2 <?php $__errorArgs = ['relation_task'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -62,7 +62,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-md-6">
                         <label for="simple-select2">Priority</label>
                         <select class="form-control select2 <?php $__errorArgs = ['priority'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -204,7 +204,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <input type="hidden" name="status" value="NEW">
-                    
+
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Location</label>
@@ -239,12 +239,6 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
-                        <label for="other_department_location">Specify Department Location</label>
-                        <input type="text" class="form-control" id="other_department_location"
-                            name="other_department_location" placeholder="Enter custom department location"
-                            value="<?php echo e(old('other_department_location')); ?>">
-                    </div>
 
                     <div class="form-group col-6" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
@@ -437,10 +431,12 @@ unset($__errorArgs, $__bag); ?>
         $('.select2').select2({
             theme: 'bootstrap4',
             minimumResultsForSearch: 0,
+            width: '100%',
         });
         $('.select2-multi').select2({
             multiple: true,
             theme: 'bootstrap4',
+            width: '100%',
         });
     </script>
 <?php $__env->stopSection(); ?>

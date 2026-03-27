@@ -39,7 +39,6 @@ class StoreTaskPersonalRequest extends FormRequest
             'task_load'                 => 'required|integer|min:1|max:100',
             'location_id'               => 'nullable|string',
             'other_location'            => 'nullable|required_if:location_id,OTHER|string|max:255',
-            'other_department_location' => 'nullable|required_if:location_id,OTHER|string|max:255',
             'schedule_start'            => 'required|date',
             'schedule_end'              => 'required|date|after_or_equal:schedule_start',
             'description'               => 'nullable|string',

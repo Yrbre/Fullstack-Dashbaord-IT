@@ -30,3 +30,27 @@
 <script src="{{ asset('dark/js/apps.js') }}"></script>
 {{-- Sweetalart --}}
 <script src="{{ asset('dark/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+
+<script>
+    (function($) {
+        function refreshSelect2Width() {
+            $('.select2, .select2-multi').each(function() {
+                const instance = $(this).data('select2');
+
+                if (instance) {
+                    instance.$container.css('width', '100%');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            refreshSelect2Width();
+        });
+
+        $(document).on('click', '.collapseSidebar', function() {
+            setTimeout(refreshSelect2Width, 320);
+        });
+
+        $(window).on('resize', refreshSelect2Width);
+    })(jQuery);
+</script>

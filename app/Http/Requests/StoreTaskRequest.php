@@ -34,7 +34,6 @@ class StoreTaskRequest extends FormRequest
             'status'                    => 'required|string|in:NEW,ON PROGRESS,ON DUTY,COMPLETED,ON HOLD,CANCELLED',
             'location_id'               => 'nullable|string',
             'other_location'            => 'nullable|required_if:location_id,OTHER|string|max:255',
-            'other_department_location' => 'nullable|required_if:location_id,OTHER|string|max:255',
             'schedule_start'            => 'required|date',
             'schedule_end'              => 'required|date|after_or_equal:schedule_start',
             'description'               => 'nullable|string',

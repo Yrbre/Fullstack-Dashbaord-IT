@@ -11,16 +11,6 @@
                 @method('PUT')
                 <div class="form-row">
 
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Department</label>
-                        <input type="text" class="form-control @error('department') is-invalid @enderror" id="department"
-                            name="department" value="{{ old('department', $location->department ?? '') }}"
-                            placeholder="Enter custom department">
-                        @error('department')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-
 
                     <div class="form-group col-12">
                         <label for="simple-select2">Location</label>
