@@ -10,7 +10,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Activity Name</label>
+                        <label for="">Job Name</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                             value="{{ old('name') }}">
                         @error('name')
@@ -26,7 +26,12 @@
                                 <option value="" selected>Without Relation</option>
                                 @foreach ($task as $item)
                                     <option value="{{ $item->id }}" @if (old('relation_task') == $item->id) selected @endif>
-                                        {{ $item->name }}</option>
+                                        Name: {{ $item->name }} | S/E:
+                                        {{ $item->schedule_start->format('m-d-Y h:i A') ?? '-' }}
+                                        /
+                                        {{ $item->schedule_end ? $item->schedule_end->format('m-d-Y h:i A') : '-' }} |
+                                        Total Weight: {{ $weight[$item->id] ?? 0 }}%
+                                    </option>
                                 @endforeach
                             </optgroup>
                         </select>
@@ -34,14 +39,7 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group col-md-6" id="wrapper_schedule_start_parent" style="display: none;">
-                        <label for="">Schedule Start Parent Activity</label>
-                        <input type="text" class="form-control" id="schedule_start_parent" readonly>
-                    </div>
-                    <div class="form-group col-md-6" id="wrapper_schedule_end_parent" style="display: none;">
-                        <label for="">Schedule End Parent Activity</label>
-                        <input type="text" class="form-control" id="schedule_end_parent" readonly>
-                    </div>
+
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Priority</label>
@@ -94,7 +92,8 @@
                             name="member[]" multiple>
                             <optgroup label="Select User">
                                 @foreach ($assignTo as $id => $name)
-                                    <option value="{{ $id }}" @if (old('member', []) == $id) selected @endif>
+                                    <option value="{{ $id }}"
+                                        {{ in_array($id, old('member', [])) ? 'selected' : '' }}>
                                         {{ $name }}</option>
                                 @endforeach
                             </optgroup>
@@ -193,7 +192,7 @@
                     <div class="form-group col-md-6">
                         <label for="">Activity Weight</label>
                         <input type="text" class="form-control @error('task_load') is-invalid @enderror"
-                            name="task_load" value="{{ old('task_load') }}"
+                            name="task_load" value="{{ old('task_load', 100) }}"
                             oninput="this.value = this.value.replace(/[^0-9]/g,'');if(this.value > 100) this.value = 100;">
                         @error('task_load')
                             <div class="invalid-feedback d-block">{{ $message }}</div>

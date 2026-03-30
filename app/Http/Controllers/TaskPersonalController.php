@@ -30,10 +30,11 @@ class TaskPersonalController extends Controller
             ->where('task_level', 'PERSONAL')
             ->get();
 
+
         foreach ($tasks as $task) {
             $task->relation_name = $task->parent?->name;
         }
-        return view('pages.task_personal.index', compact('tasks'));
+        return view('pages.task_personal.index', compact('tasks',));
     }
 
     /**
@@ -49,8 +50,9 @@ class TaskPersonalController extends Controller
         $task           = Tasks::where('task_level', 'DEPARTMENT')
             ->where('status', '!=', 'COMPLETED')
             ->get();
+        $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
 
-        return view('pages.task_personal.create', compact('assignTo', 'category', 'location', 'endUser', 'department', 'task',));
+        return view('pages.task_personal.create', compact('assignTo', 'category', 'location', 'endUser', 'department', 'task', 'weight'));
     }
 
     /**
@@ -226,8 +228,9 @@ class TaskPersonalController extends Controller
             ->where('status', '!=', 'COMPLETED')
             ->get();
         $memberIds = $task->task_user()->pluck('user_id')->toArray();
+        $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
 
-        return view('pages.task_personal.edit', compact('task', 'assignTo', 'category', 'location', 'endUser', 'department', 'relationTask', 'memberIds'));
+        return view('pages.task_personal.edit', compact('task', 'assignTo', 'category', 'location', 'endUser', 'department', 'relationTask', 'memberIds', 'weight'));
     }
 
     /**

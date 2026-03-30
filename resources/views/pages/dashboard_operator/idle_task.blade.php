@@ -26,7 +26,7 @@
                                                 <label for="activitySelect">Category</label>
                                                 <input type="text" class="form-control mb-4" id="activitySelect"
                                                     placeholder="Enter idle activity" readonly
-                                                    value="{{ $task->category->type ?? '-' }} - {{ $task->category->name ?? '-' }}">
+                                                    value="{{ $task->category->name ?? '-' }}">
 
 
                                                 <label for="simple-select2">Status</label>

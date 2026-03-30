@@ -31,7 +31,8 @@ class TaskController extends Controller
         $tasks = Tasks::orderByRaw("
     FIELD(status, 'NEW', 'ON DUTY', 'ON HOLD', 'COMPLETED', 'CANCELLED')
     ")->where('task_level', 'DEPARTMENT')->orderBy('created_at', 'desc')->get();
-        return view('pages.task.index', compact('tasks'));
+        $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
+        return view('pages.task.index', compact('tasks', 'weight'));
     }
 
     /**
@@ -183,7 +184,8 @@ class TaskController extends Controller
             ->groupBy('assign_to')
             ->selectRaw('MIN(id) as id, assign_to')
             ->get();
-        return view('pages.task.show', compact('task', 'relationTask', 'takenTask', 'countRelationTask', 'completedRelationTask'));
+        $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
+        return view('pages.task.show', compact('task', 'relationTask', 'takenTask', 'countRelationTask', 'completedRelationTask', 'weight'));
     }
 
     /**
@@ -212,9 +214,7 @@ class TaskController extends Controller
         $task = Tasks::findOrFail($id);
         $data = $request->validated();
 
-        if ($data['status'] === 'ON PROGRESS') {
-            $data['actual_start'] = now()->format('Y-m-d H:i');
-        } elseif ($data['status'] === 'COMPLETED') {
+        if ($data['status'] === 'COMPLETED') {
             $data['actual_end'] = now()->format('Y-m-d H:i');
             if (!$task->actual_start) {
                 $data['actual_start'] = now()->format('Y-m-d H:i');

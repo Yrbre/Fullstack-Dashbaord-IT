@@ -51,8 +51,13 @@
                                                     <td><?php echo e($item->progress); ?>%</td>
                                                     <td><?php echo e($item->location->location ?? '-'); ?></td>
                                                     <td>
-                                                        <a href="<?php echo e(route('active_task.index', $item->id)); ?>"
-                                                            class="btn btn-sm btn-primary">Take</a>
+                                                        
+                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
+                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
+                                                            data-location="<?php echo e($item->location->location ?? '-'); ?>"
+                                                            data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
+                                                            Take
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -113,7 +118,6 @@
                 </div>
             </div>
 
-            
 
         </div>
         <div class="row my-4 justify-content-center" data-simplebar>
@@ -199,6 +203,37 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $('#takeForm').attr('action', takeUrl).trigger('submit');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).on('click', '.btn-take-task', function() {
+            var button = $(this);
+            var jobName = button.data('name');
+            var jobLocation = button.data('location');
+            var takeUrl = button.data('url');
+
+            Swal.fire({
+                icon: 'question',
+                title: 'Confirm Take Job',
+                theme: 'dark',
+                html: '<div class="text-center">' +
+                    '<p class="mb-2">Are you sure you want to take this Job?</p>' +
+                    '<p class="mb-1"><strong>Job Name:</strong> &nbsp;' + escapeHtml(jobName) +
+                    '</p>' +
+                    '<p class="mb-0"><strong>Location:</strong> &nbsp;' + escapeHtml(jobLocation) +
+                    '</p>' +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Take Job',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#2f7cf6',
+                cancelButtonColor: '#6c757d'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = takeUrl;
                 }
             });
         });

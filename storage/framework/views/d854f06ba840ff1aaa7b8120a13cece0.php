@@ -31,23 +31,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Type</label>
-                        <select class="form-control select2" id="simple-select2" name="type">
-                            <optgroup label="Select Category Type">
-                                <option value="" selected disabled>Select Type</option>
-                                <?php $__currentLoopData = $category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($item); ?>"><?php echo e($item); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <option value="other">Other</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group col-12" id="otherTypeInput" style="display: none;">
-                        <label for="other_type">Specify Type</label>
-                        <input type="text" class="form-control" id="other_type" name="other_type"
-                            placeholder="Enter custom type">
-                    </div>
+                    
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

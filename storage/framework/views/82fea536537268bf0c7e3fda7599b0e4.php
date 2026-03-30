@@ -35,6 +35,12 @@
 
                             </h6>
                         </div>
+                        <div class="row mb-3">
+                            <h6 class="subtitle col-6"> <i class="fe fe-hard-drive"> </i> Total Weight :
+                                <?php echo e($weight[$task->id] ?? 0); ?>
+
+                            </h6>
+                        </div>
                     </div>
                     <div class="card-body">
 
@@ -61,6 +67,7 @@
                                 <tr>
                                     <td>Activity ID</td>
                                     <td>Activity Name</td>
+                                    <td>Weight</td>
                                     <td>Assigned To</td>
                                     <td>Priority</td>
                                     <td>Progress</td>
@@ -74,6 +81,7 @@
                                     <tr>
                                         <td><?php echo e($item->id); ?></td>
                                         <td><?php echo e($item->name); ?></td>
+                                        <td><?php echo e($item->task_load ?? 0); ?></td>
                                         <td><?php echo e($item->user->name ?? '-'); ?></td>
                                         <td>
                                             <?php if($item->priority === 'CRITICAL'): ?>

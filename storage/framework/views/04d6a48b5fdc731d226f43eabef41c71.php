@@ -125,14 +125,33 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group col-12">
                         <label for="simple-select2">role</label>
-                        <select class="form-control select2" id="simple-select3" name="role">
+                        <select class="form-control select2 <?php $__errorArgs = ['role'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="simple-select3"
+                            name="role">
                             <optgroup label="Select Role Type">
                                 <option value="" selected disabled>Select Role</option>
-                                <option value="ADMIN">ADMIN</option>
-                                <option value="MANAGEMENT">MANAGEMENT</option>
-                                <option value="OPERATOR">OPERATOR</option>
+                                <option value="ADMIN" <?php if(old('role') == 'ADMIN'): ?> selected <?php endif; ?>>ADMIN</option>
+                                <option value="MANAGEMENT" <?php if(old('role') == 'MANAGEMENT'): ?> selected <?php endif; ?>>MANAGEMENT
+                                </option>
+                                <option value="OPERATOR" <?php if(old('role') == 'OPERATOR'): ?> selected <?php endif; ?>>OPERATOR</option>
                             </optgroup>
                         </select>
+                        <?php $__errorArgs = ['role'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                 </div>

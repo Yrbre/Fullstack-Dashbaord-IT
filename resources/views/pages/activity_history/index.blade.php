@@ -16,9 +16,9 @@
                                         <th>#</th>
                                         <th>Member</th>
                                         <th>Reference Type</th>
-                                        <th>Description</th>
-                                        <th>Priority</th>
+                                        <th>Activity</th>
                                         <th>Location</th>
+                                        <th>Priority</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
                                         <th>Duration</th>
@@ -32,9 +32,9 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->user->name }}</td>
                                             @if ($item->reference_type === 'TASK')
-                                                <td>ACTIVITY PERSONAL - {{ $item->reference_id }}</td>
+                                                <td>ACTIVITY PERSONAL</td>
                                             @elseif ($item->reference_type === 'ACTIVITY')
-                                                <td>ACTIVITY - {{ $item->reference_id }}</td>
+                                                <td>ACTIVITY</td>
                                             @endif
                                             @if ($item->reference_type === 'TASK')
                                                 <td>{{ $item->task->name ?? '-' }}</td>
@@ -44,7 +44,7 @@
                                                 <td>-</td>
                                             @endif
 
-                                            <td>{{ $item->task->enduser->department ?? '-' }} -
+                                            <td>
                                                 {{ $item->location ?? '-' }}
                                             </td>
                                             <td>

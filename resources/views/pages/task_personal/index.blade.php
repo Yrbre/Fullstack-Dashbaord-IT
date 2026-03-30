@@ -20,6 +20,7 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Parent Activity</th>
+                                        <th>Weight</th>
                                         <th>Assign to</th>
                                         <th>Priority</th>
                                         <th>Progress</th>
@@ -37,6 +38,7 @@
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->relation_name ?? '-' }}</td>
+                                            <td>{{ $item->task_load ?? '-' }}%</td>
                                             <td>{{ $item->user->name ?? '-' }}</td>
                                             <td>
                                                 @if ($item->priority === 'CRITICAL')

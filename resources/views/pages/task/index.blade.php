@@ -19,6 +19,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Total Weight</th>
                                         <th>Level</th>
                                         <th>Assign to</th>
                                         <th>Priority</th>
@@ -35,6 +36,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
+                                            <td>{{ $weight[$item->id] ?? 0 }}%</td>
                                             <td>{{ $item->task_level }}</td>
                                             <td>{{ $item->user->name ?? '-' }}</td>
                                             <td>

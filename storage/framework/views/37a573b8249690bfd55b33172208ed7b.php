@@ -19,6 +19,7 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Parent Activity</th>
+                                        <th>Weight</th>
                                         <th>Assign to</th>
                                         <th>Priority</th>
                                         <th>Progress</th>
@@ -36,6 +37,7 @@
                                             <td><?php echo e($item->id); ?></td>
                                             <td><?php echo e($item->name); ?></td>
                                             <td><?php echo e($item->relation_name ?? '-'); ?></td>
+                                            <td><?php echo e($item->task_load ?? '-'); ?>%</td>
                                             <td><?php echo e($item->user->name ?? '-'); ?></td>
                                             <td>
                                                 <?php if($item->priority === 'CRITICAL'): ?>

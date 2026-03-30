@@ -142,10 +142,6 @@
                                     <option value="NEW" {{ old('status', $task->status) == 'NEW' ? 'selected' : '' }}>
                                         NEW
                                     </option>
-                                    <option value="ON PROGRESS"
-                                        {{ old('status', $task->status) == 'ON PROGRESS' ? 'selected' : '' }}>
-                                        ON PROGRESS
-                                    </option>
                                     <option value="ON HOLD"
                                         {{ old('status', $task->status) == 'ON HOLD' ? 'selected' : '' }}>
                                         ON HOLD

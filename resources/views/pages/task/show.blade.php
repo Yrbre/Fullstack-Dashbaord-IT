@@ -32,6 +32,11 @@
                                 {{ $task->actual_end ? \Carbon\Carbon::parse($task->actual_end)->format('d M Y') : 'Null' }}
                             </h6>
                         </div>
+                        <div class="row mb-3">
+                            <h6 class="subtitle col-6"> <i class="fe fe-hard-drive"> </i> Total Weight :
+                                {{ $weight[$task->id] ?? 0 }}
+                            </h6>
+                        </div>
                     </div>
                     <div class="card-body">
 
@@ -84,6 +89,7 @@
                                 <tr>
                                     <td>Activity ID</td>
                                     <td>Activity Name</td>
+                                    <td>Weight</td>
                                     <td>Assigned To</td>
                                     <td>Priority</td>
                                     <td>Progress</td>
@@ -97,6 +103,7 @@
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->name }}</td>
+                                        <td>{{ $item->task_load ?? 0 }}</td>
                                         <td>{{ $item->user->name ?? '-' }}</td>
                                         <td>
                                             @if ($item->priority === 'CRITICAL')

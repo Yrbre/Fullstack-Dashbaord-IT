@@ -56,14 +56,19 @@
 
                     <div class="form-group col-12">
                         <label for="simple-select2">role</label>
-                        <select class="form-control select2" id="simple-select3" name="role">
+                        <select class="form-control select2 @error('role') is-invalid @enderror" id="simple-select3"
+                            name="role">
                             <optgroup label="Select Role Type">
                                 <option value="" selected disabled>Select Role</option>
-                                <option value="ADMIN">ADMIN</option>
-                                <option value="MANAGEMENT">MANAGEMENT</option>
-                                <option value="OPERATOR">OPERATOR</option>
+                                <option value="ADMIN" @if (old('role') == 'ADMIN') selected @endif>ADMIN</option>
+                                <option value="MANAGEMENT" @if (old('role') == 'MANAGEMENT') selected @endif>MANAGEMENT
+                                </option>
+                                <option value="OPERATOR" @if (old('role') == 'OPERATOR') selected @endif>OPERATOR</option>
                             </optgroup>
                         </select>
+                        @error('role')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
 
                 </div>

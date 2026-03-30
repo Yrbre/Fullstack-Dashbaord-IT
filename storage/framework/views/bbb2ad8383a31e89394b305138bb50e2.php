@@ -17,7 +17,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Activity Name</label>
+                        <label for="">Job Name</label>
                         <input type="text" class="form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -54,7 +54,10 @@ unset($__errorArgs, $__bag); ?>"
                                 <option value="" selected>Without Relation</option>
                                 <?php $__currentLoopData = $relationTask; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>" <?php if(old('relation_task', $task->relation_task) == $item->id): ?> selected <?php endif; ?>>
-                                        <?php echo e($item->name); ?></option>
+                                        Name: <?php echo e($item->name); ?> | S/E
+                                        <?php echo e($item->schedule_start ? $item->schedule_start->format('m-d-Y h:i A') : '-'); ?> /
+                                        <?php echo e($item->schedule_end ? $item->schedule_end->format('m-d-Y h:i A') : '-'); ?> |
+                                        Weight: <?php echo e($weight[$item->id] ?? 0); ?>%</option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </optgroup>
                         </select>
@@ -95,9 +98,11 @@ unset($__errorArgs, $__bag); ?>" id="select-priority"
                                     <?php echo e(old('priority', $task->priority) == 'CRITICAL' ? 'selected' : ''); ?>>CRITICAL</option>
                                 <option value="HIGH" <?php echo e(old('priority', $task->priority) == 'HIGH' ? 'selected' : ''); ?>>
                                     HIGH</option>
-                                <option value="MEDIUM" <?php echo e(old('priority', $task->priority) == 'MEDIUM' ? 'selected' : ''); ?>>
+                                <option value="MEDIUM"
+                                    <?php echo e(old('priority', $task->priority) == 'MEDIUM' ? 'selected' : ''); ?>>
                                     MEDIUM</option>
-                                <option value="LOW" <?php echo e(old('priority', $task->priority) == 'LOW' ? 'selected' : ''); ?>>LOW
+                                <option value="LOW" <?php echo e(old('priority', $task->priority) == 'LOW' ? 'selected' : ''); ?>>
+                                    LOW
                                 </option>
                             </optgroup>
                         </select>
@@ -294,20 +299,22 @@ endif;
 unset($__errorArgs, $__bag); ?>
                         </div>
                     <?php endif; ?>
-                    <div class="form-group col-md-6">
-                        <label for="simple-select2">Status</label>
-                        <input type="text" class="form-control" value="<?php echo e($task->status); ?>" readonly>
-                        <?php $__errorArgs = ['status'];
+                    <?php if(Auth::check() && in_array(Auth::user()->role, ['OPERATOR'])): ?>
+                        <div class="form-group col-md-6">
+                            <label for="simple-select2">Status</label>
+                            <input type="text" class="form-control" value="<?php echo e($task->status); ?>" readonly>
+                            <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
-                        <?php unset($message);
+                                <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
+                            <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                    </div>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Progress</label>
@@ -322,15 +329,20 @@ unset($__errorArgs, $__bag); ?>" id="select-progress"
                             name="progress">
                             <optgroup label="Select Progress">
                                 <option value="" selected disabled>Select Progress</option>
-                                <option value="0" <?php echo e(old('progress', $task->progress) == 0 ? 'selected' : ''); ?>>0%
+                                <option value="0" <?php echo e(old('progress', $task->progress) == 0 ? 'selected' : ''); ?>>
+                                    0%
                                 </option>
-                                <option value="10" <?php echo e(old('progress', $task->progress) == 10 ? 'selected' : ''); ?>>10%
+                                <option value="10" <?php echo e(old('progress', $task->progress) == 10 ? 'selected' : ''); ?>>
+                                    10%
                                 </option>
-                                <option value="25" <?php echo e(old('progress', $task->progress) == 25 ? 'selected' : ''); ?>>25%
+                                <option value="25" <?php echo e(old('progress', $task->progress) == 25 ? 'selected' : ''); ?>>
+                                    25%
                                 </option>
-                                <option value="50" <?php echo e(old('progress', $task->progress) == 50 ? 'selected' : ''); ?>>50%
+                                <option value="50" <?php echo e(old('progress', $task->progress) == 50 ? 'selected' : ''); ?>>
+                                    50%
                                 </option>
-                                <option value="75" <?php echo e(old('progress', $task->progress) == 75 ? 'selected' : ''); ?>>75%
+                                <option value="75" <?php echo e(old('progress', $task->progress) == 75 ? 'selected' : ''); ?>>
+                                    75%
                                 </option>
                                 <option value="100" <?php echo e(old('progress', $task->progress) == 100 ? 'selected' : ''); ?>>
                                     100%
@@ -372,7 +384,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="">Bobot Task</label>
+                        <label for="">Activity Weight</label>
                         <input type="text" class="form-control <?php $__errorArgs = ['task_load'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

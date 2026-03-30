@@ -19,7 +19,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Type</th>
+
                                         <th>Create at</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -29,7 +29,6 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->type }}</td>
                                             <td>{{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
                                             </td>
                                             <td>
@@ -77,7 +76,6 @@
                 html: '<p>Are you sure you want to delete this Category?</p>' +
                     '<div class="justify-content-center">' +
                     '<strong>Category Name :</strong> ' + name + '<br>' +
-                    '<strong>Type :</strong> ' + type +
                     '</div>',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, Delete',

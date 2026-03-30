@@ -15,9 +15,9 @@
                                         <th>#</th>
                                         <th>Member</th>
                                         <th>Reference Type</th>
-                                        <th>Description</th>
-                                        <th>Priority</th>
+                                        <th>Activity</th>
                                         <th>Location</th>
+                                        <th>Priority</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
                                         <th>Duration</th>
@@ -31,9 +31,9 @@
                                             <td><?php echo e($loop->iteration); ?></td>
                                             <td><?php echo e($item->user->name); ?></td>
                                             <?php if($item->reference_type === 'TASK'): ?>
-                                                <td>ACTIVITY PERSONAL - <?php echo e($item->reference_id); ?></td>
+                                                <td>ACTIVITY PERSONAL</td>
                                             <?php elseif($item->reference_type === 'ACTIVITY'): ?>
-                                                <td>ACTIVITY - <?php echo e($item->reference_id); ?></td>
+                                                <td>ACTIVITY</td>
                                             <?php endif; ?>
                                             <?php if($item->reference_type === 'TASK'): ?>
                                                 <td><?php echo e($item->task->name ?? '-'); ?></td>
@@ -43,7 +43,7 @@
                                                 <td>-</td>
                                             <?php endif; ?>
 
-                                            <td><?php echo e($item->task->enduser->department ?? '-'); ?> -
+                                            <td>
                                                 <?php echo e($item->location ?? '-'); ?>
 
                                             </td>

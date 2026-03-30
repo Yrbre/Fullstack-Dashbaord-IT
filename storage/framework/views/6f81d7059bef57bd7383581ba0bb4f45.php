@@ -18,6 +18,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Total Weight</th>
                                         <th>Level</th>
                                         <th>Assign to</th>
                                         <th>Priority</th>
@@ -34,6 +35,7 @@
                                         <tr>
                                             <td><?php echo e($loop->iteration); ?></td>
                                             <td><?php echo e($item->name); ?></td>
+                                            <td><?php echo e($weight[$item->id] ?? 0); ?>%</td>
                                             <td><?php echo e($item->task_level); ?></td>
                                             <td><?php echo e($item->user->name ?? '-'); ?></td>
                                             <td>

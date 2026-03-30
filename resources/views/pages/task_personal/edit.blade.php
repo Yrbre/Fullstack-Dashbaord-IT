@@ -18,7 +18,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Activity Name</label>
+                        <label for="">Job Name</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                             value="{{ old('name', $task->name) }}">
                         @error('name')
@@ -34,7 +34,10 @@
                                 <option value="" selected>Without Relation</option>
                                 @foreach ($relationTask as $item)
                                     <option value="{{ $item->id }}" @if (old('relation_task', $task->relation_task) == $item->id) selected @endif>
-                                        {{ $item->name }}</option>
+                                        Name: {{ $item->name }} | S/E
+                                        {{ $item->schedule_start ? $item->schedule_start->format('m-d-Y h:i A') : '-' }} /
+                                        {{ $item->schedule_end ? $item->schedule_end->format('m-d-Y h:i A') : '-' }} |
+                                        Weight: {{ $weight[$item->id] ?? 0 }}%</option>
                                 @endforeach
                             </optgroup>
                         </select>
@@ -61,9 +64,11 @@
                                     {{ old('priority', $task->priority) == 'CRITICAL' ? 'selected' : '' }}>CRITICAL</option>
                                 <option value="HIGH" {{ old('priority', $task->priority) == 'HIGH' ? 'selected' : '' }}>
                                     HIGH</option>
-                                <option value="MEDIUM" {{ old('priority', $task->priority) == 'MEDIUM' ? 'selected' : '' }}>
+                                <option value="MEDIUM"
+                                    {{ old('priority', $task->priority) == 'MEDIUM' ? 'selected' : '' }}>
                                     MEDIUM</option>
-                                <option value="LOW" {{ old('priority', $task->priority) == 'LOW' ? 'selected' : '' }}>LOW
+                                <option value="LOW" {{ old('priority', $task->priority) == 'LOW' ? 'selected' : '' }}>
+                                    LOW
                                 </option>
                             </optgroup>
                         </select>
@@ -183,13 +188,15 @@
                             @enderror
                         </div>
                     @endif
-                    <div class="form-group col-md-6">
-                        <label for="simple-select2">Status</label>
-                        <input type="text" class="form-control" value="{{ $task->status }}" readonly>
-                        @error('status')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @if (Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
+                        <div class="form-group col-md-6">
+                            <label for="simple-select2">Status</label>
+                            <input type="text" class="form-control" value="{{ $task->status }}" readonly>
+                            @error('status')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endif
 
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Progress</label>
@@ -197,15 +204,20 @@
                             name="progress">
                             <optgroup label="Select Progress">
                                 <option value="" selected disabled>Select Progress</option>
-                                <option value="0" {{ old('progress', $task->progress) == 0 ? 'selected' : '' }}>0%
+                                <option value="0" {{ old('progress', $task->progress) == 0 ? 'selected' : '' }}>
+                                    0%
                                 </option>
-                                <option value="10" {{ old('progress', $task->progress) == 10 ? 'selected' : '' }}>10%
+                                <option value="10" {{ old('progress', $task->progress) == 10 ? 'selected' : '' }}>
+                                    10%
                                 </option>
-                                <option value="25" {{ old('progress', $task->progress) == 25 ? 'selected' : '' }}>25%
+                                <option value="25" {{ old('progress', $task->progress) == 25 ? 'selected' : '' }}>
+                                    25%
                                 </option>
-                                <option value="50" {{ old('progress', $task->progress) == 50 ? 'selected' : '' }}>50%
+                                <option value="50" {{ old('progress', $task->progress) == 50 ? 'selected' : '' }}>
+                                    50%
                                 </option>
-                                <option value="75" {{ old('progress', $task->progress) == 75 ? 'selected' : '' }}>75%
+                                <option value="75" {{ old('progress', $task->progress) == 75 ? 'selected' : '' }}>
+                                    75%
                                 </option>
                                 <option value="100" {{ old('progress', $task->progress) == 100 ? 'selected' : '' }}>
                                     100%
@@ -233,7 +245,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="">Bobot Task</label>
+                        <label for="">Activity Weight</label>
                         <input type="text" class="form-control @error('task_load') is-invalid @enderror"
                             name="task_load" value="{{ old('task_load', $task->task_load ?? '') }}"
                             oninput="this.value = this.value.replace(/[^0-9]/g,'');if(this.value > 100) this.value = 100;">

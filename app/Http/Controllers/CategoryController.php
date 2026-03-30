@@ -37,13 +37,13 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $type = $request->validated()['type'] === 'other'
-            ? $request->validated()['other_type']
-            : $request->validated()['type'];
+        // $type = $request->validated()['type'] === 'other'
+        //     ? $request->validated()['other_type']
+        //     : $request->validated()['type'];
 
         Category::firstOrCreate([
             'name' => $request->validated()['name'],
-            'type' => $type
+            // 'type' => $type
         ]);
         return redirect()->route('category.index')->with('success', 'Category created successfully.');
     }
@@ -73,13 +73,13 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        $type = $request->validated()['type'] === 'other'
-            ? $request->validated()['other_type']
-            : $request->validated()['type'];
+        // $type = $request->validated()['type'] === 'other'
+        //     ? $request->validated()['other_type']
+        //     : $request->validated()['type'];
 
         $category->update([
             'name' => $request->validated()['name'],
-            'type' => $type
+            // 'type' => $type
         ]);
         return redirect()->route('category.index')->with('success', 'Category updated successfully.');
     }

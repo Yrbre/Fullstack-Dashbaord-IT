@@ -25,7 +25,7 @@
                                                 <label for="activitySelect">Category</label>
                                                 <input type="text" class="form-control mb-4" id="activitySelect"
                                                     placeholder="Enter idle activity" readonly
-                                                    value="<?php echo e($task->category->type ?? '-'); ?> - <?php echo e($task->category->name ?? '-'); ?>">
+                                                    value="<?php echo e($task->category->name ?? '-'); ?>">
 
 
                                                 <label for="simple-select2">Status</label>

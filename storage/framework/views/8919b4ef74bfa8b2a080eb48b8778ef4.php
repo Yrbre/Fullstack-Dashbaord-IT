@@ -133,8 +133,8 @@
                                         <td>Responsibility</td>
                                         <td>Client</td>
                                         <td>Priority</td>
-                                        <td>Progress</td>
-                                        <td>Status</td>
+                                        <td class="text-center">Progress</td>
+                                        <td class="text-center">Status</td>
                                         <td class="text-center">Action</td>
                                     </tr>
                                 </thead>
@@ -172,7 +172,7 @@
                                                         class="ms-2 text-muted progress-label-mobile"><?php echo e($item->progress_label); ?></small>
                                                 </div>
                                             </td>
-                                            <td><?php echo e($item->status); ?></td>
+                                            <td class="text-center"><?php echo e($item->status); ?></td>
                                             <td class="text-center text-nowrap">
                                                 <a href="<?php echo e(route('task.show', $item->id)); ?>"
                                                     class="btn btn-sm btn-primary">View</a>

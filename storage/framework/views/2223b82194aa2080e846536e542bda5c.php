@@ -9,7 +9,7 @@
                 <div class="form-row">
 
                     <div class="form-group col-md-12">
-                        <label for="">Activity Name</label>
+                        <label for="">Job Name</label>
                         <input type="text" class="form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -46,7 +46,13 @@ unset($__errorArgs, $__bag); ?>"
                                 <option value="" selected>Without Relation</option>
                                 <?php $__currentLoopData = $task; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>" <?php if(old('relation_task') == $item->id): ?> selected <?php endif; ?>>
-                                        <?php echo e($item->name); ?></option>
+                                        Name: <?php echo e($item->name); ?> | S/E:
+                                        <?php echo e($item->schedule_start->format('m-d-Y h:i A') ?? '-'); ?>
+
+                                        /
+                                        <?php echo e($item->schedule_end ? $item->schedule_end->format('m-d-Y h:i A') : '-'); ?> |
+                                        Total Weight: <?php echo e($weight[$item->id] ?? 0); ?>%
+                                    </option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </optgroup>
                         </select>
@@ -61,14 +67,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
-                    <div class="form-group col-md-6" id="wrapper_schedule_start_parent" style="display: none;">
-                        <label for="">Schedule Start Parent Activity</label>
-                        <input type="text" class="form-control" id="schedule_start_parent" readonly>
-                    </div>
-                    <div class="form-group col-md-6" id="wrapper_schedule_end_parent" style="display: none;">
-                        <label for="">Schedule End Parent Activity</label>
-                        <input type="text" class="form-control" id="schedule_end_parent" readonly>
-                    </div>
+
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Priority</label>
@@ -156,7 +155,8 @@ unset($__errorArgs, $__bag); ?>" id="multi-select2"
                             name="member[]" multiple>
                             <optgroup label="Select User">
                                 <?php $__currentLoopData = $assignTo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($id); ?>" <?php if(old('member', []) == $id): ?> selected <?php endif; ?>>
+                                    <option value="<?php echo e($id); ?>"
+                                        <?php echo e(in_array($id, old('member', [])) ? 'selected' : ''); ?>>
                                         <?php echo e($name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </optgroup>
@@ -281,7 +281,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                            name="task_load" value="<?php echo e(old('task_load')); ?>"
+                            name="task_load" value="<?php echo e(old('task_load', 100)); ?>"
                             oninput="this.value = this.value.replace(/[^0-9]/g,'');if(this.value > 100) this.value = 100;">
                         <?php $__errorArgs = ['task_load'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

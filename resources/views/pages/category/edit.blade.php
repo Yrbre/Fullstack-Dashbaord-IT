@@ -19,7 +19,7 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group col-12">
+                    {{-- <div class="form-group col-12">
                         <label for="simple-select2">Type</label>
                         <select class="form-control select2" id="simple-select2" name="type">
                             <optgroup label="Select Category Type">
@@ -35,7 +35,7 @@
                         <label for="other_type">Specify Type</label>
                         <input type="text" class="form-control" id="other_type" name="other_type"
                             placeholder="Enter custom type">
-                    </div>
+                    </div> --}}
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
