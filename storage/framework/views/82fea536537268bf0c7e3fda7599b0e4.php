@@ -74,6 +74,7 @@
                                     <td>Schedule Start/End</td>
                                     <td>Actual Start/End</td>
                                     <td>Status</td>
+                                    <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,6 +109,10 @@
 
                                         </td>
                                         <td><?php echo e($item->status); ?></td>
+                                        <td>
+                                            <a href="<?php echo e(route('task_personal.edit', $item->id)); ?>"
+                                                class="btn btn-sm btn-primary">Edit</a>
+                                        </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>

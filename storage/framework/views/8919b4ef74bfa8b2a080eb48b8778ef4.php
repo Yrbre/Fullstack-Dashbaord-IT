@@ -155,23 +155,31 @@
                                                 <td><span class="badge badge-secondary"><?php echo e($item->priority); ?></span></td>
                                             <?php endif; ?>
                                             <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="progress flex-grow-1 position-relative"
-                                                        style="height: 20px;">
-                                                        <div class="progress-bar <?php echo e($item->progress_color); ?>"
-                                                            role="progressbar" style="width: <?php echo e($item->progress); ?>%;"
-                                                            aria-valuenow="<?php echo e($item->progress); ?>" aria-valuemin="0"
-                                                            aria-valuemax="100">
+                                                <?php if(($weight[$item->id] ?? 0) > 100): ?>
+                                                    <h6 class="text-center text-danger">
+                                                        Activity Weight Overload <span
+                                                            class="badge badge-danger"><?php echo e($weight[$item->id] ?? 0); ?>%</span>
+                                                    </h6>
+                                                <?php elseif(($weight[$item->id] ?? 0) <= 100): ?>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="progress flex-grow-1 position-relative"
+                                                            style="height: 20px;">
+                                                            <div class="progress-bar <?php echo e($item->progress_color); ?>"
+                                                                role="progressbar" style="width: <?php echo e($item->progress); ?>%;"
+                                                                aria-valuenow="<?php echo e($item->progress); ?>" aria-valuemin="0"
+                                                                aria-valuemax="100">
+                                                            </div>
+                                                            <span class="position-absolute w-100 text-center fw-bold"
+                                                                style="top: 0; left: 0; line-height: 20px; font-size: 12px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.7);">
+                                                                <?php echo e($item->progress); ?>%
+                                                            </span>
                                                         </div>
-                                                        <span class="position-absolute w-100 text-center fw-bold"
-                                                            style="top: 0; left: 0; line-height: 20px; font-size: 12px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.7);">
-                                                            <?php echo e($item->progress); ?>%
-                                                        </span>
+                                                        <small
+                                                            class="ms-2 text-muted progress-label-mobile"><?php echo e($item->progress_label); ?></small>
                                                     </div>
-                                                    <small
-                                                        class="ms-2 text-muted progress-label-mobile"><?php echo e($item->progress_label); ?></small>
-                                                </div>
+                                                <?php endif; ?>
                                             </td>
+
                                             <td class="text-center"><?php echo e($item->status); ?></td>
                                             <td class="text-center text-nowrap">
                                                 <a href="<?php echo e(route('task.show', $item->id)); ?>"

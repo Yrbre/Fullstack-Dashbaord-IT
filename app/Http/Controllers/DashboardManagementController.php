@@ -7,6 +7,7 @@ use App\Models\Tasks;
 
 class DashboardManagementController extends Controller
 {
+
     public function index()
     {
         $standBy = ActivityHistory::with('activity', 'user')
@@ -63,6 +64,7 @@ class DashboardManagementController extends Controller
                 return $task;
             });
 
-        return view('pages.dashboard_management.index', compact('standBy', 'outSide', 'taskProgress'));
+        $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
+        return view('pages.dashboard_management.index', compact('standBy', 'outSide', 'taskProgress', 'weight'));
     }
 }

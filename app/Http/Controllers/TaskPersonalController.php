@@ -281,6 +281,7 @@ class TaskPersonalController extends Controller
 
 
         $task->update($data);
+
         return redirect()->route('task_personal.index')->with('success', 'Task Personal updated successfully.');
     }
 

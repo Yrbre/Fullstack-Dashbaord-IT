@@ -11,7 +11,7 @@
         <div class="card-header">
         </div>
         <div class="card-body">
-            <form method="post" action="{{ route('task.update', $task->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('task.update', $task->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-row">

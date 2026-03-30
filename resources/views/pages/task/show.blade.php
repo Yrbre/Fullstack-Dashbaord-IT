@@ -96,6 +96,7 @@
                                     <td>Schedule Start/End</td>
                                     <td>Actual Start/End</td>
                                     <td>Status</td>
+                                    <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,6 +127,10 @@
                                             {{ $item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d M Y H:m:i') : 'Null' }}
                                         </td>
                                         <td>{{ $item->status }}</td>
+                                        <td>
+                                            <a href="{{ route('task_personal.edit', $item->id) }}"
+                                                class="btn btn-sm btn-primary">Edit</a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
