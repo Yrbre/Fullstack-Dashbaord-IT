@@ -143,7 +143,8 @@ class DashboardOperatorController extends Controller
                 'end_time' => now()->format('Y-m-d H:i:s'),
             ]);
 
-            $standby = Activity::where('name', 'STAND BY')->first();
+            $standby = Activity::where('id', '1')->first();
+
             ActivityHistory::create([
                 'user_id'           => auth()->id(),
                 'reference_id'      => $standby->id,

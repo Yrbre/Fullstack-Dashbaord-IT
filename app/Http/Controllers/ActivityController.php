@@ -97,6 +97,9 @@ class ActivityController extends Controller
      */
     public function destroy(string $id)
     {
+        if ($id == 1) {
+            return redirect()->route('activity.index')->with('error', 'Cannot delete this activity.');
+        }
         $activity = Activity::findOrFail($id);
         $activity->delete();
         return redirect()->route('activity.index')->with('success', 'Activity deleted successfully.');

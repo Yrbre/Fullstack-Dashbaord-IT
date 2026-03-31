@@ -38,7 +38,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->enduser->name ?? $item->enduser->department }}</td>
-                            <td>{{ $item->location->department }} - {{ $item->location->location }}</td>
+                            <td>{{ $item->location->location }}</td>
                             <td>
                                 @if ($item->priority === 'CRITICAL')
                                     <span class="badge badge-danger">{{ $item->priority }}</span>
