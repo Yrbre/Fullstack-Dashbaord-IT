@@ -51,8 +51,7 @@ class Handler extends ExceptionHandler
             }
 
             return redirect()
-                ->route('login')
-                ->with('status', 'Silakan login untuk melanjutkan.');
+                ->route('login');
         });
     }
 
