@@ -14,8 +14,8 @@
 
                     <div class="form-group col-12">
                         <label for="simple-select2">Location</label>
-                        <input type="text" class="form-control @error('location') is-invalid @enderror" id="location"
-                            name="location" value="{{ old('location', $location->location ?? '') }}"
+                        <input type="text" class="uppercase form-control @error('location') is-invalid @enderror"
+                            id="location" name="location" value="{{ old('location', $location->location ?? '') }}"
                             placeholder="Enter custom location">
                         @error('location')
                             <div class="invalid-feedback d-block">{{ $message }}</div>

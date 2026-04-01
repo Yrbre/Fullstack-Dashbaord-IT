@@ -90,8 +90,8 @@
 
 
                                                 <label for="description">Description</label>
-                                                <textarea class="form-control mb-4 @error('description') is-invalid @enderror" name="description" id="description"
-                                                    rows="3" placeholder="Enter description here...">{{ old('description', $task->description) }}</textarea>
+                                                <textarea class="uppercase form-control mb-4 @error('description') is-invalid @enderror" name="description"
+                                                    id="description" rows="3" placeholder="Enter description here...">{{ old('description', $task->description) }}</textarea>
 
 
                                                 <label for="activitySelect">Time Start</label>

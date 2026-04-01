@@ -12,8 +12,8 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ old('name', $user->name ?? '') }}">
+                        <input type="text" class="uppercase form-control @error('name') is-invalid @enderror"
+                            name="name" value="{{ old('name', $user->name ?? '') }}">
                         @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

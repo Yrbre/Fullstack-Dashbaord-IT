@@ -13,8 +13,8 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Name Category</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ old('name', $category->name ?? '') }}">
+                        <input type="text" class="uppercase form-control @error('name') is-invalid @enderror"
+                            name="name" value="{{ old('name', $category->name ?? '') }}">
                         @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

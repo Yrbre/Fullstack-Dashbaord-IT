@@ -54,3 +54,11 @@
         $(window).on('resize', refreshSelect2Width);
     })(jQuery);
 </script>
+
+<script>
+    document.addEventListener('input', function(e) {
+        if (e.target.matches('.uppercase')) {
+            e.target.value = e.target.value.toUpperCase();
+        }
+    });
+</script>

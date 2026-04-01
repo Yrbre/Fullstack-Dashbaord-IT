@@ -11,15 +11,15 @@
 
                     <div class="form-group col-12">
                         <label for="">Name Activity</label>
-                        <input type="text" class="form-control <?php $__errorArgs = ['name'];
+                        <input type="text" class="uppercase form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="name"
-                            value="<?php echo e(old('name')); ?>">
+unset($__errorArgs, $__bag); ?>"
+                            name="name" value="<?php echo e(old('name')); ?>">
                         <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -45,13 +45,13 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                     <div class="form-group col-12" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
-                        <input type="text" class="form-control" id="other_location" name="other_location"
+                        <input type="text" class="uppercase form-control" id="other_location" name="other_location"
                             placeholder="Enter custom location">
                     </div>
 
                     <div class="form-group col-12">
                         <label for="">Description</label>
-                        <textarea class="form-control <?php $__errorArgs = ['description'];
+                        <textarea class="uppercase form-control <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -100,6 +100,7 @@ unset($__errorArgs, $__bag); ?>
             theme: 'bootstrap4',
         });
     </script>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/activity/create.blade.php ENDPATH**/ ?>

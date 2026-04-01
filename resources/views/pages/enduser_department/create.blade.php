@@ -11,7 +11,7 @@
 
                     <div class="form-group col-12">
                         <label for="simple-select2">Department</label>
-                        <input type="text" class="form-control @error('department') is-invalid @enderror"
+                        <input type="text" class="uppercase form-control @error('department') is-invalid @enderror"
                             id="simple-select2" name="department" placeholder="Enter department name"
                             value="{{ old('department') }}">
                         @error('department')

@@ -11,7 +11,7 @@
                 <div class="form-row">
                     <div class="form-group col-12">
                         <label for="simple-select2">Select Location</label>
-                        <input type="text" class="form-control @error('location') is-invalid @enderror"
+                        <input type="text" class="uppercase form-control @error('location') is-invalid @enderror"
                             id="simple-select2" name="location" placeholder="Enter location">
                     </div>
                     @error('location')

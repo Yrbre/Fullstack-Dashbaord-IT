@@ -18,8 +18,8 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Activity Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ old('name', $task->name) }}">
+                        <input type="text" class="uppercase form-control @error('name') is-invalid @enderror"
+                            name="name" value="{{ old('name', $task->name) }}">
                         @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -119,7 +119,7 @@
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Department</label>
                         <input type="text" id="select-department"
-                            class="form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
+                            class="uppercase form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
                             value="{{ old('enduser_id', $task->enduser->department) }}" readonly>
                         @error('enduser_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -232,8 +232,8 @@
 
                     <div class="form-group col-12">
                         <label for="">Description</label>
-                        <textarea type="text" class="form-control @error('description') is-invalid @enderror" name="description"
-                            value="{{ old('description') }}">{{ old('description', $task->description) }}</textarea>
+                        <textarea type="text" class="uppercase form-control @error('description') is-invalid @enderror"
+                            name="description" value="{{ old('description') }}">{{ old('description', $task->description) }}</textarea>
                         @error('description')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

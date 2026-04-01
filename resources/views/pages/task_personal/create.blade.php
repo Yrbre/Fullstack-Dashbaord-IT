@@ -11,8 +11,8 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Job Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ old('name') }}">
+                        <input type="text" class="uppercase form-control @error('name') is-invalid @enderror"
+                            name="name" value="{{ old('name') }}">
                         @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -128,12 +128,12 @@
                     </div>
                     <div class="form-group col-6" id="otherPersonalInput" style="display: none;">
                         <label for="other_personal">Specify User</label>
-                        <input type="text" class="form-control" id="other_personal" name="other_personal"
+                        <input type="text" class="uppercase form-control" id="other_personal" name="other_personal"
                             placeholder="Enter custom personal" value="{{ old('other_personal') }}">
                     </div>
                     <div class="form-group col-6" id="otherPersonalDepartmentInput" style="display: none;">
                         <label for="other_personal_department">Specify Department</label>
-                        <input type="text" class="form-control" id="other_personal_department"
+                        <input type="text" class="uppercase form-control" id="other_personal_department"
                             name="other_personal_department" placeholder="Enter custom department"
                             value="{{ old('other_personal_department') }}">
                     </div>
@@ -178,20 +178,20 @@
 
                     <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
                         <label for="other_department_location">Specify Department Location</label>
-                        <input type="text" class="form-control" id="other_department_location"
+                        <input type="text" class="uppercase form-control" id="other_department_location"
                             name="other_department_location" placeholder="Enter custom department location"
                             value="{{ old('other_department_location') }}">
                     </div>
 
                     <div class="form-group col-6" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
-                        <input type="text" class="form-control" id="other_location" name="other_location"
+                        <input type="text" class="uppercase form-control" id="other_location" name="other_location"
                             placeholder="Enter custom location" value="{{ old('other_location') }}">
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="">Activity Weight</label>
-                        <input type="text" class="form-control @error('task_load') is-invalid @enderror"
+                        <input type="text" class="uppercase form-control @error('task_load') is-invalid @enderror"
                             name="task_load" value="{{ old('task_load', 100) }}"
                             oninput="this.value = this.value.replace(/[^0-9]/g,'');if(this.value > 100) this.value = 100;">
                         @error('task_load')
@@ -219,8 +219,8 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Description</label>
-                        <textarea type="text" class="form-control @error('description') is-invalid @enderror" name="description"
-                            value="{{ old('description') }}">{{ old('description') }}</textarea>
+                        <textarea type="text" class="uppercase form-control @error('description') is-invalid @enderror"
+                            name="description" value="{{ old('description') }}">{{ old('description') }}</textarea>
                         @error('description')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

@@ -13,28 +13,28 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Name Activity</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ old('name', $activity->name ?? '') }}">
+                        <input type="text" class="uppercase form-control @error('name') is-invalid @enderror"
+                            name="name" value="{{ old('name', $activity->name ?? '') }}">
                         @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group col-12">
                         <label for="simple-select2">Location</label>
-                        <input type="text" class="form-control @error('location') is-invalid @enderror" name="location"
-                            value="{{ old('location', $activity->location ?? '') }}">
+                        <input type="text" class="uppercase form-control @error('location') is-invalid @enderror"
+                            name="location" value="{{ old('location', $activity->location ?? '') }}">
                         @error('location')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group col-12" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
-                        <input type="text" class="form-control" id="other_location" name="other_location"
+                        <input type="text" class="uppercase form-control" id="other_location" name="other_location"
                             placeholder="Enter custom location">
                     </div>
                     <div class="form-group col-12">
                         <label for="">Description</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" name="description">{{ old('description', $activity->description) }}</textarea>
+                        <textarea class="uppercase form-control @error('description') is-invalid @enderror" name="description">{{ old('description', $activity->description) }}</textarea>
                     </div>
                     @error('description')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
