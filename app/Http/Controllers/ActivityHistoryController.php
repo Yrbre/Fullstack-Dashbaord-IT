@@ -24,7 +24,12 @@ class ActivityHistoryController extends Controller
             }
             return '-';
         });
-        return view('pages.activity_history.index', compact('activity_history', 'priority'));
+
+        $activityHistoryOp = ActivityHistory::with(['user', 'task.enduser', 'activity'])
+            ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('pages.activity_history.index', compact('activity_history', 'priority', 'activityHistoryOp'));
     }
 
     public function show(string $id)

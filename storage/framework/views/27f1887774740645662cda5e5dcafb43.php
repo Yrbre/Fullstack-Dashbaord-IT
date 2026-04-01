@@ -98,14 +98,12 @@
                 <?php endif; ?>
 
             </li>
-            <?php if(Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN'])): ?>
-                <li class="nav-item w-100">
-                    <a class="nav-link" href="<?php echo e(route('activity_history.index')); ?>">
-                        <i class="fe fe-layers fe-16"></i>
-                        <span class="ml-3 item-text">Activity History</span>
-                    </a>
-                </li>
-            <?php endif; ?>
+            <li class="nav-item w-100">
+                <a class="nav-link" href="<?php echo e(route('activity_history.index')); ?>">
+                    <i class="fe fe-layers fe-16"></i>
+                    <span class="ml-3 item-text">Activity History</span>
+                </a>
+            </li>
             <li class="nav-item dropdown">
                 <a href="#settings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                     <i class="fe fe-settings fe-16"></i>

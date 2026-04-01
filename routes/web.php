@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::get('/profile/edit/{id}', [ProfileNewController::class, 'edit'])->name('profileNew.edit');
     Route::put('/profile/update', [ProfileNewController::class, 'update'])->name('profileNew.update');
     Route::get('/export-activity', [ActivityController::class, 'export']);
+    Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], function () {
@@ -66,7 +67,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], fu
     Route::get('/user-inactive', [UserController::class, 'inactive'])->name('user.inactive');
     Route::put('/user/{id}/restore', [UserController::class, 'restore'])->name('user.restore');
     Route::resource('/user', UserController::class)->names('user');
-    Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
+
     Route::get('/activity_history/{id}', [ActivityHistoryController::class, 'show'])->name('activity_history.show');
     Route::get('/activity_history/list/{id}', [ActivityHistoryController::class, 'list'])->name('activity_history.list');
     Route::get('/activity_history/list/{id}/filter', [ActivityHistoryController::class, 'listFilter'])->name('activity_history.list.filter');
