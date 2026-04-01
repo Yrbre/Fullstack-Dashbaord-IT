@@ -18,7 +18,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group col-md-6">
+                    {{-- <div class="form-group col-md-6">
                         <label for="simple-select2">Parent Activity</label>
                         <select class="form-control select2 @error('relation_task') is-invalid @enderror"
                             id="select-relation-task" name="relation_task">
@@ -33,7 +33,7 @@
                         @error('relation_task')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Priority</label>

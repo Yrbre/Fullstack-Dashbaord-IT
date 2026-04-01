@@ -75,14 +75,14 @@ class StoreTaskPersonalRequest extends FormRequest
                 if ($start->lt($taskStart)) {
                     $validator->errors()->add(
                         'schedule_start',
-                        'Schedule start tidak boleh lebih awal dari schedule task parent.'
+                        'Schedule start tidak boleh lebih awal dari schedule parent.'
                     );
                 }
 
                 if ($end->gt($taskEnd)) {
                     $validator->errors()->add(
                         'schedule_end',
-                        'Schedule end tidak boleh melebihi schedule task parent.'
+                        'Schedule end tidak boleh melebihi schedule parent.'
                     );
                 }
             }

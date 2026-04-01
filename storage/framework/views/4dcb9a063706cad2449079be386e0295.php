@@ -18,11 +18,13 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Activity Name</th>
+                                                <th>Parent Job</th>
                                                 <th>Schedule Start</th>
                                                 <th>Schedule End</th>
                                                 <th>Priority</th>
                                                 <th>Progres</th>
                                                 <th>Location</th>
+                                                <th>Description</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -32,6 +34,7 @@
                                                 <tr>
                                                     <td><?php echo e($loop->iteration); ?></td>
                                                     <td><?php echo e($item->name); ?></td>
+                                                    <td><?php echo e($item->parent->name ?? '-'); ?></td>
                                                     <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
 
                                                     </td>
@@ -50,6 +53,7 @@
                                                         <?php endif; ?>
                                                     <td><?php echo e($item->progress); ?>%</td>
                                                     <td><?php echo e($item->location->location ?? '-'); ?></td>
+                                                    <td><?php echo e($item->description ?? ''); ?></td>
                                                     <td>
                                                         
                                                         <button type="button" class="btn btn-sm btn-primary btn-take-task"

@@ -22,59 +22,68 @@ class DatabaseSeeder extends Seeder
             'role' => 'ADMIN',
         ]);
 
-        \App\Models\Activity::create([
-            'name' => 'STAND BY',
-            'location' => 'IT OFFICE',
-        ]);
-        \App\Models\Activity::create([
-            'name' => 'MUSHALLA',
-            'location' => 'MUSHALLA',
-        ]);
-        \App\Models\Activity::create([
-            'name' => 'TOILET',
-            'location' => 'TOILET',
-        ]);
-        \App\Models\Activity::create([
-            'name' => 'MASJID',
-            'location' => 'MASJID',
-        ]);
-        \App\Models\Activity::create([
-            'name' => 'PANTRY',
-            'location' => 'PANTRY',
-        ]);
-        \App\Models\Activity::create([
-            'name' => 'KANTIN',
-            'location' => 'KANTIN',
-        ]);
-        \App\Models\Activity::create([
-            'name' => 'OUT OF OFFICE',
-            'location' => 'OUT OF OFFICE',
-        ]);
+        $activities = [
+            ['name' => 'STAND BY', 'location' => 'IT OFFICE'],
+            ['name' => 'DEVELOPMENT', 'location' => 'IT OFFICE'],
+            ['name' => 'MUSHALLA', 'location' => 'MUSHALLA'],
+            ['name' => 'TOILET', 'location' => 'TOILET'],
+            ['name' => 'MASJID', 'location' => 'MASJID'],
+            ['name' => 'PANTRY', 'location' => 'PANTRY'],
+            ['name' => 'KANTIN', 'location' => 'KANTIN'],
+            ['name' => 'OUT OF OFFICE', 'location' => 'OUT OF OFFICE'],
+        ];
 
-        \App\Models\Category::create([
-            'name' => 'ADMINISTRATION',
-        ]);
+        foreach ($activities as $activity) {
+            \App\Models\Activity::create($activity);
+        }
 
-        \App\Models\Category::create([
-            'name' => 'HARDWARE INSTALLATION',
-        ]);
-        \App\Models\Category::create([
-            'name' => 'SOFTWARE DEVELOPMENT',
-        ]);
-        \App\Models\Category::create([
-            'name' => 'SUPERVISORY',
-        ]);
-        \App\Models\Category::create([
-            'name' => 'MEETING',
-        ]);
-        \App\Models\Category::create([
-            'name' => 'ROUTINE WORK',
-        ]);
-        \App\Models\Category::create([
-            'name' => 'TROUBLESHOOTING',
-        ]);
-        \App\Models\Category::create([
-            'name' => 'OTHERS',
+        $categories = [
+            'ADMINISTRATION',
+            'HARDWARE INSTALLATION',
+            'SOFTWARE DEVELOPMENT',
+            'SUPERVISORY',
+            'MEETING',
+            'ROUTINE WORK',
+            'TROUBLESHOOTING',
+            'OTHERS',
+        ];
+
+        foreach ($categories as $category) {
+            \App\Models\Category::create([
+                'name' => $category
+            ]);
+        }
+
+
+        $departments = [
+            'ACC',
+            'QARD',
+            'BA/ESH',
+            'MARKETING',
+            'HRD',
+            'GA',
+            'CORSEC',
+            'ENG',
+            'PURCH',
+            'IT',
+            'SF',
+            'FY1',
+            'FY2',
+            'FY3',
+            'PBX',
+            'PCP',
+            'U1',
+            'U2',
+        ];
+
+        foreach ($departments as $dept) {
+            \App\Models\EndUser::create([
+                'department' => $dept
+            ]);
+        }
+
+        \App\Models\Location::create([
+            'location'  => 'IT OFFICE'
         ]);
     }
 }

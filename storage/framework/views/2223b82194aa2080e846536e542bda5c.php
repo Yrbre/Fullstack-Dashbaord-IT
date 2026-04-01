@@ -31,7 +31,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-12">
                         <label for="simple-select2">Parent Activity</label>
                         <select class="form-control select2 <?php $__errorArgs = ['relation_task'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

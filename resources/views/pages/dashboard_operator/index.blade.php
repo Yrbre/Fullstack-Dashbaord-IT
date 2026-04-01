@@ -19,11 +19,13 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Activity Name</th>
+                                                <th>Parent Job</th>
                                                 <th>Schedule Start</th>
                                                 <th>Schedule End</th>
                                                 <th>Priority</th>
                                                 <th>Progres</th>
                                                 <th>Location</th>
+                                                <th>Description</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -33,6 +35,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->parent->name ?? '-' }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
@@ -49,6 +52,7 @@
                                                         @endif
                                                     <td>{{ $item->progress }}%</td>
                                                     <td>{{ $item->location->location ?? '-' }}</td>
+                                                    <td>{{ $item->description ?? '' }}</td>
                                                     <td>
                                                         {{-- <a href="{{ route('active_task.index', $item->id) }}"
                                                             class="btn btn-sm btn-primary">Take</a> --}}
