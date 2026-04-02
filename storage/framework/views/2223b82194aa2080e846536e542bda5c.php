@@ -10,15 +10,15 @@
 
                     <div class="form-group col-md-12">
                         <label for="">Job Name</label>
-                        <input type="text" class="form-control <?php $__errorArgs = ['name'];
+                        <input type="text" class="uppercase form-control <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="name"
-                            value="<?php echo e(old('name')); ?>">
+unset($__errorArgs, $__bag); ?>"
+                            name="name" value="<?php echo e(old('name')); ?>">
                         <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -173,28 +173,17 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <div class="form-group col-6">
-                        <label for="simple-select2">Level</label>
-                        <input type="text" class="form-control <?php $__errorArgs = ['task_level'];
+                    
+                    <input type="text" class="form-control <?php $__errorArgs = ['task_level'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                            value="PERSONAL" readonly id="select-level" name="task_level">
-                        <?php $__errorArgs = ['task_level'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="invalid-feedback d-block"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                    </div>
+unset($__errorArgs, $__bag); ?>" value="PERSONAL"
+                        readonly id="select-level" name="task_level" hidden>
+                    
 
 
                     <div class="form-group col-6">
@@ -212,12 +201,12 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                     <div class="form-group col-6" id="otherPersonalInput" style="display: none;">
                         <label for="other_personal">Specify User</label>
-                        <input type="text" class="form-control" id="other_personal" name="other_personal"
+                        <input type="text" class="uppercase form-control" id="other_personal" name="other_personal"
                             placeholder="Enter custom personal" value="<?php echo e(old('other_personal')); ?>">
                     </div>
                     <div class="form-group col-6" id="otherPersonalDepartmentInput" style="display: none;">
                         <label for="other_personal_department">Specify Department</label>
-                        <input type="text" class="form-control" id="other_personal_department"
+                        <input type="text" class="uppercase form-control" id="other_personal_department"
                             name="other_personal_department" placeholder="Enter custom department"
                             value="<?php echo e(old('other_personal_department')); ?>">
                     </div>
@@ -260,20 +249,20 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
                         <label for="other_department_location">Specify Department Location</label>
-                        <input type="text" class="form-control" id="other_department_location"
+                        <input type="text" class="uppercase form-control" id="other_department_location"
                             name="other_department_location" placeholder="Enter custom department location"
                             value="<?php echo e(old('other_department_location')); ?>">
                     </div>
 
                     <div class="form-group col-6" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
-                        <input type="text" class="form-control" id="other_location" name="other_location"
+                        <input type="text" class="uppercase form-control" id="other_location" name="other_location"
                             placeholder="Enter custom location" value="<?php echo e(old('other_location')); ?>">
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="">Activity Weight</label>
-                        <input type="text" class="form-control <?php $__errorArgs = ['task_load'];
+                        <input type="text" class="uppercase form-control <?php $__errorArgs = ['task_load'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -343,15 +332,15 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group col-md-12">
                         <label for="">Description</label>
-                        <textarea type="text" class="form-control <?php $__errorArgs = ['description'];
+                        <textarea type="text" class="uppercase form-control <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="description"
-                            value="<?php echo e(old('description')); ?>"><?php echo e(old('description')); ?></textarea>
+unset($__errorArgs, $__bag); ?>"
+                            name="description" value="<?php echo e(old('description')); ?>"><?php echo e(old('description')); ?></textarea>
                         <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

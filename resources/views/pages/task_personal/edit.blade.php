@@ -123,14 +123,14 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="simple-select2">Level</label>
-                        <input type="text" class="form-control @error('task_level') is-invalid @enderror"
-                            name="task_level" value="{{ old('task_level', $task->task_level) }}" readonly>
-                        @error('task_level')
+                    {{-- <div class="form-group col-md-6">
+                        <label for="simple-select2">Level</label> --}}
+                    <input type="text" class="form-control @error('task_level') is-invalid @enderror" name="task_level"
+                        value="{{ old('task_level', $task->task_level) }}" readonly hidden>
+                    {{-- @error('task_level')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="form-group col-md-6">
                         <label for="simple-select2">End User / Dept PIC</label>

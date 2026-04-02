@@ -81,14 +81,14 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-6">
-                        <label for="simple-select2">Level</label>
-                        <input type="text" class="form-control @error('task_level') is-invalid @enderror"
-                            value="DEPARTMENT" readonly id="select-level" name="task_level">
-                        @error('task_level')
+                    {{-- <div class="form-group col-6">
+                        <label for="simple-select2">Level</label> --}}
+                    <input type="text" class="form-control @error('task_level') is-invalid @enderror" value="DEPARTMENT"
+                        readonly id="select-level" name="task_level" hidden>
+                    {{-- @error('task_level')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="form-group col-6">
                         <label for="simple-select2">Department</label>
