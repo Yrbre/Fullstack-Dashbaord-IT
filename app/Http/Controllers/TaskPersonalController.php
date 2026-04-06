@@ -38,6 +38,7 @@ class TaskPersonalController extends Controller
             $task->relation_name = $task->parent?->name;
         }
 
+
         $ManagementTask = Tasks::with('parent')
             ->where('task_level', 'PERSONAL')
             ->orderBy('created_at', 'desc')

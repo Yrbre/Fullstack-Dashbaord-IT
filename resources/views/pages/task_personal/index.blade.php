@@ -14,25 +14,27 @@
                             <h5 class="card-title">Table Job Assignment</h5>
                             <p class="card-text"></p>
                             <table class="table datatables" id="dataTable-1">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Parent Activity</th>
-                                        <th>Weight</th>
-                                        <th>Assign to</th>
-                                        <th>Priority</th>
-                                        <th>Progress</th>
-                                        <th>Schedule(S/E)</th>
-                                        <th>Actual (S/E)</th>
-                                        <th>On Timeline</th>
-                                        <th>Status</th>
-                                        <th class="text-center">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
+                                @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Parent Activity</th>
+                                            <th>Weight</th>
+                                            <th>Deliver By</th>
+                                            <th>Assign to</th>
+                                            <th>Priority</th>
+                                            <th>Progress</th>
+                                            <th>Schedule(S/E)</th>
+                                            <th>Actual (S/E)</th>
+                                            <th>On Timeline</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
                                         @foreach ($ManagementTask as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -40,6 +42,7 @@
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->relation_name ?? '-' }}</td>
                                                 <td>{{ $item->task_load ?? '-' }}%</td>
+                                                <td>{{ $item->user->name ?? ($item->delivered ?? '-') }}</td>
                                                 <td>{{ $item->user->name ?? '-' }}</td>
                                                 <td>
                                                     @if ($item->priority === 'CRITICAL')
@@ -84,7 +87,7 @@
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a class="dropdown-item"
                                                                 href="{{ route('task_personal.edit', $item->id) }}">Edit</a>
-                                                            <a class="dropdown-item" data-toggle="modal"
+                                                            <a class="dropdown-item js-delete-task" data-toggle="modal"
                                                                 data-target="#deleteModal" data-id="{{ $item->id }}"
                                                                 data-name="{{ $item->name }}"
                                                                 data-status="{{ $item->status }}"
@@ -95,8 +98,26 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    @endif
-                                    @if (Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
+                                @endif
+                                @if (Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Parent Activity</th>
+                                            <th>Weight</th>
+                                            <th>Assign to</th>
+                                            <th>Priority</th>
+                                            <th>Progress</th>
+                                            <th>Schedule(S/E)</th>
+                                            <th>Actual (S/E)</th>
+                                            <th>On Timeline</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         @foreach ($tasks as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -148,7 +169,7 @@
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a class="dropdown-item"
                                                                 href="{{ route('task_personal.edit', $item->id) }}">Edit</a>
-                                                            <a class="dropdown-item" data-toggle="modal"
+                                                            <a class="dropdown-item js-delete-task" data-toggle="modal"
                                                                 data-target="#deleteModal" data-id="{{ $item->id }}"
                                                                 data-name="{{ $item->name }}"
                                                                 data-status="{{ $item->status }}"
@@ -159,10 +180,13 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    @endif
+                                @endif
                                 </tbody>
                             </table>
-                            @extends('pages.task.delete')
+                            <form method="POST" id="deleteForm">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -171,17 +195,34 @@
     </div>
     <script>
         // Handle delete modal
-        $('#deleteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var taskName = button.data('name');
-            var statusName = button.data('status');
-            var deleteUrl = button.data('url');
+        $(document).on('click', '.js-delete-task', function(e) {
+            e.preventDefault();
+            var button = $(this);
+            var name = button.data('name');
+            var status = button.data('status');
+            var url = button.data('url');
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#taskName').text(taskName);
-            modal.find('#statusName').text(statusName);
-            modal.find('#deleteForm').attr('action', deleteUrl);
+            Swal.fire({
+                title: 'Confirm Delete',
+                icon: 'warning',
+                theme: 'dark',
+                html: '<p>Are you sure you want to delete this Activity?</p>' +
+                    '<div class="justify-content-center">' +
+                    '<strong>Activity Name :</strong> ' + name + '<br>' +
+                    '<strong>Status :</strong> ' + status +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#deleteForm');
+                    form.attr('action', url);
+                    form.submit();
+                }
+            });
         });
     </script>
     <script>
