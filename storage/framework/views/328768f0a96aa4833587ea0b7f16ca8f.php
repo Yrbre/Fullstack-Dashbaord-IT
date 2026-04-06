@@ -22,42 +22,68 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Activity Name</th>
-                        <th>End User</th>
+                        <th>Reference Type</th>
+                        <th>Activity</th>
                         <th>Location</th>
                         <th>Priority</th>
-                        <th>Progress</th>
-                        <th>Scheduled Start/End</th>
-                        <th>Actual Start/End</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $__currentLoopData = $taskList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $activityHistory; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td><?php echo e($loop->iteration); ?></td>
-                            <td><?php echo e($item->name); ?></td>
-                            <td><?php echo e($item->enduser->name ?? $item->enduser->department); ?></td>
-                            <td><?php echo e($item->location->location); ?></td>
+                            <?php if($item->reference_type === 'TASK'): ?>
+                                <td>JOB</td>
+                            <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                <td>ACTIVITY PERSONAL</td>
+                            <?php endif; ?>
+                            <?php if($item->reference_type === 'TASK'): ?>
+                                <td><?php echo e($item->task->name ?? 'Job Deleted'); ?></td>
+                            <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                <td><?php echo e($item->activity->name ?? 'Activity Deleted'); ?></td>
+                            <?php else: ?>
+                                <td>-</td>
+                            <?php endif; ?>
                             <td>
-                                <?php if($item->priority === 'CRITICAL'): ?>
-                                    <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
-                                <?php elseif($item->priority === 'HIGH'): ?>
-                                    <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
-                                <?php elseif($item->priority === 'MEDIUM'): ?>
-                                    <span class="badge badge-info"><?php echo e($item->priority); ?></span>
-                                <?php elseif($item->priority === 'LOW'): ?>
-                                    <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                <?php echo e($item->location ?? '-'); ?>
+
+                            </td>
+                            <td>
+                                <?php if($item->reference_type === 'TASK'): ?>
+                                    <?php if(!$item->task): ?>
+                                        <span class="badge badge-secondary">Job Deleted</span>
+                                    <?php elseif($item->task?->priority === 'CRITICAL'): ?>
+                                        <span class="badge badge-danger"><?php echo e($item->task?->priority); ?></span>
+                                    <?php elseif($item->task?->priority === 'HIGH'): ?>
+                                        <span class="badge badge-warning"><?php echo e($item->task?->priority); ?></span>
+                                    <?php elseif($item->task?->priority === 'MEDIUM'): ?>
+                                        <span class="badge badge-info"><?php echo e($item->task?->priority); ?></span>
+                                    <?php elseif($item->task?->priority === 'LOW'): ?>
+                                        <span class="badge badge-secondary"><?php echo e($item->task?->priority); ?></span>
+                                    <?php elseif($item->task?->priority === null): ?>
+                                        <span class="badge badge-secondary">-</span>
+                                    <?php endif; ?>
+                                <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                    -
+                                <?php else: ?>
+                                    -
                                 <?php endif; ?>
                             </td>
-                            <td><?php echo e($item->progress); ?>%</td>
-                            <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i')); ?> <br>
-                                <?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i')); ?></td>
-                            <td><?php echo e($item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d-m-Y H:i') : '-'); ?>
-
-                                <br>
-                                <?php echo e($item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-'); ?>
+                            <td><?php echo e($item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-'); ?>
 
                             </td>
+                            <td><?php echo e($item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-'); ?>
+
+                            </td>
+                            <td style="color: greenyellow">
+                                <?php echo e($item->duration ?? '-'); ?>
+
+                            </td>
+                            <td><?php echo e($item->status ?? '-'); ?></td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>

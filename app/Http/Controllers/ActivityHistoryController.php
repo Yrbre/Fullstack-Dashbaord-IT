@@ -66,7 +66,12 @@ class ActivityHistoryController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('pages.activity_history.showListActivityUser', compact('taskList', 'user'));
+        $activityHistory = ActivityHistory::with('user', 'task', 'activity')
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('pages.activity_history.showListActivityUser', compact('taskList', 'user', 'activityHistory'));
     }
 
     public function listFilter(Request $request, string $id)

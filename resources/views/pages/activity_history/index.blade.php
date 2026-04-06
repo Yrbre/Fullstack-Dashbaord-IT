@@ -33,14 +33,14 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->user->name }}</td>
                                                 @if ($item->reference_type === 'TASK')
-                                                    <td>ACTIVITY PERSONAL</td>
+                                                    <td>JOB</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
-                                                    <td>ACTIVITY</td>
+                                                    <td>ACTIVITY PERSONAL</td>
                                                 @endif
                                                 @if ($item->reference_type === 'TASK')
-                                                    <td>{{ $item->task->name ?? '-' }}</td>
+                                                    <td>{{ $item->task->name ?? 'Job Deleted' }}</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
-                                                    <td>{{ $item->activity->name ?? '-' }}</td>
+                                                    <td>{{ $item->activity->name ?? 'Activity Deleted' }}</td>
                                                 @else
                                                     <td>-</td>
                                                 @endif
@@ -50,18 +50,22 @@
                                                 </td>
                                                 <td>
                                                     @if ($item->reference_type === 'TASK')
-                                                        @if ($item->task->priority === 'CRITICAL')
+                                                        @if (!$item->task)
+                                                            <span class="badge badge-secondary">Job Deleted</span>
+                                                        @elseif ($item->task?->priority === 'CRITICAL')
                                                             <span
-                                                                class="badge badge-danger">{{ $item->task->priority }}</span>
-                                                        @elseif ($item->task->priority === 'HIGH')
+                                                                class="badge badge-danger">{{ $item->task?->priority }}</span>
+                                                        @elseif ($item->task?->priority === 'HIGH')
                                                             <span
-                                                                class="badge badge-warning">{{ $item->task->priority }}</span>
-                                                        @elseif ($item->task->priority === 'MEDIUM')
+                                                                class="badge badge-warning">{{ $item->task?->priority }}</span>
+                                                        @elseif ($item->task?->priority === 'MEDIUM')
                                                             <span
-                                                                class="badge badge-info">{{ $item->task->priority }}</span>
-                                                        @elseif ($item->task->priority === 'LOW')
+                                                                class="badge badge-info">{{ $item->task?->priority }}</span>
+                                                        @elseif ($item->task?->priority === 'LOW')
                                                             <span
-                                                                class="badge badge-secondary">{{ $item->task->priority }}</span>
+                                                                class="badge badge-secondary">{{ $item->task?->priority }}</span>
+                                                        @elseif ($item->task?->priority === null)
+                                                            <span class="badge badge-secondary">-</span>
                                                         @endif
                                                     @elseif ($item->reference_type === 'ACTIVITY')
                                                         -

@@ -90,7 +90,7 @@
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a class="dropdown-item"
                                                                 href="<?php echo e(route('task_personal.edit', $item->id)); ?>">Edit</a>
-                                                            <a class="dropdown-item" data-toggle="modal"
+                                                            <a class="dropdown-item js-delete-task" data-toggle="modal"
                                                                 data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
                                                                 data-name="<?php echo e($item->name); ?>"
                                                                 data-status="<?php echo e($item->status); ?>"

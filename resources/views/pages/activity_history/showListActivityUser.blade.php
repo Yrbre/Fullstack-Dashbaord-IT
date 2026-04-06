@@ -23,40 +23,64 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Activity Name</th>
-                        <th>End User</th>
+                        <th>Reference Type</th>
+                        <th>Activity</th>
                         <th>Location</th>
                         <th>Priority</th>
-                        <th>Progress</th>
-                        <th>Scheduled Start/End</th>
-                        <th>Actual Start/End</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($taskList as $item)
+                    @foreach ($activityHistory as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->enduser->name ?? $item->enduser->department }}</td>
-                            <td>{{ $item->location->location }}</td>
+                            @if ($item->reference_type === 'TASK')
+                                <td>JOB</td>
+                            @elseif ($item->reference_type === 'ACTIVITY')
+                                <td>ACTIVITY PERSONAL</td>
+                            @endif
+                            @if ($item->reference_type === 'TASK')
+                                <td>{{ $item->task->name ?? 'Job Deleted' }}</td>
+                            @elseif ($item->reference_type === 'ACTIVITY')
+                                <td>{{ $item->activity->name ?? 'Activity Deleted' }}</td>
+                            @else
+                                <td>-</td>
+                            @endif
                             <td>
-                                @if ($item->priority === 'CRITICAL')
-                                    <span class="badge badge-danger">{{ $item->priority }}</span>
-                                @elseif ($item->priority === 'HIGH')
-                                    <span class="badge badge-warning">{{ $item->priority }}</span>
-                                @elseif ($item->priority === 'MEDIUM')
-                                    <span class="badge badge-info">{{ $item->priority }}</span>
-                                @elseif ($item->priority === 'LOW')
-                                    <span class="badge badge-secondary">{{ $item->priority }}</span>
+                                {{ $item->location ?? '-' }}
+                            </td>
+                            <td>
+                                @if ($item->reference_type === 'TASK')
+                                    @if (!$item->task)
+                                        <span class="badge badge-secondary">Job Deleted</span>
+                                    @elseif ($item->task?->priority === 'CRITICAL')
+                                        <span class="badge badge-danger">{{ $item->task?->priority }}</span>
+                                    @elseif ($item->task?->priority === 'HIGH')
+                                        <span class="badge badge-warning">{{ $item->task?->priority }}</span>
+                                    @elseif ($item->task?->priority === 'MEDIUM')
+                                        <span class="badge badge-info">{{ $item->task?->priority }}</span>
+                                    @elseif ($item->task?->priority === 'LOW')
+                                        <span class="badge badge-secondary">{{ $item->task?->priority }}</span>
+                                    @elseif ($item->task?->priority === null)
+                                        <span class="badge badge-secondary">-</span>
+                                    @endif
+                                @elseif ($item->reference_type === 'ACTIVITY')
+                                    -
+                                @else
+                                    -
                                 @endif
                             </td>
-                            <td>{{ $item->progress }}%</td>
-                            <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i') }} <br>
-                                {{ \Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i') }}</td>
-                            <td>{{ $item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d-m-Y H:i') : '-' }}
-                                <br>
-                                {{ $item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-' }}
+                            <td>{{ $item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-' }}
                             </td>
+                            <td>{{ $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-' }}
+                            </td>
+                            <td style="color: greenyellow">
+                                {{ $item->duration ?? '-' }}
+                            </td>
+                            <td>{{ $item->status ?? '-' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
