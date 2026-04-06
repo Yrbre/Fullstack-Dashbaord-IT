@@ -31,71 +31,142 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <tr>
-                                            <td><?php echo e($loop->iteration); ?></td>
-                                            <td><?php echo e($item->id); ?></td>
-                                            <td><?php echo e($item->name); ?></td>
-                                            <td><?php echo e($item->relation_name ?? '-'); ?></td>
-                                            <td><?php echo e($item->task_load ?? '-'); ?>%</td>
-                                            <td><?php echo e($item->user->name ?? '-'); ?></td>
-                                            <td>
-                                                <?php if($item->priority === 'CRITICAL'): ?>
-                                                    <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
-                                                <?php elseif($item->priority === 'HIGH'): ?>
-                                                    <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
-                                                <?php elseif($item->priority === 'MEDIUM'): ?>
-                                                    <span class="badge badge-info"><?php echo e($item->priority); ?></span>
-                                                <?php elseif($item->priority === 'LOW'): ?>
-                                                    <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td><?php echo e($item->progress); ?>%</td>
-                                            <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i')); ?>
+                                    <?php if(Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN'])): ?>
+                                        <?php $__currentLoopData = $ManagementTask; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <tr>
+                                                <td><?php echo e($loop->iteration); ?></td>
+                                                <td><?php echo e($item->id); ?></td>
+                                                <td><?php echo e($item->name); ?></td>
+                                                <td><?php echo e($item->relation_name ?? '-'); ?></td>
+                                                <td><?php echo e($item->task_load ?? '-'); ?>%</td>
+                                                <td><?php echo e($item->user->name ?? '-'); ?></td>
+                                                <td>
+                                                    <?php if($item->priority === 'CRITICAL'): ?>
+                                                        <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'HIGH'): ?>
+                                                        <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                        <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'LOW'): ?>
+                                                        <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td><?php echo e($item->progress); ?>%</td>
+                                                <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i')); ?>
 
-                                                <br />
-                                                <?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i')); ?>
+                                                    <br />
+                                                    <?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i')); ?>
 
-                                            </td>
-                                            <td><?php echo e($item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d-m-Y H:i') : '-'); ?>
+                                                </td>
+                                                <td><?php echo e($item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d-m-Y H:i') : '-'); ?>
 
-                                                <br />
-                                                <?php echo e($item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-'); ?>
+                                                    <br />
+                                                    <?php echo e($item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-'); ?>
 
-                                            </td>
-                                            <td><?php echo e($item->diffTime ?? '-'); ?></td>
-                                            <td>
-                                                <?php if($item->status === 'COMPLETED'): ?>
-                                                    <span class="badge badge-success"><?php echo e($item->status); ?></span>
-                                                <?php elseif($item->status === 'ON DUTY'): ?>
-                                                    <span class="badge badge-primary"><?php echo e($item->status); ?></span>
-                                                <?php elseif($item->status === 'NEW'): ?>
-                                                    <span class="badge badge-info"><?php echo e($item->status); ?></span>
-                                                <?php elseif($item->status === 'CANCELED'): ?>
-                                                    <span class="badge badge-warning"><?php echo e($item->status); ?></span>
-                                                <?php else: ?>
-                                                    <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown d-flex justify-content-center">
-                                                    <button class="btn btn-sm btn-info dropdown-toggle" type="button"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item"
-                                                            href="<?php echo e(route('task_personal.edit', $item->id)); ?>">Edit</a>
-                                                        <a class="dropdown-item" data-toggle="modal"
-                                                            data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
-                                                            data-name="<?php echo e($item->name); ?>"
-                                                            data-status="<?php echo e($item->status); ?>"
-                                                            data-url="<?php echo e(route('task_personal.destroy', $item->id)); ?>"
-                                                            href="#">Remove</a>
+                                                </td>
+                                                <td><?php echo e($item->diffTime ?? '-'); ?></td>
+                                                <td>
+                                                    <?php if($item->status === 'COMPLETED'): ?>
+                                                        <span class="badge badge-success"><?php echo e($item->status); ?></span>
+                                                    <?php elseif($item->status === 'ON DUTY'): ?>
+                                                        <span class="badge badge-primary"><?php echo e($item->status); ?></span>
+                                                    <?php elseif($item->status === 'NEW'): ?>
+                                                        <span class="badge badge-info"><?php echo e($item->status); ?></span>
+                                                    <?php elseif($item->status === 'CANCELED'): ?>
+                                                        <span class="badge badge-warning"><?php echo e($item->status); ?></span>
+                                                    <?php else: ?>
+                                                        <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown d-flex justify-content-center">
+                                                        <button class="btn btn-sm btn-info dropdown-toggle" type="button"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item"
+                                                                href="<?php echo e(route('task_personal.edit', $item->id)); ?>">Edit</a>
+                                                            <a class="dropdown-item" data-toggle="modal"
+                                                                data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
+                                                                data-name="<?php echo e($item->name); ?>"
+                                                                data-status="<?php echo e($item->status); ?>"
+                                                                data-url="<?php echo e(route('task_personal.destroy', $item->id)); ?>"
+                                                                href="#">Remove</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
+                                    <?php if(Auth::check() && in_array(Auth::user()->role, ['OPERATOR'])): ?>
+                                        <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <tr>
+                                                <td><?php echo e($loop->iteration); ?></td>
+                                                <td><?php echo e($item->id); ?></td>
+                                                <td><?php echo e($item->name); ?></td>
+                                                <td><?php echo e($item->relation_name ?? '-'); ?></td>
+                                                <td><?php echo e($item->task_load ?? '-'); ?>%</td>
+                                                <td><?php echo e($item->user->name ?? '-'); ?></td>
+                                                <td>
+                                                    <?php if($item->priority === 'CRITICAL'): ?>
+                                                        <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'HIGH'): ?>
+                                                        <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                        <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'LOW'): ?>
+                                                        <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td><?php echo e($item->progress); ?>%</td>
+                                                <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d-m-Y H:i')); ?>
+
+                                                    <br />
+                                                    <?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d-m-Y H:i')); ?>
+
+                                                </td>
+                                                <td><?php echo e($item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d-m-Y H:i') : '-'); ?>
+
+                                                    <br />
+                                                    <?php echo e($item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d-m-Y H:i') : '-'); ?>
+
+                                                </td>
+                                                <td><?php echo e($item->diffTime ?? '-'); ?></td>
+                                                <td>
+                                                    <?php if($item->status === 'COMPLETED'): ?>
+                                                        <span class="badge badge-success"><?php echo e($item->status); ?></span>
+                                                    <?php elseif($item->status === 'ON DUTY'): ?>
+                                                        <span class="badge badge-primary"><?php echo e($item->status); ?></span>
+                                                    <?php elseif($item->status === 'NEW'): ?>
+                                                        <span class="badge badge-info"><?php echo e($item->status); ?></span>
+                                                    <?php elseif($item->status === 'CANCELED'): ?>
+                                                        <span class="badge badge-warning"><?php echo e($item->status); ?></span>
+                                                    <?php else: ?>
+                                                        <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown d-flex justify-content-center">
+                                                        <button class="btn btn-sm btn-info dropdown-toggle" type="button"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item"
+                                                                href="<?php echo e(route('task_personal.edit', $item->id)); ?>">Edit</a>
+                                                            <a class="dropdown-item" data-toggle="modal"
+                                                                data-target="#deleteModal" data-id="<?php echo e($item->id); ?>"
+                                                                data-name="<?php echo e($item->name); ?>"
+                                                                data-status="<?php echo e($item->status); ?>"
+                                                                data-url="<?php echo e(route('task_personal.destroy', $item->id)); ?>"
+                                                                href="#">Remove</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                             

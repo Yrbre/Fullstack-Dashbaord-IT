@@ -28,6 +28,8 @@ class TaskPersonalController extends Controller
     {
         $tasks = Tasks::with('parent')
             ->where('task_level', 'PERSONAL')
+            ->where('delivered', Auth::user()->id)
+            ->orWhere('delivered', Auth::user()->name)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -35,7 +37,16 @@ class TaskPersonalController extends Controller
         foreach ($tasks as $task) {
             $task->relation_name = $task->parent?->name;
         }
-        return view('pages.task_personal.index', compact('tasks',));
+
+        $ManagementTask = Tasks::with('parent')
+            ->where('task_level', 'PERSONAL')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($ManagementTask as $task) {
+            $task->relation_name = $task->parent?->name;
+        }
+        return view('pages.task_personal.index', compact('tasks', 'ManagementTask'));
     }
 
     /**
@@ -143,7 +154,7 @@ class TaskPersonalController extends Controller
                 'status'        => $data['status'],
                 'progress'      => $data['progress'],
                 'task_load'     => $data['task_load'],
-                'delivered'     => Auth::user()->name,
+                'delivered'     => Auth::user()->id,
                 'location_id'   => $location_ID,
                 'in_timeline'   => $data['in_timeline'],
                 'schedule_start' => $data['schedule_start'],
