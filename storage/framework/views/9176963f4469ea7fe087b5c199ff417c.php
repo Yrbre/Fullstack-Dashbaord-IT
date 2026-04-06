@@ -110,15 +110,15 @@ unset($__errorArgs, $__bag); ?>"
 
 
                                                 <label for="description">Description</label>
-                                                <textarea class="form-control mb-4 <?php $__errorArgs = ['description'];
+                                                <textarea class="uppercase form-control mb-4 <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="description" id="description"
-                                                    rows="3" placeholder="Enter description here..."><?php echo e(old('description', $task->description)); ?></textarea>
+unset($__errorArgs, $__bag); ?>" name="description"
+                                                    id="description" rows="3" placeholder="Enter description here..."><?php echo e(old('description', $task->description)); ?></textarea>
 
 
                                                 <label for="activitySelect">Time Start</label>

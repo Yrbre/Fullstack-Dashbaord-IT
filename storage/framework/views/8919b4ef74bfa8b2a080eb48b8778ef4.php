@@ -49,7 +49,13 @@
                                                     <td><a class="link-black"
                                                             href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
                                                     </td>
-                                                    <td><?php echo e($item->activity->name); ?></td>
+                                                    <?php if($item->reference_type === 'ACTIVITY'): ?>
+                                                        <td><?php echo e($item->activity->name); ?></td>
+                                                    <?php elseif($item->reference_type === 'TASK'): ?>
+                                                        <td><?php echo e($item->task->name); ?></td>
+                                                    <?php else: ?>
+                                                        <td> - </td>
+                                                    <?php endif; ?>
                                                     <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
 
                                                     </td>

@@ -22,6 +22,18 @@ class DashboardManagementController extends Controller
                     ->whereNull('deleted_at')
                     ->groupBy('user_id');
             })
+            ->orWhere(function ($query) {
+                $query->where('reference_type', 'TASK')
+                    ->whereHas('task', function ($t) {
+                        $t->where('location', 'IT OFFICE');
+                    })
+                    ->whereIn('id', function ($q) {
+                        $q->selectRaw('MAX(id)')
+                            ->from('activity_histories')
+                            ->whereNull('deleted_at')
+                            ->groupBy('user_id');
+                    });
+            })
             ->latest()
             ->get();
 
@@ -35,6 +47,9 @@ class DashboardManagementController extends Controller
             })
             ->where(function ($query) {
                 $query->where('reference_type', 'TASK')
+                    ->whereHas('task', function ($t) {
+                        $t->where('location', '!=', 'IT OFFICE');
+                    })
                     ->orWhere(function ($q) {
                         $q->where('reference_type', 'ACTIVITY')
                             ->whereHas('activity', function ($a) {

@@ -50,7 +50,13 @@
                                                     <td><a class="link-black"
                                                             href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
                                                     </td>
-                                                    <td>{{ $item->activity->name }}</td>
+                                                    @if ($item->reference_type === 'ACTIVITY')
+                                                        <td>{{ $item->activity->name }}</td>
+                                                    @elseif ($item->reference_type === 'TASK')
+                                                        <td>{{ $item->task->name }}</td>
+                                                    @else
+                                                        <td> - </td>
+                                                    @endif
                                                     <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
                                                     </td>
                                                     <td style="color:greenyellow">
