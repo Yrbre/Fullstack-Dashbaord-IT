@@ -11,14 +11,15 @@
                         <div class="card shadow">
                             <div class="card-body">
 
-                                <!-- Div dengan scroll untuk tabel -->
-                                <div style="max-height:400px; overflow-y:auto;" data-simplebar>
-                                    <table class="table table-bordered">
+
+                                <div>
+                                    <table class="table datatables" id="dataTable-2">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
                                                 <th>Activity Name</th>
                                                 <th>Parent Job</th>
+                                                <th>Deliver By</th>
                                                 <th>Schedule Start</th>
                                                 <th>Schedule End</th>
                                                 <th>Priority</th>
@@ -35,6 +36,7 @@
                                                     <td><?php echo e($loop->iteration); ?></td>
                                                     <td><?php echo e($item->name); ?></td>
                                                     <td><?php echo e($item->parent->name ?? '-'); ?></td>
+                                                    <td><?php echo e($item->user->name ?? ($item->delivered ?? '-')); ?></td>
                                                     <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
 
                                                     </td>
@@ -51,11 +53,11 @@
                                                         <?php else: ?>
                                                             <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
                                                         <?php endif; ?>
+                                                    </td>
                                                     <td><?php echo e($item->progress); ?>%</td>
                                                     <td><?php echo e($item->location->location ?? '-'); ?></td>
                                                     <td><?php echo e($item->description ?? ''); ?></td>
                                                     <td>
-                                                        
                                                         <button type="button" class="btn btn-sm btn-primary btn-take-task"
                                                             data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
                                                             data-location="<?php echo e($item->location->location ?? '-'); ?>"
@@ -124,14 +126,14 @@
 
 
         </div>
-        <div class="row my-4 justify-content-center" data-simplebar>
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-12 my-4">
                 <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed
                 </h2>
                 <div class="card shadow">
                     <div class="card-body">
-                        <div style="max-height:100%; overflow-y:auto;">
-                            <table class="table table-hover">
+                        <div style="">
+                            <table class="table datatables" id="dataTable-1">
                                 <thead>
                                     <tr>
                                         <td class="text-center">#</td>
@@ -158,7 +160,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <form id="takeForm" method="POST" style="display:none;">
@@ -253,6 +254,25 @@
                 showConfirmButton: false,
             });
         <?php endif; ?>
+    </script>
+    
+    <script>
+        $('#dataTable-1').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+            ]
+        });
+    </script>
+    <script>
+        $('#dataTable-2').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+            ]
+        });
     </script>
 <?php $__env->stopSection(); ?>
 

@@ -12,14 +12,15 @@
                         <div class="card shadow">
                             <div class="card-body">
 
-                                <!-- Div dengan scroll untuk tabel -->
-                                <div style="max-height:400px; overflow-y:auto;" data-simplebar>
-                                    <table class="table table-bordered">
+
+                                <div>
+                                    <table class="table datatables" id="dataTable-2">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
                                                 <th>Activity Name</th>
                                                 <th>Parent Job</th>
+                                                <th>Deliver By</th>
                                                 <th>Schedule Start</th>
                                                 <th>Schedule End</th>
                                                 <th>Priority</th>
@@ -36,6 +37,7 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->name }}</td>
                                                     <td>{{ $item->parent->name ?? '-' }}</td>
+                                                    <td>{{ $item->user->name ?? ($item->delivered ?? '-') }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
                                                     </td>
                                                     <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
@@ -50,12 +52,11 @@
                                                         @else
                                                             <span class="badge badge-secondary">{{ $item->priority }}</span>
                                                         @endif
+                                                    </td>
                                                     <td>{{ $item->progress }}%</td>
                                                     <td>{{ $item->location->location ?? '-' }}</td>
                                                     <td>{{ $item->description ?? '' }}</td>
                                                     <td>
-                                                        {{-- <a href="{{ route('active_task.index', $item->id) }}"
-                                                            class="btn btn-sm btn-primary">Take</a> --}}
                                                         <button type="button" class="btn btn-sm btn-primary btn-take-task"
                                                             data-id="{{ $item->id }}" data-name="{{ $item->name }}"
                                                             data-location="{{ $item->location->location ?? '-' }}"
@@ -124,14 +125,14 @@
 
 
         </div>
-        <div class="row my-4 justify-content-center" data-simplebar>
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-12 my-4">
                 <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed
                 </h2>
                 <div class="card shadow">
                     <div class="card-body">
-                        <div style="max-height:100%; overflow-y:auto;">
-                            <table class="table table-hover">
+                        <div style="">
+                            <table class="table datatables" id="dataTable-1">
                                 <thead>
                                     <tr>
                                         <td class="text-center">#</td>
@@ -158,7 +159,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <form id="takeForm" method="POST" style="display:none;">
@@ -253,5 +253,24 @@
                 showConfirmButton: false,
             });
         @endif
+    </script>
+    {{-- DataTableScript --}}
+    <script>
+        $('#dataTable-1').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+            ]
+        });
+    </script>
+    <script>
+        $('#dataTable-2').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+            ]
+        });
     </script>
 @endsection
