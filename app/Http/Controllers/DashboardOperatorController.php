@@ -29,7 +29,8 @@ class DashboardOperatorController extends Controller
             ->latest()
             ->first();
 
-        $activityList = Activity::where('name', '!=', 'STAND BY')
+        $activityList = Activity::where('id', '!=', '1')
+            ->orderBy('name', 'asc')
             ->get();
 
         $taskReady = Auth::user()

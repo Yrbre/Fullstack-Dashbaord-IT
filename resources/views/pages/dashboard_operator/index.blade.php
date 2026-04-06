@@ -12,63 +12,61 @@
                         <div class="card shadow">
                             <div class="card-body">
 
+                                <table class="table table-responsive datatables" id="dataTable-2">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Activity Name</th>
+                                            <th>Parent Job</th>
+                                            <th>Deliver By</th>
+                                            <th>Schedule Start</th>
+                                            <th>Schedule End</th>
+                                            <th>Priority</th>
+                                            <th>Progres</th>
+                                            <th>Location</th>
+                                            <th>Description</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                <div>
-                                    <table class="table datatables" id="dataTable-2">
-                                        <thead>
+                                        @foreach ($taskReady as $item)
                                             <tr>
-                                                <th>No</th>
-                                                <th>Activity Name</th>
-                                                <th>Parent Job</th>
-                                                <th>Deliver By</th>
-                                                <th>Schedule Start</th>
-                                                <th>Schedule End</th>
-                                                <th>Priority</th>
-                                                <th>Progres</th>
-                                                <th>Location</th>
-                                                <th>Description</th>
-                                                <th>Action</th>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->name }}</td>
+                                                <td>{{ $item->parent->name ?? '-' }}</td>
+                                                <td>{{ $item->user->name ?? ($item->delivered ?? '-') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
+                                                </td>
+                                                <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
+                                                </td>
+                                                <td>
+                                                    @if ($item->priority === 'CRITICAL')
+                                                        <span class="badge badge-danger">{{ $item->priority }}</span>
+                                                    @elseif ($item->priority === 'HIGH')
+                                                        <span class="badge badge-warning">{{ $item->priority }}</span>
+                                                    @elseif ($item->priority === 'MEDIUM')
+                                                        <span class="badge badge-info">{{ $item->priority }}</span>
+                                                    @else
+                                                        <span class="badge badge-secondary">{{ $item->priority }}</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $item->progress }}%</td>
+                                                <td>{{ $item->location->location ?? '-' }}</td>
+                                                <td>{{ $item->description ?? '' }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-primary btn-take-task"
+                                                        data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                        data-location="{{ $item->location->location ?? '-' }}"
+                                                        data-url="{{ route('active_task.index', $item->id) }}">
+                                                        Take
+                                                    </button>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
-                                            @foreach ($taskReady as $item)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $item->name }}</td>
-                                                    <td>{{ $item->parent->name ?? '-' }}</td>
-                                                    <td>{{ $item->user->name ?? ($item->delivered ?? '-') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
-                                                    </td>
-                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
-                                                    </td>
-                                                    <td>
-                                                        @if ($item->priority === 'CRITICAL')
-                                                            <span class="badge badge-danger">{{ $item->priority }}</span>
-                                                        @elseif ($item->priority === 'HIGH')
-                                                            <span class="badge badge-warning">{{ $item->priority }}</span>
-                                                        @elseif ($item->priority === 'MEDIUM')
-                                                            <span class="badge badge-info">{{ $item->priority }}</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">{{ $item->priority }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->progress }}%</td>
-                                                    <td>{{ $item->location->location ?? '-' }}</td>
-                                                    <td>{{ $item->description ?? '' }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                                                            data-location="{{ $item->location->location ?? '-' }}"
-                                                            data-url="{{ route('active_task.index', $item->id) }}">
-                                                            Take
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -131,30 +129,30 @@
                 </h2>
                 <div class="card shadow">
                     <div class="card-body">
-                        <div style="">
-                            <table class="table datatables" id="dataTable-1">
-                                <thead>
+
+                        <table class="table md:table-responsive datatables" id="dataTable-1">
+                            <thead>
+                                <tr>
+                                    <td class="text-center">#</td>
+                                    <td class="text-center">Activity Name</td>
+                                    <td class="text-center">Progress</td>
+                                    <td class="text-center">Status</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($taskCompleted as $task)
                                     <tr>
-                                        <td class="text-center">#</td>
-                                        <td class="text-center">Activity Name</td>
-                                        <td class="text-center">Progress</td>
-                                        <td class="text-center">Status</td>
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td class="text-center">{{ $task->name }}</td>
+                                        <td class="text-center">{{ $task->progress }}%</td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success">Completed</span>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($taskCompleted as $task)
-                                        <tr>
-                                            <td class="text-center">{{ $loop->iteration }}</td>
-                                            <td class="text-center">{{ $task->name }}</td>
-                                            <td class="text-center">{{ $task->progress }}%</td>
-                                            <td class="text-center">
-                                                <span class="badge badge-success">Completed</span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
             </div>

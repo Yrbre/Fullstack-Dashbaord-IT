@@ -11,65 +11,63 @@
                         <div class="card shadow">
                             <div class="card-body">
 
+                                <table class="table table-responsive datatables" id="dataTable-2">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Activity Name</th>
+                                            <th>Parent Job</th>
+                                            <th>Deliver By</th>
+                                            <th>Schedule Start</th>
+                                            <th>Schedule End</th>
+                                            <th>Priority</th>
+                                            <th>Progres</th>
+                                            <th>Location</th>
+                                            <th>Description</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                <div>
-                                    <table class="table datatables" id="dataTable-2">
-                                        <thead>
+                                        <?php $__currentLoopData = $taskReady; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Activity Name</th>
-                                                <th>Parent Job</th>
-                                                <th>Deliver By</th>
-                                                <th>Schedule Start</th>
-                                                <th>Schedule End</th>
-                                                <th>Priority</th>
-                                                <th>Progres</th>
-                                                <th>Location</th>
-                                                <th>Description</th>
-                                                <th>Action</th>
+                                                <td><?php echo e($loop->iteration); ?></td>
+                                                <td><?php echo e($item->name); ?></td>
+                                                <td><?php echo e($item->parent->name ?? '-'); ?></td>
+                                                <td><?php echo e($item->user->name ?? ($item->delivered ?? '-')); ?></td>
+                                                <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
+
+                                                </td>
+                                                <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
+
+                                                </td>
+                                                <td>
+                                                    <?php if($item->priority === 'CRITICAL'): ?>
+                                                        <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'HIGH'): ?>
+                                                        <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                    <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                        <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                    <?php else: ?>
+                                                        <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td><?php echo e($item->progress); ?>%</td>
+                                                <td><?php echo e($item->location->location ?? '-'); ?></td>
+                                                <td><?php echo e($item->description ?? ''); ?></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-primary btn-take-task"
+                                                        data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
+                                                        data-location="<?php echo e($item->location->location ?? '-'); ?>"
+                                                        data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
+                                                        Take
+                                                    </button>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </tbody>
+                                </table>
 
-                                            <?php $__currentLoopData = $taskReady; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <tr>
-                                                    <td><?php echo e($loop->iteration); ?></td>
-                                                    <td><?php echo e($item->name); ?></td>
-                                                    <td><?php echo e($item->parent->name ?? '-'); ?></td>
-                                                    <td><?php echo e($item->user->name ?? ($item->delivered ?? '-')); ?></td>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
-
-                                                    </td>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
-
-                                                    </td>
-                                                    <td>
-                                                        <?php if($item->priority === 'CRITICAL'): ?>
-                                                            <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
-                                                        <?php elseif($item->priority === 'HIGH'): ?>
-                                                            <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
-                                                        <?php elseif($item->priority === 'MEDIUM'): ?>
-                                                            <span class="badge badge-info"><?php echo e($item->priority); ?></span>
-                                                        <?php else: ?>
-                                                            <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?php echo e($item->progress); ?>%</td>
-                                                    <td><?php echo e($item->location->location ?? '-'); ?></td>
-                                                    <td><?php echo e($item->description ?? ''); ?></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
-                                                            data-location="<?php echo e($item->location->location ?? '-'); ?>"
-                                                            data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
-                                                            Take
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -132,30 +130,30 @@
                 </h2>
                 <div class="card shadow">
                     <div class="card-body">
-                        <div style="">
-                            <table class="table datatables" id="dataTable-1">
-                                <thead>
+
+                        <table class="table md:table-responsive datatables" id="dataTable-1">
+                            <thead>
+                                <tr>
+                                    <td class="text-center">#</td>
+                                    <td class="text-center">Activity Name</td>
+                                    <td class="text-center">Progress</td>
+                                    <td class="text-center">Status</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $__currentLoopData = $taskCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td class="text-center">#</td>
-                                        <td class="text-center">Activity Name</td>
-                                        <td class="text-center">Progress</td>
-                                        <td class="text-center">Status</td>
+                                        <td class="text-center"><?php echo e($loop->iteration); ?></td>
+                                        <td class="text-center"><?php echo e($task->name); ?></td>
+                                        <td class="text-center"><?php echo e($task->progress); ?>%</td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success">Completed</span>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $__currentLoopData = $taskCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <tr>
-                                            <td class="text-center"><?php echo e($loop->iteration); ?></td>
-                                            <td class="text-center"><?php echo e($task->name); ?></td>
-                                            <td class="text-center"><?php echo e($task->progress); ?>%</td>
-                                            <td class="text-center">
-                                                <span class="badge badge-success">Completed</span>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </tbody>
-                            </table>
-                        </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
             </div>

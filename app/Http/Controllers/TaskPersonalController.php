@@ -140,6 +140,10 @@ class TaskPersonalController extends Controller
             $data['in_timeline'] = true;
         }
 
+        if ($data['relation_task'] === null) {
+            $data['task_load'] = 100;
+        }
+
         DB::transaction(function () use ($data, $enduserId, $location_ID) {
 
 

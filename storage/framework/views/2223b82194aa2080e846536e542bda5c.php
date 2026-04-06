@@ -247,12 +247,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <div class="form-group col-6" id="otherDepartmentLocationInput" style="display: none;">
-                        <label for="other_department_location">Specify Department Location</label>
-                        <input type="text" class="uppercase form-control" id="other_department_location"
-                            name="other_department_location" placeholder="Enter custom department location"
-                            value="<?php echo e(old('other_department_location')); ?>">
-                    </div>
+                    
 
                     <div class="form-group col-6" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
