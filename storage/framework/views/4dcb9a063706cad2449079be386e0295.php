@@ -2,55 +2,8 @@
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid py-4">
         <div class="mx-auto">
-            <div class="row align-items-stretch mb-4 <?php echo e(empty($activeSession) ? 'justify-content-end' : ''); ?>">
-                <?php if(!empty($activeSession) && $activeSession->reference_type === 'TASK'): ?>
-                    <div class="col-12 col-lg-8 mb-3 mb-lg-0">
-                        <div class="card shadow h-100">
-                            <div class="mt-2 ml-2">
-                                <h2 class="page-title"><i class="fe fe-activity" style="color:chartreuse"></i> Active Job
-                                </h2>
-                            </div>
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                    <th>JOB</th>
-                                    <th>Progress</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </thead>
-                                <tbody>
-                                    <td><?php echo e($activeSession->task->name); ?></td>
-                                    <td><?php echo e($activeSession->task->progress); ?>%</td>
-                                    <td><?php echo e($activeSession->task->status); ?></td>
-                                    <td>
-                                        <a href="<?php echo e(route('dashboard_operator.idle_task', $activeSession->reference_id)); ?>"
-                                            class="btn btn-sm btn-primary">View</a>
-                                    </td>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <div class="col-12 col-lg-4">
-                    <div class=" h-100">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <div class="mb-4">
-                                <div class="activity-icon-wrapper rounded-circle mb-3"></div>
-                                <h4 class="page-title font-weight-bold mb-0">
-                                    <i class="fe fe-list text-primary"></i> PERSONAL ACTIVITY
-                                </h4>
-                            </div>
-
-                            <button type="button" id="btnChooseActivity" class="btn btn-primary px-4 py-2 shadow-sm">
-                                SELECT
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
-                <div class="col-12">
+                <div class="col-8">
 
                     <h4 class="page-title justify-content-center"><i class="fe fe-send" style="color:orange"></i>
                         JOB ASSIGNMENT</h4>
@@ -58,8 +11,7 @@
                         <div class="card shadow">
                             <div class="card-body">
 
-                                <table class="table xl:table-responsive md:table-responsive lg:table-responsive datatables"
-                                    id="dataTable-2">
+                                <table class="table table-responsive datatables" id="dataTable-2">
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -120,7 +72,44 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-4 d-flex justify-content-center">
+                    <div class="d-flex flex-column align-items-center text-center h-100 w-100 px-3"
+                        style="max-width: 360px;">
+                        <!-- Icon dan Judul -->
+                        <div class="mb-4 w-100">
+                            <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto">
+                            </div>
 
+                            <h4 class="page-title font-weight-bold mb-0"> <i class="fe fe-list text-primary"></i> PERSONAL
+                                ACTIVITY
+                            </h4>
+                        </div>
+
+                        <!-- Button -->
+                        <button type="button" id="btnChooseActivity" class="btn btn-primary px-4 py-2 shadow-sm">
+                            SELECT
+                        </button>
+
+                        <?php if(!empty($activeSession) && $activeSession->reference_type === 'TASK'): ?>
+                            <div class="mt-5 mb-4 w-100 py-4 m">
+
+
+                                <h4 class="page-title font-weight-bold mb-2"> <i class="fe fe-activity"
+                                        style="color:chartreuse"></i></i>
+                                    JOB IN PROGRESS
+                                </h4>
+                                <h5 class="page-title font-weight-bold py-4">
+                                    <?php echo e($activeSession->task->name ?? '-'); ?>
+
+                                </h5>
+                                <a href="<?php echo e(route('dashboard_operator.idle_task', $activeSession->reference_id)); ?>"
+                                    class="btn btn-sm btn-primary px-4 py-2">View</a>
+                            </div>
+
+                            <!-- Button -->
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
 
             <div id="activityListTemplate" style="display: none;">
@@ -279,18 +268,6 @@
                 title: 'Success',
                 theme: 'dark',
                 text: '<?php echo e(session('success')); ?>',
-                timer: 2000,
-                showConfirmButton: false,
-            });
-        <?php endif; ?>
-    </script>
-    <script>
-        <?php if(session('error')): ?>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                theme: 'dark',
-                text: '<?php echo e(session('error')); ?>',
                 timer: 2000,
                 showConfirmButton: false,
             });

@@ -65,6 +65,18 @@
                     });
                 <?php endif; ?>
             </script>
+            <script>
+                <?php if(session('error')): ?>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        theme: 'dark',
+                        text: '<?php echo e(session('error')); ?>',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+                <?php endif; ?>
+            </script>
         <?php $__env->stopPush(); ?>
 
 

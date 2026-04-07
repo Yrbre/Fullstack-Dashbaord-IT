@@ -172,15 +172,7 @@ class DashboardOperatorController extends Controller
     {
         $task = Tasks::findOrFail($id);
         $data = $request->validated();
-        $activityHistory = ActivityHistory::where('reference_type', 'TASK')
-            ->where('reference_id', $task->id)
-            ->where('user_id', auth()->id())
-            ->latest()
-            ->firstOrFail();
 
-        $activityHistory->update([
-            'status' => $request->status,
-        ]);
 
         if ($request->status === 'COMPLETED') {
             $task->update([
@@ -212,20 +204,34 @@ class DashboardOperatorController extends Controller
 
 
 
+        if ($request->status == 'ON DUTY') {
+            return redirect()->route('dashboard_operator.idle_task', $task->id)->with('success', 'Task updated successfully.');
+        } else {
 
-        $activityHistory->update([
-            'end_time' => now()->format('Y-m-d H:i:s'),
-        ]);
+            $activityHistory = ActivityHistory::where('reference_type', 'TASK')
+                ->where('reference_id', $task->id)
+                ->where('user_id', auth()->id())
+                ->latest()
+                ->firstOrFail();
 
-        $standby = Activity::where('id', '1')->first();
+            $activityHistory->update([
+                'status' => $request->status,
+                'end_time' => now()->format('Y-m-d H:i:s'),
+            ]);
 
-        ActivityHistory::create([
-            'user_id'           => auth()->id(),
-            'reference_id'      => $standby->id,
-            'reference_type'    => 'ACTIVITY',
-            'location'          => $standby->location,
-            'start_time'        => now(),
-        ]);
+
+            $standby = Activity::where('id', '1')->first();
+
+            ActivityHistory::create([
+                'user_id'           => auth()->id(),
+                'reference_id'      => $standby->id,
+                'reference_type'    => 'ACTIVITY',
+                'location'          => $standby->location,
+                'start_time'        => now(),
+            ]);
+        }
+
+
 
         return redirect()->route('dashboard_operator.index')->with('success', 'Task updated successfully.');
     }

@@ -23,26 +23,27 @@ class ActiveSession
 
         $activeTaskSession = ActivityHistory::query()
             ->where('user_id', $user->id)
-            ->whereIn('reference_type', ['TASK', 'ACTIVITY'])
             ->whereNull('end_time')
             ->where(function ($query) {
                 $query->where('reference_type', 'TASK')
                     ->orWhere(function ($query) {
                         $query->where('reference_type', 'ACTIVITY')
-                            ->whereHas('activity', function ($q) {
-                                $q->where('id', '!=', '1');
-                            });
+                            ->where('reference_id', '!=', 1);
                     });
             })
             ->latest()
             ->first();
 
+
         if (!$activeTaskSession) {
             return $next($request);
         }
 
-        return redirect()
-            ->route('dashboard_operator.index', $activeTaskSession->reference_id)
-            ->with('error', 'Selesaikan Activity Anda Terlebih Dahulu');
+        $redirect = $activeTaskSession->reference_type === 'ACTIVITY'
+            ? redirect()->route('dashboard_operator.idle', $activeTaskSession->id)
+            : redirect()->route('dashboard_operator.index');
+
+
+        return $redirect->with('error', 'Selesaikan Activity Anda Terlebih Dahulu');
     }
 }

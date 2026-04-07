@@ -160,6 +160,17 @@ unset($__errorArgs, $__bag); ?>" name="description"
                 });
             <?php endif; ?>
 
+            <?php if(session('success')): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    theme: 'dark',
+                    text: '<?php echo e(session('success')); ?>',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            <?php endif; ?>
+
             $(function() {
                 const originalProgress = '<?php echo e((string) $task->progress); ?>';
                 const $status = $('#select-status');

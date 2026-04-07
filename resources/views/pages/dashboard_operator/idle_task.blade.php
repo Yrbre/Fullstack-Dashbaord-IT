@@ -133,6 +133,17 @@
                 });
             @endif
 
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    theme: 'dark',
+                    text: '{{ session('success') }}',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            @endif
+
             $(function() {
                 const originalProgress = '{{ (string) $task->progress }}';
                 const $status = $('#select-status');
