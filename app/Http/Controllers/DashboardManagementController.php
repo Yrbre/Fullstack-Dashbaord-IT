@@ -13,6 +13,7 @@ class DashboardManagementController extends Controller
         $standBy = ActivityHistory::with('activity', 'user')
             ->whereHas('user')
             ->where('reference_type', 'ACTIVITY')
+            ->whereNull('end_time')
             ->whereHas('activity', function ($query) {
                 $query->where('location', 'IT OFFICE');
             })
@@ -27,6 +28,7 @@ class DashboardManagementController extends Controller
                     ->whereHas('task', function ($t) {
                         $t->where('location', 'IT OFFICE');
                     })
+                    ->whereNull('end_time')
                     ->whereIn('id', function ($q) {
                         $q->selectRaw('MAX(id)')
                             ->from('activity_histories')
@@ -39,6 +41,7 @@ class DashboardManagementController extends Controller
 
         $outSide = ActivityHistory::with('activity', 'user', 'task')
             ->whereHas('user')
+            ->whereNull('end_time')
             ->whereIn('id', function ($query) {
                 $query->selectRaw('MAX(id)')
                     ->from('activity_histories')
@@ -50,11 +53,13 @@ class DashboardManagementController extends Controller
                     ->whereHas('task', function ($t) {
                         $t->where('location', '!=', 'IT OFFICE');
                     })
+                    ->whereNull('end_time')
                     ->orWhere(function ($q) {
                         $q->where('reference_type', 'ACTIVITY')
                             ->whereHas('activity', function ($a) {
                                 $a->where('location', '!=', 'IT OFFICE');
-                            });
+                            })
+                            ->whereNull('end_time');
                     });
             })
             ->latest()

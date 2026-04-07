@@ -41,7 +41,7 @@
                                                 <td><?php echo e($item->name); ?></td>
                                                 <td><?php echo e($item->relation_name ?? '-'); ?></td>
                                                 <td><?php echo e($item->task_load ?? '-'); ?>%</td>
-                                                <td><?php echo e($item->user->name ?? ($item->delivered ?? '-')); ?></td>
+                                                <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?></td>
                                                 <td><?php echo e($item->user->name ?? '-'); ?></td>
                                                 <td>
                                                     <?php if($item->priority === 'CRITICAL'): ?>

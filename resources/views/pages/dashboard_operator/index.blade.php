@@ -35,7 +35,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->parent->name ?? '-' }}</td>
-                                                <td>{{ $item->user->name ?? ($item->delivered ?? '-') }}</td>
+                                                <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}

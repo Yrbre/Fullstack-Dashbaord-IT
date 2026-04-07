@@ -34,7 +34,7 @@
                                                 <td><?php echo e($loop->iteration); ?></td>
                                                 <td><?php echo e($item->name); ?></td>
                                                 <td><?php echo e($item->parent->name ?? '-'); ?></td>
-                                                <td><?php echo e($item->user->name ?? ($item->delivered ?? '-')); ?></td>
+                                                <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?></td>
                                                 <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
 
                                                 </td>

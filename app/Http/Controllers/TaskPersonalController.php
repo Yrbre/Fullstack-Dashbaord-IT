@@ -26,10 +26,12 @@ class TaskPersonalController extends Controller
      */
     public function index()
     {
-        $tasks = Tasks::with('parent')
+        $tasks = Tasks::with('parent', 'deliveredUser', 'user')
             ->where('task_level', 'PERSONAL')
-            ->where('delivered', Auth::user()->id)
-            ->orWhere('delivered', Auth::user()->name)
+            ->where(function ($query) {
+                $query->where('delivered', Auth::id())
+                    ->orWhere('delivered', Auth::user()->name);
+            })
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -39,7 +41,7 @@ class TaskPersonalController extends Controller
         }
 
 
-        $ManagementTask = Tasks::with('parent')
+        $ManagementTask = Tasks::with('parent', 'deliveredUser', 'user')
             ->where('task_level', 'PERSONAL')
             ->orderBy('created_at', 'desc')
             ->get();

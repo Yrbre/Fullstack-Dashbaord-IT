@@ -27,6 +27,7 @@ class DashboardOperatorController extends Controller
 
         $taskReady = Auth::user()
             ->user_task()
+            ->with('deliveredUser')
             ->where('task_level', 'PERSONAL')
             ->where('status', '!=', 'COMPLETED')
             ->get();

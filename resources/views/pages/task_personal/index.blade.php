@@ -42,7 +42,7 @@
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->relation_name ?? '-' }}</td>
                                                 <td>{{ $item->task_load ?? '-' }}%</td>
-                                                <td>{{ $item->user->name ?? ($item->delivered ?? '-') }}</td>
+                                                <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}</td>
                                                 <td>{{ $item->user->name ?? '-' }}</td>
                                                 <td>
                                                     @if ($item->priority === 'CRITICAL')

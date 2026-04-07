@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Activity;
+use App\Models\ActivityHistory;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,6 +31,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+
+        $activity = Activity::where('id', '1')->first();
+        ActivityHistory::create([
+            'user_id' => $request->user()->id,
+            'reference_id' => $activity->id,
+            'reference_type' => "ACTIVITY",
+            'location' => $activity->location,
+            'status' => "LOGIN",
+            'start_time' => now(),
+        ]);
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -37,11 +50,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $activityHistory = ActivityHistory::where('user_id', $request->user()->id)
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+        if ($activityHistory) {
+            $activityHistory->update([
+                'status' => 'LOGOUT',
+                'end_time' => now(),
+            ]);
+        }
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+
+
+
 
         return redirect('/');
     }

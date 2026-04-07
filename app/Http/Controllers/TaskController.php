@@ -133,7 +133,7 @@ class TaskController extends Controller
             'enduser_id'    => $enduserId,
             'status'        => $data['status'],
             'progress'      => $data['progress'],
-            'delivered'     => Auth::user()->name,
+            'delivered'     => Auth::id(),
             'location_id'   => $location_ID,
             'in_timeline'   => $data['in_timeline'],
             'schedule_start' => $data['schedule_start'],

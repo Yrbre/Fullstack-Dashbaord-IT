@@ -61,6 +61,11 @@ class Tasks extends Model
         return $this->belongsTo(User::class, 'assign_to', 'id');
     }
 
+    public function deliveredUser()
+    {
+        return $this->belongsTo(User::class, 'delivered', 'id');
+    }
+
     public function parent()
     {
         return $this->belongsTo(Tasks::class, 'relation_task');
