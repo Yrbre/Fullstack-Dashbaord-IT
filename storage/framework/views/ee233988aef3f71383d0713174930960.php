@@ -386,7 +386,7 @@
             <div class="job-title">
                 <div class="job-icon">⚡</div>
                 <div class="job-name">
-                    <h2 class="uppercase">{{ $data->name }}</h2>
+                    <h2 class="uppercase"><?php echo e($data->name); ?></h2>
                     <span>Job Assignment</span>
                 </div>
             </div>
@@ -398,7 +398,7 @@
                     <div class="info-label">
                         <span>⚡</span> Priority Level
                     </div>
-                    @php
+                    <?php
                         $priorityClass = '';
                         if (strtolower($data->priority) == 'high' || strtolower($data->priority) == 'tinggi') {
                             $priorityClass = 'priority-high';
@@ -407,10 +407,11 @@
                         } elseif (strtolower($data->priority) == 'low' || strtolower($data->priority) == 'rendah') {
                             $priorityClass = 'priority-low';
                         }
-                    @endphp
+                    ?>
                     <div>
-                        <span class="priority-badge {{ $priorityClass }}">
-                            {{ $data->priority }}
+                        <span class="priority-badge <?php echo e($priorityClass); ?>">
+                            <?php echo e($data->priority); ?>
+
                         </span>
                     </div>
                 </div>
@@ -422,7 +423,7 @@
                         <span>📅</span> Schedule Timeline
                     </div>
 
-                    @php
+                    <?php
                         $start = \Carbon\Carbon::parse($data->schedule_start);
                         $end = \Carbon\Carbon::parse($data->schedule_end);
                         $hours = $start->diffInHours($end);
@@ -430,28 +431,40 @@
                         $isOngoing = $start->isPast() && $end->isFuture();
                         $isUpcoming = $start->isFuture();
                         $isCompleted = $end->isPast();
-                    @endphp
+                    ?>
 
                     <div class="timeline">
                         <!-- Start Time -->
                         <div class="timeline-item">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">START</div>
-                            <div class="timeline-date">{{ $start->format('l, d F Y') }}</div>
-                            <div class="timeline-time">{{ $start->format('H:i') }} WIB</div>
+                            <div class="timeline-date"><?php echo e($start->format('l, d F Y')); ?></div>
+                            <div class="timeline-time"><?php echo e($start->format('H:i')); ?> WIB</div>
                         </div>
 
                         <!-- End Time -->
                         <div class="timeline-item">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">END</div>
-                            <div class="timeline-date">{{ $end->format('l, d F Y') }}</div>
-                            <div class="timeline-time">{{ $end->format('H:i') }} WIB</div>
+                            <div class="timeline-date"><?php echo e($end->format('l, d F Y')); ?></div>
+                            <div class="timeline-time"><?php echo e($end->format('H:i')); ?> WIB</div>
                         </div>
                     </div>
 
                     <!-- Duration Badge -->
+                    <div style="text-align: center; margin-top: 25px;">
+                        <span class="duration-badge">
+                            ⏱️ Duration:
+                            <?php if($days > 0): ?>
+                                <?php echo e($days); ?> day<?php echo e($days > 1 ? 's' : ''); ?>
 
+                                (<?php echo e($hours); ?> hours)
+                            <?php else: ?>
+                                <?php echo e($hours); ?> hour<?php echo e($hours > 1 ? 's' : ''); ?>
+
+                            <?php endif; ?>
+                        </span>
+                    </div>
 
                     <div class="schedule-header">
                         <span>📝</span> Description
@@ -461,7 +474,7 @@
                         <div class="timeline-item">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Description</div>
-                            <div class="timeline-date">{{ $data->description }}</div>
+                            <div class="timeline-date"><?php echo e($data->description); ?></div>
                         </div>
                     </div>
 
@@ -479,7 +492,7 @@
                 <strong>Need help?</strong> Contact your supervisor<br>
             </div>
             <div class="company-info">
-                © {{ date('Y') }} PT.TIFICO FIBER INDONESIA,Tbk . All rights reserved.<br>
+                © <?php echo e(date('Y')); ?> PT.TIFICO FIBER INDONESIA,Tbk . All rights reserved.<br>
                 IT Department
             </div>
         </div>
@@ -487,3 +500,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/mails/create.blade.php ENDPATH**/ ?>

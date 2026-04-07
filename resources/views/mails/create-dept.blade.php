@@ -450,18 +450,7 @@
                         </div>
                     </div>
 
-                    <!-- Duration Badge -->
-                    <div style="text-align: center; margin-top: 25px;">
-                        <span class="duration-badge">
-                            ⏱️ Duration:
-                            @if ($days > 0)
-                                {{ $days }} day{{ $days > 1 ? 's' : '' }}
-                                ({{ $hours }} hours)
-                            @else
-                                {{ $hours }} hour{{ $hours > 1 ? 's' : '' }}
-                            @endif
-                        </span>
-                    </div>
+
 
                     <div class="schedule-header">
                         <span>📝</span> Description
