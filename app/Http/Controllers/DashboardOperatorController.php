@@ -13,23 +13,13 @@ class DashboardOperatorController extends Controller
 {
     public function index()
     {
-        // Jika user masih punya sesi aktif (belum isi end_time), redirect ke idle
-        // Kecuali sesi aktif tersebut adalah activity dengan nama STAND BY
-        $activeSession = ActivityHistory::with('task', 'activity')
+        // Card Active Job hanya menampilkan task yang masih berjalan.
+        $activeSession = ActivityHistory::with('task')
             ->where('user_id', auth()->id())
             ->whereNull('end_time')
-            ->where(function ($query) {
-                $query->where('reference_type', 'TASK')
-                    ->orWhere(function ($query) {
-                        $query->where('reference_type', 'ACTIVITY')
-                            ->whereHas('activity', function ($q) {
-                                $q->where('name', '!=', 'STAND BY');
-                            });
-                    });
-            })
+            ->where('reference_type', 'TASK')
             ->latest()
             ->first();
-
 
         $activityList = Activity::where('id', '!=', '1')
             ->orderBy('name', 'asc')

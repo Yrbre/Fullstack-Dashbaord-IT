@@ -4,7 +4,7 @@
     <div class="container-fluid py-4">
         <div class="mx-auto">
             <div class="row align-items-stretch mb-4 {{ empty($activeSession) ? 'justify-content-end' : '' }}">
-                @if (!empty($activeSession))
+                @if (!empty($activeSession) && $activeSession->reference_type === 'TASK')
                     <div class="col-12 col-lg-8 mb-3 mb-lg-0">
                         <div class="card shadow h-100">
                             <div class="mt-2 ml-2">
@@ -24,7 +24,7 @@
                                     <td>{{ $activeSession->task->status }}</td>
                                     <td>
                                         <a href="{{ route('dashboard_operator.idle_task', $activeSession->reference_id) }}"
-                                            class="btn btn-sm btn-danger">View</a>
+                                            class="btn btn-sm btn-primary">View</a>
                                     </td>
                                 </tbody>
                             </table>
