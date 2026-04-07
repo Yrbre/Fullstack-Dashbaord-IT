@@ -129,7 +129,9 @@ unset($__errorArgs, $__bag); ?>" name="description"
                                                 <span class="live-duration" style="color:greenyellow"
                                                     data-start="<?php echo e(\Carbon\Carbon::parse($task->actual_start)->toISOString()); ?>"></span>
                                                 <div class="d-flex justify-content-end">
-                                                    <button type="submit" class="btn btn-primary mt-4">Update
+                                                    <a href="<?php echo e(route('dashboard_operator.index')); ?>"
+                                                        class="btn btn-secondary mt-4 mr-2">Back</a>
+                                                    <button type="submit" class="btn btn-primary mt-4 ">Update
                                                         Activity</button>
                                                 </div>
                                             </form>

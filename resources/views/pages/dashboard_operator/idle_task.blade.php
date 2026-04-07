@@ -102,7 +102,9 @@
                                                 <span class="live-duration" style="color:greenyellow"
                                                     data-start="{{ \Carbon\Carbon::parse($task->actual_start)->toISOString() }}"></span>
                                                 <div class="d-flex justify-content-end">
-                                                    <button type="submit" class="btn btn-primary mt-4">Update
+                                                    <a href="{{ route('dashboard_operator.index') }}"
+                                                        class="btn btn-secondary mt-4 mr-2">Back</a>
+                                                    <button type="submit" class="btn btn-primary mt-4 ">Update
                                                         Activity</button>
                                                 </div>
                                             </form>

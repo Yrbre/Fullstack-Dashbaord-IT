@@ -32,9 +32,9 @@
                                                 <td><?php echo e($loop->iteration); ?></td>
                                                 <td><?php echo e($item->user->name); ?></td>
                                                 <?php if($item->reference_type === 'TASK'): ?>
-                                                    <td>ACTIVITY PERSONAL</td>
+                                                    <td>JOB</td>
                                                 <?php elseif($item->reference_type === 'ACTIVITY'): ?>
-                                                    <td>ACTIVITY</td>
+                                                    <td>ACTIVITY PERSONAL</td>
                                                 <?php endif; ?>
                                                 <?php if($item->reference_type === 'TASK'): ?>
                                                     <td><?php echo e($item->task->name ?? 'Job Deleted'); ?></td>
@@ -126,14 +126,14 @@
                                                 <td><?php echo e($loop->iteration); ?></td>
                                                 <td><?php echo e($item->user->name); ?></td>
                                                 <?php if($item->reference_type === 'TASK'): ?>
-                                                    <td>ACTIVITY PERSONAL</td>
+                                                    <td>JOB</td>
                                                 <?php elseif($item->reference_type === 'ACTIVITY'): ?>
-                                                    <td>ACTIVITY</td>
+                                                    <td>ACTIVITY PERSONAL</td>
                                                 <?php endif; ?>
                                                 <?php if($item->reference_type === 'TASK'): ?>
-                                                    <td><?php echo e($item->task->name ?? '-'); ?></td>
+                                                    <td><?php echo e($item->task->name ?? 'Job Deleted'); ?></td>
                                                 <?php elseif($item->reference_type === 'ACTIVITY'): ?>
-                                                    <td><?php echo e($item->activity->name ?? '-'); ?></td>
+                                                    <td><?php echo e($item->activity->name ?? 'Activity Deleted'); ?></td>
                                                 <?php else: ?>
                                                     <td>-</td>
                                                 <?php endif; ?>
@@ -144,18 +144,22 @@
                                                 </td>
                                                 <td>
                                                     <?php if($item->reference_type === 'TASK'): ?>
-                                                        <?php if($item->task->priority === 'CRITICAL'): ?>
+                                                        <?php if(!$item->task): ?>
+                                                            <span class="badge badge-secondary">Job Deleted</span>
+                                                        <?php elseif($item->task?->priority === 'CRITICAL'): ?>
                                                             <span
-                                                                class="badge badge-danger"><?php echo e($item->task->priority); ?></span>
-                                                        <?php elseif($item->task->priority === 'HIGH'): ?>
+                                                                class="badge badge-danger"><?php echo e($item->task?->priority); ?></span>
+                                                        <?php elseif($item->task?->priority === 'HIGH'): ?>
                                                             <span
-                                                                class="badge badge-warning"><?php echo e($item->task->priority); ?></span>
-                                                        <?php elseif($item->task->priority === 'MEDIUM'): ?>
+                                                                class="badge badge-warning"><?php echo e($item->task?->priority); ?></span>
+                                                        <?php elseif($item->task?->priority === 'MEDIUM'): ?>
                                                             <span
-                                                                class="badge badge-info"><?php echo e($item->task->priority); ?></span>
-                                                        <?php elseif($item->task->priority === 'LOW'): ?>
+                                                                class="badge badge-info"><?php echo e($item->task?->priority); ?></span>
+                                                        <?php elseif($item->task?->priority === 'LOW'): ?>
                                                             <span
-                                                                class="badge badge-secondary"><?php echo e($item->task->priority); ?></span>
+                                                                class="badge badge-secondary"><?php echo e($item->task?->priority); ?></span>
+                                                        <?php elseif($item->task?->priority === null): ?>
+                                                            <span class="badge badge-secondary">-</span>
                                                         <?php endif; ?>
                                                     <?php elseif($item->reference_type === 'ACTIVITY'): ?>
                                                         -

@@ -5,52 +5,44 @@ namespace App\Http\Middleware;
 use App\Models\ActivityHistory;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ActiveSession
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check()) {
+        // Only guard the actions that start a new assignment; other menus should remain accessible.
+        if (!$request->routeIs('active_task.index', 'dashboard_operator.take')) {
             return $next($request);
         }
 
-        // Hindari infinite loop
-        if (
-            $request->routeIs('dashboard_operator.idle_task') ||
-            $request->routeIs('dashboard_operator.idle') ||
-            $request->routeIs('dashboard_operator.update_task') ||
-            $request->routeIs('dashboard_operator.complete')
-        ) {
+        $user = Auth::user();
+        if (!$user || $user->role !== 'OPERATOR') {
             return $next($request);
         }
 
-        $activeSession = ActivityHistory::where('user_id', auth()->id())
+        $activeTaskSession = ActivityHistory::query()
+            ->where('user_id', $user->id)
+            ->whereIn('reference_type', ['TASK', 'ACTIVITY'])
             ->whereNull('end_time')
             ->where(function ($query) {
                 $query->where('reference_type', 'TASK')
                     ->orWhere(function ($query) {
                         $query->where('reference_type', 'ACTIVITY')
                             ->whereHas('activity', function ($q) {
-                                $q->where('id', '!=', 1);
+                                $q->where('id', '!=', '1');
                             });
                     });
             })
             ->latest()
             ->first();
 
-        if ($activeSession) {
-
-            if ($activeSession->reference_type === 'TASK') {
-                return redirect()
-                    ->route('dashboard_operator.idle_task', $activeSession->reference_id)
-                    ->with('warning', 'Selesaikan task Anda sebelum mengambil yang baru.');
-            }
-
-            return redirect()
-                ->route('dashboard_operator.idle', $activeSession->id)
-                ->with('warning', 'Selesaikan activity Anda sebelum mengambil yang baru.');
+        if (!$activeTaskSession) {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect()
+            ->route('dashboard_operator.index', $activeTaskSession->reference_id)
+            ->with('error', 'Selesaikan Activity Anda Terlebih Dahulu');
     }
 }

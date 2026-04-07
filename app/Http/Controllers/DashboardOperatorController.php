@@ -15,7 +15,8 @@ class DashboardOperatorController extends Controller
     {
         // Jika user masih punya sesi aktif (belum isi end_time), redirect ke idle
         // Kecuali sesi aktif tersebut adalah activity dengan nama STAND BY
-        $activeSession = ActivityHistory::where('user_id', auth()->id())
+        $activeSession = ActivityHistory::with('task', 'activity')
+            ->where('user_id', auth()->id())
             ->whereNull('end_time')
             ->where(function ($query) {
                 $query->where('reference_type', 'TASK')
@@ -28,6 +29,7 @@ class DashboardOperatorController extends Controller
             })
             ->latest()
             ->first();
+
 
         $activityList = Activity::where('id', '!=', '1')
             ->orderBy('name', 'asc')
@@ -44,7 +46,7 @@ class DashboardOperatorController extends Controller
             ->where('status', 'COMPLETED')
             ->where('task_level', 'PERSONAL')
             ->get();
-        return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted'));
+        return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted', 'activeSession'));
     }
 
     public function takeActivity(string $id)
@@ -126,8 +128,7 @@ class DashboardOperatorController extends Controller
             'start_time'        => now(),
         ]);
 
-        return redirect()->route('dashboard_operator.idle_task', $task->id)
-            ->with('success', 'Task taken successfully.');
+        return redirect()->route('dashboard_operator.index')->with('success', 'Task taken successfully.');
     }
 
     public function idleTask(string $id)
