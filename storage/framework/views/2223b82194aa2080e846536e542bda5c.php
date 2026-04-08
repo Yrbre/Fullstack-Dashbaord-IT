@@ -156,7 +156,7 @@ unset($__errorArgs, $__bag); ?>" id="multi-select2"
                             <optgroup label="Select User">
                                 <?php $__currentLoopData = $assignTo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($id); ?>"
-                                        <?php echo e(in_array($id, old('member', [])) ? 'selected' : ''); ?>>
+                                        <?php echo e(in_array($id, old('member', [Auth::user()->id])) ? 'selected' : ''); ?>>
                                         <?php echo e($name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </optgroup>

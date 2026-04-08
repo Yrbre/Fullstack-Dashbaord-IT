@@ -93,7 +93,7 @@
                             <optgroup label="Select User">
                                 @foreach ($assignTo as $id => $name)
                                     <option value="{{ $id }}"
-                                        {{ in_array($id, old('member', [])) ? 'selected' : '' }}>
+                                        {{ in_array($id, old('member', [Auth::user()->id])) ? 'selected' : '' }}>
                                         {{ $name }}</option>
                                 @endforeach
                             </optgroup>
