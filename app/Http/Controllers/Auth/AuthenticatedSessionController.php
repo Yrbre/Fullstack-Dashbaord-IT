@@ -31,16 +31,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if (in_array(Auth::user()->role, ['ADMIN', 'MANAGEMENT'])) {
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
 
-        $activity = Activity::where('id', '1')->first();
-        ActivityHistory::create([
-            'user_id' => $request->user()->id,
-            'reference_id' => $activity->id,
-            'reference_type' => "ACTIVITY",
-            'location' => $activity->location,
-            'status' => "LOGIN",
-            'start_time' => now(),
-        ]);
+        $activityHisotry = ActivityHistory::where('user_id', $request->user()->id)
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+
+        if (!$activityHisotry) {
+            $activity = Activity::where('id', '1')->first();
+            ActivityHistory::create([
+                'user_id' => $request->user()->id,
+                'reference_id' => $activity->id,
+                'reference_type' => "ACTIVITY",
+                'location' => $activity->location,
+                'status' => "LOGIN",
+                'start_time' => now(),
+            ]);
+        }
+
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
