@@ -31,6 +31,11 @@
                                                 data-start="{{ \Carbon\Carbon::parse($activityHistory->start_time)->toISOString() }}"></span>
 
                                             <div class="d-flex justify-content-end">
+                                                <a href="{{ route('dashboard_operator.index') }}"
+                                                    class="btn btn-secondary mt-3 mr-2">
+                                                    Back
+                                                </a>
+
                                                 @if ($activityHistory->reference_type === 'ACTIVITY')
                                                     <form
                                                         action="{{ route('dashboard_operator.complete', $activityHistory->id) }}"

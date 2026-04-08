@@ -108,6 +108,24 @@
 
                             <!-- Button -->
                         <?php endif; ?>
+                        <?php if(!empty($activeSession) && $activeSession->reference_type === 'ACTIVITY'): ?>
+                            <div class="mt-5 mb-4 w-100 py-4 m">
+
+
+                                <h4 class="page-title font-weight-bold mb-2"> <i class="fe fe-activity"
+                                        style="color:chartreuse"></i></i>
+                                    ACTIVITY IN PROGRESS
+                                </h4>
+                                <h5 class="page-title font-weight-bold py-4">
+                                    <?php echo e($activeSession->activity->name ?? '-'); ?>
+
+                                </h5>
+                                <a href="<?php echo e(route('dashboard_operator.idle', $activeSession->id)); ?>"
+                                    class="btn btn-sm btn-primary px-4 py-2">View</a>
+                            </div>
+
+                            <!-- Button -->
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

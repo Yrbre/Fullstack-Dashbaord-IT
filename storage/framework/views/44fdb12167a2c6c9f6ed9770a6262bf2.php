@@ -29,6 +29,11 @@
                                                 data-start="<?php echo e(\Carbon\Carbon::parse($activityHistory->start_time)->toISOString()); ?>"></span>
 
                                             <div class="d-flex justify-content-end">
+                                                <a href="<?php echo e(route('dashboard_operator.index')); ?>"
+                                                    class="btn btn-secondary mt-3 mr-2">
+                                                    Back
+                                                </a>
+
                                                 <?php if($activityHistory->reference_type === 'ACTIVITY'): ?>
                                                     <form
                                                         action="<?php echo e(route('dashboard_operator.complete', $activityHistory->id)); ?>"

@@ -14,12 +14,23 @@ class DashboardOperatorController extends Controller
     public function index()
     {
         // Card Active Job hanya menampilkan task yang masih berjalan.
-        $activeSession = ActivityHistory::with('task')
+        $activeSession = ActivityHistory::with('task', 'activity')
             ->where('user_id', auth()->id())
             ->whereNull('end_time')
-            ->where('reference_type', 'TASK')
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('reference_type', 'ACTIVITY')
+                        ->where('reference_id', '!=', 1);
+                })->orWhere(function ($q) {
+                    $q->where('reference_type', 'TASK');
+                });
+            })
             ->latest()
             ->first();
+
+
+
+
 
         $activityList = Activity::where('id', '!=', '1')
             ->orderBy('name', 'asc')
