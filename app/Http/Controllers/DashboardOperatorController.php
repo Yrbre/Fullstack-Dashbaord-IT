@@ -72,7 +72,7 @@ class DashboardOperatorController extends Controller
             'start_time'        => now(),
 
         ]);
-        return redirect()->route('dashboard_operator.idle', $activityHistory->id)->with('success', 'Activity taken successfully.');
+        return redirect()->route('dashboard_operator.index')->with('success', 'Activity taken successfully.');
     }
 
     public function takeTask(string $id)
