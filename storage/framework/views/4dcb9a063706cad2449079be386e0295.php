@@ -30,40 +30,78 @@
                                     <tbody>
 
                                         <?php $__currentLoopData = $taskReady; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <tr>
-                                                <td><?php echo e($loop->iteration); ?></td>
-                                                <td><?php echo e($item->name); ?></td>
-                                                <td><?php echo e($item->parent->name ?? '-'); ?></td>
-                                                <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?></td>
-                                                <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
+                                            <?php if($item->schedule_start != now()->format('Y-m-d H:i') && $item->schedule_start > now()): ?>
+                                                <tr style="color:yellow">
+                                                    <td><?php echo e($loop->iteration); ?></td>
+                                                    <td><?php echo e($item->name); ?></td>
+                                                    <td><?php echo e($item->parent->name ?? '-'); ?></td>
+                                                    <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?></td>
+                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
 
-                                                </td>
-                                                <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
+                                                    </td>
+                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
 
-                                                </td>
-                                                <td>
-                                                    <?php if($item->priority === 'CRITICAL'): ?>
-                                                        <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
-                                                    <?php elseif($item->priority === 'HIGH'): ?>
-                                                        <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
-                                                    <?php elseif($item->priority === 'MEDIUM'): ?>
-                                                        <span class="badge badge-info"><?php echo e($item->priority); ?></span>
-                                                    <?php else: ?>
-                                                        <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td><?php echo e($item->progress); ?>%</td>
-                                                <td><?php echo e($item->location->location ?? '-'); ?></td>
-                                                <td><?php echo e($item->description ?? ''); ?></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                        data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
-                                                        data-location="<?php echo e($item->location->location ?? '-'); ?>"
-                                                        data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
-                                                        Take
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td>
+                                                        <?php if($item->priority === 'CRITICAL'): ?>
+                                                            <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                        <?php elseif($item->priority === 'HIGH'): ?>
+                                                            <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                        <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                            <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                        <?php else: ?>
+                                                            <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td><?php echo e($item->progress); ?>%</td>
+                                                    <td><?php echo e($item->location->location ?? '-'); ?></td>
+                                                    <td><?php echo e($item->description ?? ''); ?></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
+                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
+                                                            data-location="<?php echo e($item->location->location ?? '-'); ?>"
+                                                            data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
+                                                            Take
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td><?php echo e($loop->iteration); ?></td>
+                                                    <td><?php echo e($item->name); ?></td>
+                                                    <td><?php echo e($item->parent->name ?? '-'); ?></td>
+                                                    <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?></td>
+                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
+
+                                                    </td>
+                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
+
+                                                    </td>
+                                                    <td>
+                                                        <?php if($item->priority === 'CRITICAL'): ?>
+                                                            <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                        <?php elseif($item->priority === 'HIGH'): ?>
+                                                            <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                        <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                            <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                        <?php else: ?>
+                                                            <span
+                                                                class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td><?php echo e($item->progress); ?>%</td>
+                                                    <td><?php echo e($item->location->location ?? '-'); ?></td>
+                                                    <td><?php echo e($item->description ?? ''); ?></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
+                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
+                                                            data-location="<?php echo e($item->location->location ?? '-'); ?>"
+                                                            data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
+                                                            Take
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>

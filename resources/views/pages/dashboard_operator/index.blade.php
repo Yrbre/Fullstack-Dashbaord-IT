@@ -31,38 +31,74 @@
                                     <tbody>
 
                                         @foreach ($taskReady as $item)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->parent->name ?? '-' }}</td>
-                                                <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
-                                                </td>
-                                                <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
-                                                </td>
-                                                <td>
-                                                    @if ($item->priority === 'CRITICAL')
-                                                        <span class="badge badge-danger">{{ $item->priority }}</span>
-                                                    @elseif ($item->priority === 'HIGH')
-                                                        <span class="badge badge-warning">{{ $item->priority }}</span>
-                                                    @elseif ($item->priority === 'MEDIUM')
-                                                        <span class="badge badge-info">{{ $item->priority }}</span>
-                                                    @else
-                                                        <span class="badge badge-secondary">{{ $item->priority }}</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $item->progress }}%</td>
-                                                <td>{{ $item->location->location ?? '-' }}</td>
-                                                <td>{{ $item->description ?? '' }}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                        data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                                                        data-location="{{ $item->location->location ?? '-' }}"
-                                                        data-url="{{ route('active_task.index', $item->id) }}">
-                                                        Take
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            @if ($item->schedule_start != now()->format('Y-m-d H:i') && $item->schedule_start > now())
+                                                <tr style="color:yellow">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->parent->name ?? '-' }}</td>
+                                                    <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($item->priority === 'CRITICAL')
+                                                            <span class="badge badge-danger">{{ $item->priority }}</span>
+                                                        @elseif ($item->priority === 'HIGH')
+                                                            <span class="badge badge-warning">{{ $item->priority }}</span>
+                                                        @elseif ($item->priority === 'MEDIUM')
+                                                            <span class="badge badge-info">{{ $item->priority }}</span>
+                                                        @else
+                                                            <span class="badge badge-secondary">{{ $item->priority }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $item->progress }}%</td>
+                                                    <td>{{ $item->location->location ?? '-' }}</td>
+                                                    <td>{{ $item->description ?? '' }}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
+                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                            data-location="{{ $item->location->location ?? '-' }}"
+                                                            data-url="{{ route('active_task.index', $item->id) }}">
+                                                            Take
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->parent->name ?? '-' }}</td>
+                                                    <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($item->priority === 'CRITICAL')
+                                                            <span class="badge badge-danger">{{ $item->priority }}</span>
+                                                        @elseif ($item->priority === 'HIGH')
+                                                            <span class="badge badge-warning">{{ $item->priority }}</span>
+                                                        @elseif ($item->priority === 'MEDIUM')
+                                                            <span class="badge badge-info">{{ $item->priority }}</span>
+                                                        @else
+                                                            <span
+                                                                class="badge badge-secondary">{{ $item->priority }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $item->progress }}%</td>
+                                                    <td>{{ $item->location->location ?? '-' }}</td>
+                                                    <td>{{ $item->description ?? '' }}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
+                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                            data-location="{{ $item->location->location ?? '-' }}"
+                                                            data-url="{{ route('active_task.index', $item->id) }}">
+                                                            Take
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>

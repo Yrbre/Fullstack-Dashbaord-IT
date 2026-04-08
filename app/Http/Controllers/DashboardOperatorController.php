@@ -41,6 +41,7 @@ class DashboardOperatorController extends Controller
             ->with('deliveredUser')
             ->where('task_level', 'PERSONAL')
             ->where('status', '!=', 'COMPLETED')
+            ->orderBy('schedule_start', 'asc')
             ->get();
 
         $taskCompleted = Auth::user()
