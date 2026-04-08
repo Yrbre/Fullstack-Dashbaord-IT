@@ -452,19 +452,7 @@
                     </div>
 
                     <!-- Duration Badge -->
-                    <div style="text-align: center; margin-top: 25px;">
-                        <span class="duration-badge">
-                            ⏱️ Duration:
-                            <?php if($days > 0): ?>
-                                <?php echo e($days); ?> day<?php echo e($days > 1 ? 's' : ''); ?>
 
-                                (<?php echo e($hours); ?> hours)
-                            <?php else: ?>
-                                <?php echo e($hours); ?> hour<?php echo e($hours > 1 ? 's' : ''); ?>
-
-                            <?php endif; ?>
-                        </span>
-                    </div>
 
                     <div class="schedule-header">
                         <span>📝</span> Description

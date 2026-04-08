@@ -208,7 +208,8 @@ unset($__errorArgs, $__bag); ?>" value="PERSONAL"
                         <label for="other_personal_department">Specify Department</label>
                         <input type="text" class="uppercase form-control" id="other_personal_department"
                             name="other_personal_department" placeholder="Enter custom department"
-                            value="<?php echo e(old('other_personal_department')); ?>">
+                            value="<?php echo e(old('other_personal_department')); ?>" pattern="^\S+$"
+                            oninput="this.value = this.value.replace(/\s+/g, '')">
                     </div>
 
                     <input type="hidden" name="status" value="NEW">

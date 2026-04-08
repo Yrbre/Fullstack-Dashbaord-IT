@@ -33,7 +33,8 @@
                     <div class="form-group col-12" id="otherDepartmentInput" style="display: none;">
                         <label for="other_department">Specify Department</label>
                         <input type="text" class="uppercase form-control" id="other_department" name="other_department"
-                            placeholder="Enter custom department">
+                            placeholder="Enter custom department" pattern="^\S+$"
+                            oninput="this.value = this.value.replace(/\s+/g, '')" value="{{ old('other_department') }}">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>

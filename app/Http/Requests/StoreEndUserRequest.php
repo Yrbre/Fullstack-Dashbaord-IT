@@ -24,7 +24,7 @@ class StoreEndUserRequest extends FormRequest
         return [
             'name'              => 'required|string|max:255|unique:endusers,name,',
             'department'        => 'required|string|max:255',
-            'other_department'  => 'nullable|string|max:255',
+            'other_department'  => 'nullable|string|max:255|regex:/^\S+$/',
         ];
     }
 }

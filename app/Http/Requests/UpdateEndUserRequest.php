@@ -24,7 +24,7 @@ class UpdateEndUserRequest extends FormRequest
         return [
             'name'              => 'sometimes|string|max:255',
             'department'        => 'sometimes|string|max:255',
-            'other_department'  => 'nullable|string|max:255',
+            'other_department'  => 'nullable|string|max:255|regex:/^\S+$/',
         ];
     }
 }
