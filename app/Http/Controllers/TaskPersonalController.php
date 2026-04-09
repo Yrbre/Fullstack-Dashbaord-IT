@@ -120,6 +120,7 @@ class TaskPersonalController extends Controller
         if (($data['location_id'] ?? null) === 'OTHER') {
             $location = Location::firstOrCreate([
                 'location'   => $data['other_location'],
+                'building'   => $data['other_building'],
             ]);
             $location_ID = $location->id;
         } else {

@@ -1,11 +1,10 @@
-@extends('layouts.template')
-@section('judul', 'Location List')
-@section('content')
+<?php $__env->startSection('judul', 'Location List'); ?>
+<?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
         <div class="col-12">
             <div class="mb-4 d-flex justify-content-end">
-                <a href="{{ route('location.create') }}" class="btn btn-primary">Create New</a>
+                <a href="<?php echo e(route('location.create')); ?>" class="btn btn-primary">Create New</a>
             </div>
 
             <div class="row">
@@ -25,12 +24,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($location as $item)
+                                    <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->building }}</td>
-                                            <td>{{ $item->location }}</td>
-                                            <td>{{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
+                                            <td><?php echo e($loop->iteration); ?></td>
+                                            <td><?php echo e($item->building); ?></td>
+                                            <td><?php echo e($item->location); ?></td>
+                                            <td><?php echo e($item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-'); ?>
+
                                             </td>
                                             <td>
                                                 <div class="dropdown d-flex justify-content-center">
@@ -39,22 +39,22 @@
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('location.edit', $item->id) }}">Edit</a>
+                                                            href="<?php echo e(route('location.edit', $item->id)); ?>">Edit</a>
                                                         <a class="dropdown-item js-delete-location"
-                                                            data-id="{{ $item->id }}"
-                                                            data-location="{{ $item->location }}"
-                                                            data-department="{{ $item->department }}"
-                                                            data-url="{{ route('location.destroy', $item->id) }}"
+                                                            data-id="<?php echo e($item->id); ?>"
+                                                            data-location="<?php echo e($item->location); ?>"
+                                                            data-department="<?php echo e($item->department); ?>"
+                                                            data-url="<?php echo e(route('location.destroy', $item->id)); ?>"
                                                             href="#">Remove</a>
                                                     </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                             <form method="POST" id="deleteForm">
-                                @csrf
-                                @method('DELETE')
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
                             </form>
                         </div>
                     </div>
@@ -95,18 +95,18 @@
         });
     </script>
     <script>
-        @if (session('success'))
+        <?php if(session('success')): ?>
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
                 theme: 'dark',
-                text: '{{ session('success') }}',
+                text: '<?php echo e(session('success')); ?>',
                 timer: 2000,
                 showConfirmButton: false,
             });
-        @endif
+        <?php endif; ?>
     </script>
-    {{-- DataTableScript --}}
+    
     <script>
         $('#dataTable-1').DataTable({
             autoWidth: true,
@@ -116,4 +116,6 @@
             ]
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/location/index.blade.php ENDPATH**/ ?>

@@ -23,6 +23,7 @@ class StoreLocationRequest extends FormRequest
     {
         return [
             'location'          => 'required|string|max:255',
+            'building'          => 'required|string|max:255',
         ];
     }
 }

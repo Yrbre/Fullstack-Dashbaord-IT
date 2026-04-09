@@ -23,6 +23,7 @@ class UpdateLocationRequest extends FormRequest
     {
         return [
             'location'          => 'sometimes|string|max:255',
+            'building'          => 'sometimes|string|max:255',
         ];
     }
 }

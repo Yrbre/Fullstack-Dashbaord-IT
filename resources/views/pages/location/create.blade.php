@@ -10,13 +10,23 @@
                 @csrf
                 <div class="form-row">
                     <div class="form-group col-12">
-                        <label for="simple-select2">Select Location</label>
+                        <label for="simple-select2">Building</label>
+                        <input type="text" class="uppercase form-control @error('building') is-invalid @enderror"
+                            id="simple-select2" name="building" placeholder="Enter building">
+                    </div>
+                    @error('building')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+
+                    <div class="form-group col-12">
+                        <label for="simple-select2">Location</label>
                         <input type="text" class="uppercase form-control @error('location') is-invalid @enderror"
                             id="simple-select2" name="location" placeholder="Enter location">
                     </div>
                     @error('location')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
+
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

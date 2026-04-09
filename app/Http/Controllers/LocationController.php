@@ -39,7 +39,8 @@ class LocationController extends Controller
         $request->validated();
 
         Location::firstOrCreate([
-            'location' => $request->location
+            'location' => $request->location,
+            'building' => $request->building
         ]);
 
         return redirect()->route('location.index')->with('success', 'Location created successfully.');
@@ -73,7 +74,8 @@ class LocationController extends Controller
 
 
         $location->update([
-            'location' => $request->location
+            'location' => $request->location,
+            'building' => $request->building
         ]);
         return redirect()->route('location.index')->with('success', 'Location updated successfully.');
     }

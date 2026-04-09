@@ -248,7 +248,11 @@ endif;
 unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    
+                    <div class="form-group col-6" id="otherbuilding" style="display: none;">
+                        <label for="other_building">Specify Building</label>
+                        <input type="text" class="uppercase form-control" id="other_building" name="other_building"
+                            placeholder="Enter Building" value="<?php echo e(old('other_building')); ?>">
+                    </div>
 
                     <div class="form-group col-6" id="otherLocationInput" style="display: none;">
                         <label for="other_location">Specify Location</label>
@@ -427,16 +431,16 @@ unset($__errorArgs, $__bag); ?>
                     $('#otherLocationInput').show();
                     $('#other_location').prop('required', true);
 
-                    $('#otherDepartmentLocationInput').show();
-                    $('#other_department_location').prop('required', true);
+                    $('#otherbuilding').show();
+                    $('#other_building').prop('required', true);
                 } else {
                     $('#otherLocationInput').hide();
                     $('#other_location')
                         .prop('required', false)
                         .val('');
 
-                    $('#otherDepartmentLocationInput').hide();
-                    $('#other_department_location')
+                    $('#otherbuilding').hide();
+                    $('#other_building')
                         .prop('required', false)
                         .val('');
                 }

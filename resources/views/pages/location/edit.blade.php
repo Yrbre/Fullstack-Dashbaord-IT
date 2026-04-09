@@ -10,17 +10,26 @@
                 @csrf
                 @method('PUT')
                 <div class="form-row">
-
+                    <div class="form-group col-12">
+                        <label for="simple-select2">Building</label>
+                        <input type="text" class="uppercase form-control @error('building') is-invalid @enderror"
+                            id="building" name="building" value="{{ old('building', $location->building ?? '') }}"
+                            placeholder="Enter custom building">
+                    </div>
+                    @error('building')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
 
                     <div class="form-group col-12">
                         <label for="simple-select2">Location</label>
                         <input type="text" class="uppercase form-control @error('location') is-invalid @enderror"
                             id="location" name="location" value="{{ old('location', $location->location ?? '') }}"
                             placeholder="Enter custom location">
-                        @error('location')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
                     </div>
+                    @error('location')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
