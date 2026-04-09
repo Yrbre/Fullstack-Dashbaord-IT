@@ -73,7 +73,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], fu
     Route::get('/activity_history/list/{id}/filter', [ActivityHistoryController::class, 'listFilter'])->name('activity_history.list.filter');
     Route::resource('/task/department', TaskController::class)->names('task');
     Route::put('/task/{id}/complete', [TaskController::class, 'complete'])->name('task.complete');
-    Route::get('/export-task-department', [TaskController::class, 'export']);
+    Route::get('/export-task-department', [TaskController::class, 'export'])->name('task.export');
 });
 
 // Edit Activity History, Privilage only for Admin

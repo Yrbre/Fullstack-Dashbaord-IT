@@ -25,6 +25,8 @@
 
 </body>
 <script>
+    const taskExportUrl = @json(route('task.export'));
+
     $('#export-data').on('click', function(e) {
         e.preventDefault();
         Swal.fire({
@@ -84,8 +86,8 @@
 
                     const queryString = params.toString();
                     window.location.href = queryString ?
-                        `/export-task-department?${queryString}` :
-                        '/export-task-department';
+                        `${taskExportUrl}?${queryString}` :
+                        taskExportUrl;
                 });
             }
         });
