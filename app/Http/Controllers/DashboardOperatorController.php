@@ -41,6 +41,8 @@ class DashboardOperatorController extends Controller
             ->with('deliveredUser')
             ->where('task_level', 'PERSONAL')
             ->where('status', '!=', 'COMPLETED')
+            ->where('status', '!=', 'ON DUTY')
+            ->where('status', '!=', 'CANCELLED')
             ->orderBy('schedule_start', 'asc')
             ->get();
 

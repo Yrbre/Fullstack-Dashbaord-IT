@@ -26,7 +26,7 @@ class DashboardManagementController extends Controller
             ->orWhere(function ($query) {
                 $query->where('reference_type', 'TASK')
                     ->whereHas('task', function ($t) {
-                        $t->where('location', 'IT OFFICE');
+                        $t->where('location', 'like', '%IT OFFICE%');
                     })
                     ->whereNull('end_time')
                     ->whereIn('id', function ($q) {
@@ -51,7 +51,7 @@ class DashboardManagementController extends Controller
             ->where(function ($query) {
                 $query->where('reference_type', 'TASK')
                     ->whereHas('task', function ($t) {
-                        $t->where('location', '!=', 'IT OFFICE');
+                        $t->where('location', 'not like', '%IT OFFICE%');
                     })
                     ->whereNull('end_time')
                     ->orWhere(function ($q) {

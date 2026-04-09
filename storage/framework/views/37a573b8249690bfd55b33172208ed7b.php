@@ -3,6 +3,7 @@
 
     <div class="container-fluid">
         <div class="col-12">
+
             <div class="mb-4 d-flex justify-content-end">
                 <a href="<?php echo e(route('task_personal.create')); ?>" class="btn btn-primary">Create New</a>
             </div>

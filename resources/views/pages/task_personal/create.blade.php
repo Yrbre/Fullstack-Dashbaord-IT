@@ -169,7 +169,7 @@
                                         @if (old('location_id') == $item->id) selected @endif>
                                         {{ $item->building }} - {{ $item->location }}</option>
                                 @endforeach
-                                <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option>
+                                {{-- <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option> --}}
                             </optgroup>
                         </select>
                         @error('location_id')
