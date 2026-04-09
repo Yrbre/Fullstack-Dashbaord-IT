@@ -39,7 +39,7 @@ class DashboardManagementController extends Controller
             ->latest()
             ->get();
 
-        $outSide = ActivityHistory::with('activity', 'user', 'task')
+        $outSide = ActivityHistory::with('activity', 'user', 'task',)
             ->whereHas('user')
             ->whereNull('end_time')
             ->whereIn('id', function ($query) {

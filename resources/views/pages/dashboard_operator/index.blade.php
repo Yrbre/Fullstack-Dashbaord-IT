@@ -53,12 +53,13 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $item->progress }}%</td>
-                                                    <td>{{ $item->location->location ?? '-' }}</td>
+                                                    <td>{{ $item->location->building ?? '-' }} -
+                                                        {{ $item->location->location ?? '-' }}</td>
                                                     <td>{{ $item->description ?? '' }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-primary btn-take-task"
                                                             data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                                                            data-location="{{ $item->location->location ?? '-' }}"
+                                                            data-location="{{ $item->location->building ?? '-' }} - {{ $item->location->location ?? '-' }}"
                                                             data-url="{{ route('active_task.index', $item->id) }}">
                                                             Take
                                                         </button>

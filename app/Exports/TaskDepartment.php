@@ -51,7 +51,11 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
             $task->progress,
             $task->task_load ?? '-',
             $task->user->name,
-            $task->location->location,
+            sprintf(
+                '%s - %s',
+                $task->location?->building ?? '-',
+                $task->location?->location ?? '-'
+            ),
             $task->in_timeline ? 'On Schedule' : 'Late',
             $task->schedule_start ? $task->schedule_start->format('Y-m-d H:i') : null,
             $task->schedule_end ? $task->schedule_end->format('Y-m-d H:i') : null,

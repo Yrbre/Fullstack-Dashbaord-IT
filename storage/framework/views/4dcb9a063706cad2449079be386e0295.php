@@ -54,12 +54,13 @@
                                                         <?php endif; ?>
                                                     </td>
                                                     <td><?php echo e($item->progress); ?>%</td>
-                                                    <td><?php echo e($item->location->location ?? '-'); ?></td>
+                                                    <td><?php echo e($item->location->building ?? '-'); ?> -
+                                                        <?php echo e($item->location->location ?? '-'); ?></td>
                                                     <td><?php echo e($item->description ?? ''); ?></td>
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-primary btn-take-task"
                                                             data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
-                                                            data-location="<?php echo e($item->location->location ?? '-'); ?>"
+                                                            data-location="<?php echo e($item->location->building ?? '-'); ?> - <?php echo e($item->location->location ?? '-'); ?>"
                                                             data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
                                                             Take
                                                         </button>

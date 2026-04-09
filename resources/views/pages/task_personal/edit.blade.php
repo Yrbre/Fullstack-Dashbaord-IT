@@ -235,7 +235,7 @@
                                 @foreach ($location as $item)
                                     <option value="{{ $item->id }}"
                                         {{ old('location_id', $task->location_id) == $item->id ? 'selected' : '' }}>
-                                        {{ $item->location }}</option>
+                                        {{ $item->building }} - {{ $item->location }}</option>
                                 @endforeach
                             </optgroup>
                         </select>

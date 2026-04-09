@@ -167,7 +167,7 @@
                                 @foreach ($location as $item)
                                     <option value="{{ $item->id }}"
                                         @if (old('location_id') == $item->id) selected @endif>
-                                        {{ $item->location }}</option>
+                                        {{ $item->building }} - {{ $item->location }}</option>
                                 @endforeach
                                 <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option>
                             </optgroup>

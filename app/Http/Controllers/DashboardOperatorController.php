@@ -89,7 +89,6 @@ class DashboardOperatorController extends Controller
             ]);
         }
         $task = Tasks::findOrFail($id);
-
         $task->update([
             'status' => 'ON DUTY',
         ]);
@@ -127,7 +126,11 @@ class DashboardOperatorController extends Controller
             'user_id'           => auth()->id(),
             'reference_id'      => $task->id,
             'reference_type'    => 'TASK',
-            'location'          => $task->location->location ?? null,
+            'location'          => sprintf(
+                '%s - %s',
+                $task->location?->building ?? '-',
+                $task->location?->location ?? '-'
+            ),
             'start_time'        => now(),
         ]);
 
