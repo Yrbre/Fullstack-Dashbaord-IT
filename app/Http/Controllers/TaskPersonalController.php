@@ -30,7 +30,8 @@ class TaskPersonalController extends Controller
             ->where('task_level', 'PERSONAL')
             ->where(function ($query) {
                 $query->where('delivered', Auth::id())
-                    ->orWhere('delivered', Auth::user()->name);
+                    ->orWhere('delivered', Auth::user()->name)
+                    ->orWhere('assign_to', Auth::id());
             })
             ->orderBy('created_at', 'desc')
             ->get();
