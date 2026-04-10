@@ -120,7 +120,7 @@
                                 <option value="" selected disabled>Select User</option>
                                 @foreach ($endUser as $item)
                                     <option value="{{ $item->id }}" @if (old('enduser_personal') == $item->id) selected @endif>
-                                        {{ $item->name }}</option>
+                                        {{ $item->name ?? '-' }} - {{ $item->department ?? '-' }}</option>
                                 @endforeach
                                 <option value="OTHER" @if (old('enduser_personal') == 'OTHER') selected @endif>OTHER</option>
                             </optgroup>

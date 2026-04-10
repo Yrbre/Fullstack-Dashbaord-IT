@@ -41,8 +41,8 @@ class DashboardOperatorController extends Controller
             ->with('deliveredUser')
             ->where('task_level', 'PERSONAL')
             ->where('status', '!=', 'COMPLETED')
-            ->where('status', '!=', 'ON DUTY')
             ->where('status', '!=', 'CANCELLED')
+            ->wherePivot('taken', false)
             ->orderBy('schedule_start', 'asc')
             ->get();
 
@@ -93,6 +93,11 @@ class DashboardOperatorController extends Controller
         $task = Tasks::findOrFail($id);
         $task->update([
             'status' => 'ON DUTY',
+        ]);
+
+        $userId = auth()->user();
+        $userId->user_task()->updateExistingPivot($task->id, [
+            'taken' => true,
         ]);
 
 
@@ -147,8 +152,16 @@ class DashboardOperatorController extends Controller
 
     public function completeActivity(string $id)
     {
+
         $activityHistory = ActivityHistory::findOrFail($id);
+
+
         if ($activityHistory->reference_type == 'TASK') {
+            $task = Tasks::findOrFail($activityHistory->reference_id);
+            $userId = auth()->user();
+            $userId->user_task()->updateExistingPivot($task->id, [
+                'taken' => false,
+            ]);
             $activityHistory->update([
                 'end_time' => now()->format('Y-m-d H:i:s'),
             ]);
@@ -231,6 +244,12 @@ class DashboardOperatorController extends Controller
                 ->where('user_id', auth()->id())
                 ->latest()
                 ->firstOrFail();
+
+            $taskId = Tasks::findOrFail($activityHistory->reference_id);
+            $userId = auth()->user();
+            $userId->user_task()->updateExistingPivot($taskId->id, [
+                'taken' => false,
+            ]);
 
             $activityHistory->update([
                 'status' => $request->status,

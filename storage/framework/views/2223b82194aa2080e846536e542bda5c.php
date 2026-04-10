@@ -193,7 +193,7 @@ unset($__errorArgs, $__bag); ?>" value="PERSONAL"
                                 <option value="" selected disabled>Select User</option>
                                 <?php $__currentLoopData = $endUser; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>" <?php if(old('enduser_personal') == $item->id): ?> selected <?php endif; ?>>
-                                        <?php echo e($item->name); ?></option>
+                                        <?php echo e($item->name ?? '-'); ?> - <?php echo e($item->department ?? '-'); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <option value="OTHER" <?php if(old('enduser_personal') == 'OTHER'): ?> selected <?php endif; ?>>OTHER</option>
                             </optgroup>
@@ -231,9 +231,9 @@ unset($__errorArgs, $__bag); ?>"
                                 <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>"
                                         <?php if(old('location_id') == $item->id): ?> selected <?php endif; ?>>
-                                        <?php echo e($item->location); ?></option>
+                                        <?php echo e($item->building); ?> - <?php echo e($item->location); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <option value="OTHER" <?php if(old('location_id') == 'OTHER'): ?> selected <?php endif; ?>>OTHER</option>
+                                
                             </optgroup>
                         </select>
                         <?php $__errorArgs = ['location_id'];

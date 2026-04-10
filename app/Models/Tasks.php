@@ -79,6 +79,7 @@ class Tasks extends Model
     public function task_user()
     {
         return $this->belongsToMany(User::class, 'task_user')
+            ->withPivot('taken')
             ->withTimestamps();
     }
 
