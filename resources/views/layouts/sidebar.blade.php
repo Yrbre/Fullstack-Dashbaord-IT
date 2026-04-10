@@ -162,7 +162,7 @@
                     <li class="nav-item w-100">
                         <a class="nav-link @yield('menulocation')" href="#" id="export-data">
                             <i class="fe fe-download fe-16"></i>
-                            <span class="ml-3 item-text">Export Activity List</span>
+                            <span class="ml-3 item-text">Export Job Activity</span>
                         </a>
                     </li>
                 </ul>

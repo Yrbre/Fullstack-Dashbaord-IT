@@ -8,6 +8,7 @@ use App\Models\ActivityHistory;
 use App\Models\Tasks;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardOperatorController extends Controller
 {
@@ -54,7 +55,7 @@ class DashboardOperatorController extends Controller
         return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted', 'activeSession'));
     }
 
-    public function takeActivity(string $id)
+    public function takeActivity(string $id, Request $request)
     {
         $activityHistory = ActivityHistory::where('user_id', auth()->id())
             ->whereNull('end_time')
@@ -66,15 +67,28 @@ class DashboardOperatorController extends Controller
             ]);
         }
         $activity = Activity::findOrFail($id);
+        if ($activity->id == 9) {
+            $LokasiTroble = $request->input('location');
+            $nameTroble = $request->input('trouble');
+            $activityHistory = ActivityHistory::create([
+                'user_id'           => auth()->id(),
+                'reference_id'      => $activity->id,
+                'reference_type'    => 'ACTIVITY',
+                'location'          => $LokasiTroble,
+                'start_time'        => now(),
+                'description'       => $nameTroble,
+            ]);
+        } else {
+            $activityHistory = ActivityHistory::create([
+                'user_id'           => auth()->id(),
+                'reference_id'      => $activity->id,
+                'reference_type'    => 'ACTIVITY',
+                'location'          => $activity->location,
+                'start_time'        => now(),
+                'description'       => null,
+            ]);
+        }
 
-        $activityHistory = ActivityHistory::create([
-            'user_id'           => auth()->id(),
-            'reference_id'      => $activity->id,
-            'reference_type'    => 'ACTIVITY',
-            'location'          => $activity->location,
-            'start_time'        => now(),
-
-        ]);
         return redirect()->route('dashboard_operator.index')->with('success', 'Activity taken successfully.');
     }
 
@@ -139,6 +153,7 @@ class DashboardOperatorController extends Controller
                 $task->location?->location ?? '-'
             ),
             'start_time'        => now(),
+            'description'       => $task->description ?? null,
         ]);
 
         return redirect()->route('dashboard_operator.index')->with('success', 'Task taken successfully.');
@@ -174,6 +189,7 @@ class DashboardOperatorController extends Controller
                 'reference_type'    => 'ACTIVITY',
                 'location'          => $standby->location,
                 'start_time'        => now(),
+                'description'       => null,
             ]);
         } elseif ($activityHistory->reference_type == 'ACTIVITY') {
             $activityHistory->update([
@@ -186,6 +202,7 @@ class DashboardOperatorController extends Controller
                 'reference_type'    => 'ACTIVITY',
                 'location'          => $standby->location,
                 'start_time'        => now(),
+                'description'       => null,
             ]);
         }
 
@@ -265,6 +282,7 @@ class DashboardOperatorController extends Controller
                 'reference_type'    => 'ACTIVITY',
                 'location'          => $standby->location,
                 'start_time'        => now(),
+                'description'       => null,
             ]);
         }
 

@@ -46,24 +46,48 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($standBy as $item)
-                                                <tr>
-                                                    <td><a class="link-black"
-                                                            href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
-                                                    </td>
-                                                    @if ($item->reference_type === 'ACTIVITY')
-                                                        <td>{{ $item->activity->name }}</td>
-                                                    @elseif ($item->reference_type === 'TASK')
-                                                        <td>{{ $item->task->name }}</td>
-                                                    @else
-                                                        <td> - </td>
-                                                    @endif
-                                                    <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
-                                                    </td>
-                                                    <td style="color:greenyellow">
-                                                        <span class="live-duration"
-                                                            data-start="{{ \Carbon\Carbon::parse($item->start_time)->toISOString() }}"></span>
-                                                    </td>
-                                                </tr>
+                                                @if (
+                                                    $item->reference_type === 'ACTIVITY' &&
+                                                        (int) optional($item->activity)->id === 1 &&
+                                                        \Carbon\Carbon::parse($item->start_time)->diffInMinutes(now()) > 3)
+                                                    <tr style="color: yellow">
+                                                        <td><a class="link-black"
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                        </td>
+                                                        @if ($item->reference_type === 'ACTIVITY')
+                                                            <td>{{ $item->activity->name }}</td>
+                                                        @elseif ($item->reference_type === 'TASK')
+                                                            <td>{{ $item->task->name }}</td>
+                                                        @else
+                                                            <td> - </td>
+                                                        @endif
+                                                        <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="{{ \Carbon\Carbon::parse($item->start_time)->toISOString() }}"></span>
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td><a class="link-black"
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                        </td>
+                                                        @if ($item->reference_type === 'ACTIVITY')
+                                                            <td>{{ $item->activity->name }}</td>
+                                                        @elseif ($item->reference_type === 'TASK')
+                                                            <td>{{ $item->task->name }}</td>
+                                                        @else
+                                                            <td> - </td>
+                                                        @endif
+                                                        <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="{{ \Carbon\Carbon::parse($item->start_time)->toISOString() }}"></span>
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -98,7 +122,9 @@
                                                             href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
                                                     </td>
                                                     <td>{{ $item->location }}</td>
-                                                    @if ($item->reference_type === 'ACTIVITY')
+                                                    @if ($item->reference_id == '9')
+                                                        <td>{{ $item->description ?? '-' }}</td>
+                                                    @elseif($item->reference_type === 'ACTIVITY')
                                                         <td>{{ $item->activity->name }}</td>
                                                     @elseif ($item->reference_type === 'TASK')
                                                         <td>{{ $item->task->name }}</td>

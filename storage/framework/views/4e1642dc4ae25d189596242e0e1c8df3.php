@@ -8,7 +8,6 @@
                     <a href="<?php echo e(route('location.create')); ?>" class="btn btn-primary">Create New</a>
                 </div>
             <?php endif; ?>
-
             <div class="row">
                 <div class="col-12 my-4">
                     <div class="card shadow">

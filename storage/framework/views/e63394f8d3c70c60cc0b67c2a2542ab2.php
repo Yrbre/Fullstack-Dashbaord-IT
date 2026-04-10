@@ -22,6 +22,7 @@
                                             <th>Start Time</th>
                                             <th>End Time</th>
                                             <th>Duration</th>
+                                            <th>Description</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -83,6 +84,7 @@
                                                     <?php echo e($item->duration ?? '-'); ?>
 
                                                 </td>
+                                                <td><?php echo e($item->description ?? '-'); ?></td>
                                                 <td><?php echo e($item->status ?? '-'); ?></td>
 
                                             </tr>
@@ -116,6 +118,7 @@
                                             <th>Start Time</th>
                                             <th>End Time</th>
                                             <th>Duration</th>
+                                            <th>Description</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -177,6 +180,7 @@
                                                     <?php echo e($item->duration ?? '-'); ?>
 
                                                 </td>
+                                                <td><?php echo e($item->description ?? '-'); ?></td>
                                                 <td><?php echo e($item->status ?? '-'); ?></td>
 
                                             </tr>

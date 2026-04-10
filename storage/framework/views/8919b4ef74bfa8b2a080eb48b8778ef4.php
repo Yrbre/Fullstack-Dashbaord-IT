@@ -45,25 +45,50 @@
                                         </thead>
                                         <tbody>
                                             <?php $__currentLoopData = $standBy; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <tr>
-                                                    <td><a class="link-black"
-                                                            href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
-                                                    </td>
-                                                    <?php if($item->reference_type === 'ACTIVITY'): ?>
-                                                        <td><?php echo e($item->activity->name); ?></td>
-                                                    <?php elseif($item->reference_type === 'TASK'): ?>
-                                                        <td><?php echo e($item->task->name); ?></td>
-                                                    <?php else: ?>
-                                                        <td> - </td>
-                                                    <?php endif; ?>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
+                                                <?php if(
+                                                    $item->reference_type === 'ACTIVITY' &&
+                                                        (int) optional($item->activity)->id === 1 &&
+                                                        \Carbon\Carbon::parse($item->start_time)->diffInMinutes(now()) > 3): ?>
+                                                    <tr style="color: yellow">
+                                                        <td><a class="link-black"
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                        </td>
+                                                        <?php if($item->reference_type === 'ACTIVITY'): ?>
+                                                            <td><?php echo e($item->activity->name); ?></td>
+                                                        <?php elseif($item->reference_type === 'TASK'): ?>
+                                                            <td><?php echo e($item->task->name); ?></td>
+                                                        <?php else: ?>
+                                                            <td> - </td>
+                                                        <?php endif; ?>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
 
-                                                    </td>
-                                                    <td style="color:greenyellow">
-                                                        <span class="live-duration"
-                                                            data-start="<?php echo e(\Carbon\Carbon::parse($item->start_time)->toISOString()); ?>"></span>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="<?php echo e(\Carbon\Carbon::parse($item->start_time)->toISOString()); ?>"></span>
+                                                        </td>
+                                                    </tr>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td><a class="link-black"
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                        </td>
+                                                        <?php if($item->reference_type === 'ACTIVITY'): ?>
+                                                            <td><?php echo e($item->activity->name); ?></td>
+                                                        <?php elseif($item->reference_type === 'TASK'): ?>
+                                                            <td><?php echo e($item->task->name); ?></td>
+                                                        <?php else: ?>
+                                                            <td> - </td>
+                                                        <?php endif; ?>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
+
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="<?php echo e(\Carbon\Carbon::parse($item->start_time)->toISOString()); ?>"></span>
+                                                        </td>
+                                                    </tr>
+                                                <?php endif; ?>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </tbody>
                                     </table>
@@ -98,7 +123,9 @@
                                                             href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
                                                     </td>
                                                     <td><?php echo e($item->location); ?></td>
-                                                    <?php if($item->reference_type === 'ACTIVITY'): ?>
+                                                    <?php if($item->reference_id == '9'): ?>
+                                                        <td><?php echo e($item->description ?? '-'); ?></td>
+                                                    <?php elseif($item->reference_type === 'ACTIVITY'): ?>
                                                         <td><?php echo e($item->activity->name); ?></td>
                                                     <?php elseif($item->reference_type === 'TASK'): ?>
                                                         <td><?php echo e($item->task->name); ?></td>

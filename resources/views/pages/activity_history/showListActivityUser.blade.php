@@ -30,6 +30,7 @@
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Duration</th>
+                        <th>Description</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -80,6 +81,7 @@
                             <td style="color: greenyellow">
                                 {{ $item->duration ?? '-' }}
                             </td>
+                            <td>{{ $item->description ?? '-' }}</td>
                             <td>{{ $item->status ?? '-' }}</td>
                         </tr>
                     @endforeach

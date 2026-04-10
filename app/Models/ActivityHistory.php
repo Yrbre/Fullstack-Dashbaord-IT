@@ -21,6 +21,7 @@ class ActivityHistory extends Model
         'status',
         'start_time',
         'end_time',
+        'description',
     ];
 
     public function user()

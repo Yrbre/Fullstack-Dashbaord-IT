@@ -194,166 +194,302 @@
                 </div>
             </div>
 
-
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-12 my-4">
-                <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed
-                </h2>
-                <div class="card shadow">
-                    <div class="card-body">
-
-                        <table class="table md:table-responsive datatables" id="dataTable-1">
-                            <thead>
-                                <tr>
-                                    <td class="text-center">#</td>
-                                    <td class="text-center">Activity Name</td>
-                                    <td class="text-center">Progress</td>
-                                    <td class="text-center">Status</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($taskCompleted as $task)
+            <div id="showActivityTemplate" style="display: none;">
+                @foreach ($taskCompleted as $task)
+                    <div id="show-activity-{{ $task->id }}" class="show-activity-item" style="display: none;">
+                        <div style="max-height:400px; overflow-y:auto;" data-simplebar>
+                            <table class="table table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td class="text-center">{{ $task->name }}</td>
-                                        <td class="text-center">{{ $task->progress }}%</td>
-                                        <td class="text-center">
-                                            <span class="badge badge-success">Completed</span>
-                                        </td>
+                                        <td class="text-center">ID</td>
+                                        <td class="text-center">Name</td>
+                                        <td class="text-center">Parent</td>
+                                        <td class="text-center">Assign to</td>
+                                        <td class="text-center">Priority</td>
+                                        <td class="text-center">Schedule Start</td>
+                                        <td class="text-center">Schedule End</td>
+                                        <td class="text-center">Actual Start</td>
+                                        <td class="text-center">Actual End</td>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">{{ $task->id }}</td>
+                                        <td class="text-center">{{ $task->name }}</td>
+                                        <td class="text-center">{{ $task->parent->name ?? '-' }}</td>
+                                        <td class="text-center">{{ $task->assignedTo->name ?? '-' }}</td>
+                                        <td class="text-center">{{ $task->priority }}</td>
+                                        <td class="text-center">{{ $task->schedule_start->format('d-m-Y H:i') ?? '-' }}
+                                        </td>
+                                        <td class="text-center">{{ $task->schedule_end->format('d-m-Y H:i') ?? '-' }}</td>
+                                        <td class="text-center">{{ $task->actual_start->format('d-m-Y H:i') ?? '-' }}</td>
+                                        <td class="text-center">{{ $task->actual_end->format('d-m-Y H:i') ?? '-' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 my-4">
+                    <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Completed
+                    </h2>
+                    <div class="card shadow">
+                        <div class="card-body">
 
+                            <table class="table md:table-responsive datatables" id="dataTable-1">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center">#</td>
+                                        <td class="text-center">Activity Name</td>
+                                        <td class="text-center">Progress</td>
+                                        <td class="text-center">Status</td>
+                                        <td class="">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($taskCompleted as $task)
+                                        <tr>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $task->name }}</td>
+                                            <td class="text-center">{{ $task->progress }}%</td>
+                                            <td class="text-center">
+                                                <span class="badge badge-success">Completed</span>
+                                            </td>
+                                            <td class=""><button type="button" data-id="{{ $task->id }}"
+                                                    data-template-id="show-activity-{{ $task->id }}"
+                                                    class="btn btn-primary px-4 py-2 shadow-sm btn-show-activity">
+                                                    SHOW
+                                                </button></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <form id="takeForm" method="POST" style="display:none;">
-        @csrf
-    </form>
+        <form id="takeForm" method="POST" style="display:none;">
+            @csrf
+        </form>
 
+        <script>
+            $(document).on('click', '.btn-show-activity', function() {
+                const templateId = $(this).data('template-id');
+                const content = $('#' + templateId).html();
 
-    <script>
-        $(document).on('click', '#btnChooseActivity', function() {
-            Swal.fire({
-                title: 'Choose Activity',
-                theme: 'dark',
-                width: '900px',
-                html: $('#activityListTemplate').html(),
-                showConfirmButton: false,
-                showCloseButton: true
+                Swal.fire({
+                    title: 'Activity Details',
+                    theme: 'dark',
+                    width: '1500px',
+                    html: content || '<p class="text-center mb-0">Detail activity tidak ditemukan.</p>',
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
             });
-        });
+        </script>
+        <script>
+            $(document).on('click', '#btnChooseActivity', function() {
+                Swal.fire({
+                    title: 'Choose Activity',
+                    theme: 'dark',
+                    width: '900px',
+                    html: $('#activityListTemplate').html(),
+                    showConfirmButton: false,
+                    showCloseButton: true
+                });
+            });
 
-        function escapeHtml(text) {
-            return $('<div>').text(text || '-').html();
-        }
+            function escapeHtml(text) {
+                return $('<div>').text(text || '-').html();
+            }
 
-        $(document).on('click', '.btn-take-activity', function() {
-            var button = $(this);
-            var activityName = button.data('name');
-            var activityLocation = button.data('location');
-            var takeUrl = button.data('url');
+            $(document).on('click', '.btn-take-activity', function() {
+                const button = $(this);
 
-            Swal.fire({
-                icon: 'question',
-                title: 'Confirm Take Activity',
-                theme: 'dark',
-                html: '<div class="text-center">' +
-                    '<p class="mb-2">Are you sure you want to take this activity?</p>' +
-                    '<p class="mb-1"><strong>Activity Name:</strong> &nbsp;' + escapeHtml(activityName) +
-                    '</p>' +
-                    '<p class="mb-0"><strong>Location:</strong> &nbsp;' + escapeHtml(activityLocation) +
-                    '</p>' +
-                    '</div>',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, Take Activity',
-                cancelButtonText: 'Cancel',
-                confirmButtonColor: '#2f7cf6',
-                cancelButtonColor: '#6c757d'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#takeForm').attr('action', takeUrl).trigger('submit');
+                const activityName = button.data('name');
+                const activityLocation = button.data('location');
+                const endUser = button.data('enduser');
+                const trouble = button.data('trouble');
+                const takeUrl = button.data('url');
+                const activityId = button.data('id');
+
+                let htmlContent = '';
+
+                // Kondisi normal
+                if (activityId != '9') {
+                    htmlContent = `
+            <div class="text-center">
+                <p class="mb-2">Are you sure you want to take this activity?</p>
+                <p class="mb-1">
+                    <strong>Activity Name:</strong>
+                    ${escapeHtml(activityName)}
+                </p>
+                <p class="mb-0">
+                    <strong>Location:</strong>
+                    ${escapeHtml(activityLocation)}
+                </p>
+            </div>
+        `;
                 }
-            });
-        });
-    </script>
+                // Kondisi aktivitas dadakan
+                else {
+                    Swal.fire({
+                        icon: 'question',
+                        title: 'UNPLANNED ACTIVITY',
+                        theme: 'dark',
+                        html: `
+            <div class="text-start" style="max-width: 520px; margin: 0 auto;">
+                <div class="d-flex align-items-center mb-2">
+                    <label for="swal-enduser" class="form-label mb-0" style="width: 110px;">End User</label>
+                    <input type="text" id="swal-enduser" class="uppercase swal2-input" style="margin: 0;" placeholder="Masukkan End User">
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <label for="swal-location" class="form-label mb-0" style="width: 110px;">Location</label>
+                    <input type="text" id="swal-location" class="uppercase swal2-input" style="margin: 0;" placeholder="Masukkan Lokasi">
+                </div>
+                <div class="d-flex align-items-center mb-0">
+                    <label for="swal-trouble" class="form-label mb-0" style="width: 110px;">Trouble</label>
+                    <input type="text" id="swal-trouble" class="uppercase swal2-input" style="margin: 0;" placeholder="Masukkan Trouble">
+                </div>
+            </div>
+        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Take Activity',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonColor: '#2f7cf6',
+                        cancelButtonColor: '#6c757d',
 
-    <script>
-        $(document).on('click', '.btn-take-task', function() {
-            var button = $(this);
-            var jobName = button.data('name');
-            var jobLocation = button.data('location');
-            var takeUrl = button.data('url');
+                        // VALIDASI sebelum submit
+                        preConfirm: () => {
+                            const endUser = $('#swal-enduser').val();
+                            const location = $('#swal-location').val();
+                            const trouble = $('#swal-trouble').val();
 
-            Swal.fire({
-                icon: 'question',
-                title: 'Confirm Take Job',
-                theme: 'dark',
-                html: '<div class="text-center">' +
-                    '<p class="mb-2">Are you sure you want to take this Job?</p>' +
-                    '<p class="mb-1"><strong>Job Name:</strong> &nbsp;' + escapeHtml(jobName) +
-                    '</p>' +
-                    '<p class="mb-0"><strong>Location:</strong> &nbsp;' + escapeHtml(jobLocation) +
-                    '</p>' +
-                    '</div>',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, Take Job',
-                cancelButtonText: 'Cancel',
-                confirmButtonColor: '#2f7cf6',
-                cancelButtonColor: '#6c757d'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = takeUrl;
+                            if (!endUser || !location || !trouble) {
+                                Swal.showValidationMessage('Semua field wajib diisi');
+                                return false;
+                            }
+
+                            return {
+                                endUser,
+                                location,
+                                trouble
+                            };
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            // inject ke form sebelum submit
+                            $('#takeForm').attr('action', takeUrl);
+
+                            // pastikan input hidden ada
+                            $('#takeForm').append(`
+                <input type="hidden" name="end_user" value="${escapeHtml(result.value.endUser)}">
+                <input type="hidden" name="location" value="${escapeHtml(result.value.location)}">
+                <input type="hidden" name="trouble" value="${escapeHtml(result.value.trouble)}">
+            `);
+
+                            $('#takeForm').trigger('submit');
+                        }
+                    });
+
+                    return; // IMPORTANT: stop eksekusi Swal bawah
                 }
+
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Confirm Take Activity',
+                    theme: 'dark',
+                    html: htmlContent,
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Take Activity',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#2f7cf6',
+                    cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#takeForm').attr('action', takeUrl).trigger('submit');
+                    }
+                });
             });
-        });
-    </script>
-    <script>
-        @if (session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                theme: 'dark',
-                text: '{{ session('success') }}',
-                timer: 2000,
-                showConfirmButton: false,
+        </script>
+
+        <script>
+            $(document).on('click', '.btn-take-task', function() {
+                var button = $(this);
+                var jobName = button.data('name');
+                var jobLocation = button.data('location');
+                var takeUrl = button.data('url');
+
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Confirm Take Job',
+                    theme: 'dark',
+                    html: '<div class="text-center">' +
+                        '<p class="mb-2">Are you sure you want to take this Job?</p>' +
+                        '<p class="mb-1"><strong>Job Name:</strong> &nbsp;' + escapeHtml(jobName) +
+                        '</p>' +
+                        '<p class="mb-0"><strong>Location:</strong> &nbsp;' + escapeHtml(jobLocation) +
+                        '</p>' +
+                        '</div>',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Take Job',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#2f7cf6',
+                    cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = takeUrl;
+                    }
+                });
             });
-        @endif
-    </script>
-    <script>
-        @if (session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                theme: 'dark',
-                text: '{{ session('error') }}',
-                timer: 2000,
-                showConfirmButton: false,
+        </script>
+        <script>
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    theme: 'dark',
+                    text: '{{ session('success') }}',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            @endif
+        </script>
+        <script>
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    theme: 'dark',
+                    text: '{{ session('error') }}',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            @endif
+        </script>
+        {{-- DataTableScript --}}
+        <script>
+            $('#dataTable-1').DataTable({
+                autoWidth: true,
+                "lengthMenu": [
+                    [16, 32, 64, -1],
+                    [16, 32, 64, "All"]
+                ]
             });
-        @endif
-    </script>
-    {{-- DataTableScript --}}
-    <script>
-        $('#dataTable-1').DataTable({
-            autoWidth: true,
-            "lengthMenu": [
-                [16, 32, 64, -1],
-                [16, 32, 64, "All"]
-            ]
-        });
-    </script>
-    <script>
-        $('#dataTable-2').DataTable({
-            autoWidth: true,
-            "lengthMenu": [
-                [16, 32, 64, -1],
-                [16, 32, 64, "All"]
-            ]
-        });
-    </script>
-@endsection
+        </script>
+        <script>
+            $('#dataTable-2').DataTable({
+                autoWidth: true,
+                "lengthMenu": [
+                    [16, 32, 64, -1],
+                    [16, 32, 64, "All"]
+                ]
+            });
+        </script>
+    @endsection

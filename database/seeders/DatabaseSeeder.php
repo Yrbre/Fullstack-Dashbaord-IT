@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'PANTRY', 'location' => 'PANTRY'],
             ['name' => 'KANTIN', 'location' => 'KANTIN'],
             ['name' => 'OUT OF OFFICE', 'location' => 'OUT OF OFFICE'],
+            ['name' => 'UNPLANNED', 'location' => 'UNPLANNED'],
         ];
 
         foreach ($activities as $activity) {
