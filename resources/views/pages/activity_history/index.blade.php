@@ -33,15 +33,18 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->user->name }}</td>
-                                                @if ($item->reference_type === 'TASK')
+                                                @if (in_array($item->reference_type, ['TASK', 'JOB']))
                                                     <td>JOB</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
                                                     <td>ACTIVITY PERSONAL</td>
                                                 @endif
+
                                                 @if ($item->reference_type === 'TASK')
                                                     <td>{{ $item->task->name ?? 'Job Deleted' }}</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
                                                     <td>{{ $item->activity->name ?? 'Activity Deleted' }}</td>
+                                                @elseif ($item->reference_type === 'JOB')
+                                                    <td>{{ $item->activity->name ?? 'Job Deleted' }}</td>
                                                 @else
                                                     <td>-</td>
                                                 @endif
@@ -125,15 +128,18 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->user->name }}</td>
-                                                @if ($item->reference_type === 'TASK')
+                                                @if (in_array($item->reference_type, ['TASK', 'JOB']))
                                                     <td>JOB</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
                                                     <td>ACTIVITY PERSONAL</td>
                                                 @endif
+
                                                 @if ($item->reference_type === 'TASK')
                                                     <td>{{ $item->task->name ?? 'Job Deleted' }}</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
                                                     <td>{{ $item->activity->name ?? 'Activity Deleted' }}</td>
+                                                @elseif ($item->reference_type === 'JOB')
+                                                    <td>{{ $item->activity->name ?? 'Job Deleted' }}</td>
                                                 @else
                                                     <td>-</td>
                                                 @endif

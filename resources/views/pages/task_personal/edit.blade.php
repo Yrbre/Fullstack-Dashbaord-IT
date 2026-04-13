@@ -162,7 +162,7 @@
                                     <option value="" selected disabled>Select Status</option>
                                     @if ($task->status === 'ON DUTY')
                                         <option value="ON DUTY"
-                                            {{ old('status', $task->status) == 'ON DUTY' ? 'selected' : '' }}>
+                                            {{ old('status', $task->status) == 'ON DUTY' ? 'selected' : '' }} disabled>
                                             ON DUTY
                                         </option>
                                     @endif

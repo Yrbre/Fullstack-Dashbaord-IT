@@ -32,15 +32,18 @@
                                             <tr>
                                                 <td><?php echo e($loop->iteration); ?></td>
                                                 <td><?php echo e($item->user->name); ?></td>
-                                                <?php if($item->reference_type === 'TASK'): ?>
+                                                <?php if(in_array($item->reference_type, ['TASK', 'JOB'])): ?>
                                                     <td>JOB</td>
                                                 <?php elseif($item->reference_type === 'ACTIVITY'): ?>
                                                     <td>ACTIVITY PERSONAL</td>
                                                 <?php endif; ?>
+
                                                 <?php if($item->reference_type === 'TASK'): ?>
                                                     <td><?php echo e($item->task->name ?? 'Job Deleted'); ?></td>
                                                 <?php elseif($item->reference_type === 'ACTIVITY'): ?>
                                                     <td><?php echo e($item->activity->name ?? 'Activity Deleted'); ?></td>
+                                                <?php elseif($item->reference_type === 'JOB'): ?>
+                                                    <td><?php echo e($item->activity->name ?? 'Job Deleted'); ?></td>
                                                 <?php else: ?>
                                                     <td>-</td>
                                                 <?php endif; ?>
@@ -128,15 +131,18 @@
                                             <tr>
                                                 <td><?php echo e($loop->iteration); ?></td>
                                                 <td><?php echo e($item->user->name); ?></td>
-                                                <?php if($item->reference_type === 'TASK'): ?>
+                                                <?php if(in_array($item->reference_type, ['TASK', 'JOB'])): ?>
                                                     <td>JOB</td>
                                                 <?php elseif($item->reference_type === 'ACTIVITY'): ?>
                                                     <td>ACTIVITY PERSONAL</td>
                                                 <?php endif; ?>
+
                                                 <?php if($item->reference_type === 'TASK'): ?>
                                                     <td><?php echo e($item->task->name ?? 'Job Deleted'); ?></td>
                                                 <?php elseif($item->reference_type === 'ACTIVITY'): ?>
                                                     <td><?php echo e($item->activity->name ?? 'Activity Deleted'); ?></td>
+                                                <?php elseif($item->reference_type === 'JOB'): ?>
+                                                    <td><?php echo e($item->activity->name ?? 'Job Deleted'); ?></td>
                                                 <?php else: ?>
                                                     <td>-</td>
                                                 <?php endif; ?>

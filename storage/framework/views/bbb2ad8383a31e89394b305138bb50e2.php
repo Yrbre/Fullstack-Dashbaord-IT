@@ -255,7 +255,7 @@ unset($__errorArgs, $__bag); ?>" id="select-status"
                                     <option value="" selected disabled>Select Status</option>
                                     <?php if($task->status === 'ON DUTY'): ?>
                                         <option value="ON DUTY"
-                                            <?php echo e(old('status', $task->status) == 'ON DUTY' ? 'selected' : ''); ?>>
+                                            <?php echo e(old('status', $task->status) == 'ON DUTY' ? 'selected' : ''); ?> disabled>
                                             ON DUTY
                                         </option>
                                     <?php endif; ?>

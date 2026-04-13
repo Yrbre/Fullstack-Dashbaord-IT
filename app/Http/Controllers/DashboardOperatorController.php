@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateTaskActiveRequest;
 use App\Models\Activity;
 use App\Models\ActivityHistory;
+use App\Models\EndUser;
+use App\Models\Location;
 use App\Models\Tasks;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Request;
 
 class DashboardOperatorController extends Controller
 {
@@ -24,6 +27,8 @@ class DashboardOperatorController extends Controller
                         ->where('reference_id', '!=', 1);
                 })->orWhere(function ($q) {
                     $q->where('reference_type', 'TASK');
+                })->orWhere(function ($q) {
+                    $q->where('reference_type', 'JOB');
                 });
             })
             ->latest()
@@ -37,7 +42,10 @@ class DashboardOperatorController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        $taskReady = Auth::user()
+        /** @var User $user */
+        $user = Auth::user();
+
+        $taskReady = $user
             ->user_task()
             ->with('deliveredUser')
             ->where('task_level', 'PERSONAL')
@@ -47,12 +55,15 @@ class DashboardOperatorController extends Controller
             ->orderBy('schedule_start', 'asc')
             ->get();
 
-        $taskCompleted = Auth::user()
+        $taskCompleted = $user
             ->user_task()
             ->where('status', 'COMPLETED')
             ->where('task_level', 'PERSONAL')
             ->get();
-        return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted', 'activeSession'));
+
+        $endUser = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
+        $location       = Location::orderBy('location', 'asc')->distinct('location')->get();
+        return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted', 'activeSession', 'endUser', 'location'));
     }
 
     public function takeActivity(string $id, Request $request)
@@ -70,13 +81,18 @@ class DashboardOperatorController extends Controller
         if ($activity->id == 9) {
             $LokasiTroble = $request->input('location');
             $nameTroble = $request->input('trouble');
+            $endUser = $request->input('end_user');
             $activityHistory = ActivityHistory::create([
                 'user_id'           => auth()->id(),
                 'reference_id'      => $activity->id,
-                'reference_type'    => 'ACTIVITY',
+                'reference_type'    => 'JOB',
                 'location'          => $LokasiTroble,
                 'start_time'        => now(),
-                'description'       => $nameTroble,
+                'description'       => sprintf(
+                    '%s - %s',
+                    $endUser ?? '-',
+                    $nameTroble ?? '-'
+                ),
             ]);
         } else {
             $activityHistory = ActivityHistory::create([
@@ -109,8 +125,9 @@ class DashboardOperatorController extends Controller
             'status' => 'ON DUTY',
         ]);
 
-        $userId = auth()->user();
-        $userId->user_task()->updateExistingPivot($task->id, [
+        /** @var User $user */
+        $user = auth()->user();
+        $user->user_task()->updateExistingPivot($task->id, [
             'taken' => true,
         ]);
 
@@ -165,16 +182,19 @@ class DashboardOperatorController extends Controller
         return view('pages.dashboard_operator.idle_task', compact('task'));
     }
 
-    public function completeActivity(string $id)
+    public function completeActivity(string $id, Request $request)
     {
 
         $activityHistory = ActivityHistory::findOrFail($id);
-
+        $activityHistory->update([
+            'description' => $request->input('description') ?? $activityHistory->description,
+        ]);
 
         if ($activityHistory->reference_type == 'TASK') {
             $task = Tasks::findOrFail($activityHistory->reference_id);
-            $userId = auth()->user();
-            $userId->user_task()->updateExistingPivot($task->id, [
+            /** @var User $user */
+            $user = auth()->user();
+            $user->user_task()->updateExistingPivot($task->id, [
                 'taken' => false,
             ]);
             $activityHistory->update([
@@ -191,7 +211,7 @@ class DashboardOperatorController extends Controller
                 'start_time'        => now(),
                 'description'       => null,
             ]);
-        } elseif ($activityHistory->reference_type == 'ACTIVITY') {
+        } elseif (in_array($activityHistory->reference_type, ['ACTIVITY', 'JOB'])) {
             $activityHistory->update([
                 'end_time' => now()->format('Y-m-d H:i:s'),
             ]);
@@ -263,8 +283,9 @@ class DashboardOperatorController extends Controller
                 ->firstOrFail();
 
             $taskId = Tasks::findOrFail($activityHistory->reference_id);
-            $userId = auth()->user();
-            $userId->user_task()->updateExistingPivot($taskId->id, [
+            /** @var User $user */
+            $user = auth()->user();
+            $user->user_task()->updateExistingPivot($taskId->id, [
                 'taken' => false,
             ]);
 

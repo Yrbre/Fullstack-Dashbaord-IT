@@ -129,7 +129,7 @@
                             SELECT
                         </button>
 
-                        <?php if(!empty($activeSession) && $activeSession->reference_type === 'TASK'): ?>
+                        <?php if(!empty($activeSession) && in_array($activeSession->reference_type, ['TASK', 'JOB'])): ?>
                             <div class="mt-5 mb-4 w-100 py-4 m">
 
 
@@ -137,12 +137,23 @@
                                         style="color:chartreuse"></i></i>
                                     JOB IN PROGRESS
                                 </h4>
-                                <h5 class="page-title font-weight-bold py-4">
-                                    <?php echo e($activeSession->task->name ?? '-'); ?>
+                                <?php if($activeSession->reference_type === 'TASK'): ?>
+                                    <h5 class="page-title font-weight-bold py-4">
+                                        <?php echo e($activeSession->task->name ?? '-'); ?>
 
-                                </h5>
-                                <a href="<?php echo e(route('dashboard_operator.idle_task', $activeSession->reference_id)); ?>"
-                                    class="btn btn-sm btn-primary px-4 py-2">View</a>
+                                    </h5>
+                                    <a href="<?php echo e(route('dashboard_operator.idle_task', $activeSession->reference_id)); ?>"
+                                        class="btn btn-sm btn-primary px-4 py-2">View</a>
+                                <?php elseif($activeSession->reference_type === 'JOB'): ?>
+                                    <h5 class="page-title font-weight-bold py-4">
+                                        <?php echo e($activeSession->activity->name ?? '-'); ?>
+
+                                    </h5>
+                                    <a href="<?php echo e(route('dashboard_operator.idle', $activeSession->id)); ?>"
+                                        class="btn btn-sm btn-primary px-4 py-2">View</a>
+                                <?php endif; ?>
+
+
                             </div>
 
                             <!-- Button -->
@@ -323,7 +334,6 @@
                 const trouble = button.data('trouble');
                 const takeUrl = button.data('url');
                 const activityId = button.data('id');
-
                 let htmlContent = '';
 
                 // Kondisi normal
@@ -349,26 +359,68 @@
                         title: 'UNPLANNED ACTIVITY',
                         theme: 'dark',
                         html: `
-            <div class="text-start" style="max-width: 520px; margin: 0 auto;">
-                <div class="d-flex align-items-center mb-2">
-                    <label for="swal-enduser" class="form-label mb-0" style="width: 110px;">End User</label>
-                    <input type="text" id="swal-enduser" class="uppercase swal2-input" style="margin: 0;" placeholder="Masukkan End User">
-                </div>
-                <div class="d-flex align-items-center mb-2">
-                    <label for="swal-location" class="form-label mb-0" style="width: 110px;">Location</label>
-                    <input type="text" id="swal-location" class="uppercase swal2-input" style="margin: 0;" placeholder="Masukkan Lokasi">
-                </div>
-                <div class="d-flex align-items-center mb-0">
-                    <label for="swal-trouble" class="form-label mb-0" style="width: 110px;">Trouble</label>
-                    <input type="text" id="swal-trouble" class="uppercase swal2-input" style="margin: 0;" placeholder="Masukkan Trouble">
-                </div>
-            </div>
+                    <div class="text-start" style="max-width: 560px; margin: 0 auto;">
+                        <div class="small text-muted mb-3">Lengkapi data berikut sebelum mengambil activity.</div>
+
+                        <div class="d-flex align-items-start mb-3" style="gap: 12px;">
+                            <label for="swal-enduser" class="form-label mb-0 pt-2" style="min-width: 120px;">End User</label>
+                            <div style="flex: 1;">
+                                <select class="swal2-select select2" id="swal-enduser" name="enduser_personal" style="margin: 0; width: 100%;">
+                                    <optgroup label="Select End User">
+                                        <option value="" selected disabled>Select User</option>
+                                            <?php $__currentLoopData = $endUser; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($item->name); ?>" <?php if(old('enduser_personal') == $item->name): ?> selected <?php endif; ?>>
+                                                    <?php echo e($item->name ?? '-'); ?> - <?php echo e($item->department ?? '-'); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3" style="gap: 12px;">
+                            <label for="swal-location" class="form-label mb-0 pt-2" style="min-width: 120px;">Location</label>
+                            <div style="flex: 1;">
+                                <select class="swal2-select select2" id="swal-location" name="location" style="margin: 0; width: 100%;">
+                                    <optgroup label="Select Location">
+                                        <option value="" selected disabled>Select Location</option>
+                                            <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($item->building); ?> - <?php echo e($item->location); ?>" <?php if(old('location') == $item->building . ' - ' . $item->location): ?> selected <?php endif; ?>>
+                                                    <?php echo e($item->building ?? '-'); ?> - <?php echo e($item->location ?? '-'); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-0" style="gap: 12px;">
+                            <label for="swal-trouble" class="form-label mb-0 pt-2" style="min-width: 120px;">Trouble</label>
+                            <div style="flex: 1;">
+                                <textarea class="uppercase swal2-textarea" id="swal-trouble" style="margin: 0; width: 100%; min-height: 110px;" placeholder="Masukkan Trouble"></textarea>
+                            </div>
+                        </div>
+                    </div>
         `,
                         showCancelButton: true,
                         confirmButtonText: 'Yes, Take Activity',
                         cancelButtonText: 'Cancel',
                         confirmButtonColor: '#2f7cf6',
                         cancelButtonColor: '#6c757d',
+                        didOpen: () => {
+                            $('#swal-enduser').select2({
+                                theme: 'bootstrap4',
+                                width: '100%',
+                                dropdownParent: $('.swal2-popup'),
+                                placeholder: 'Select User',
+                                allowClear: true
+                            });
+                            $('#swal-location').select2({
+                                theme: 'bootstrap4',
+                                width: '100%',
+                                dropdownParent: $('.swal2-popup'),
+                                placeholder: 'Select Location',
+                                allowClear: true
+                            });
+                        },
 
                         // VALIDASI sebelum submit
                         preConfirm: () => {
@@ -392,13 +444,15 @@
 
                             // inject ke form sebelum submit
                             $('#takeForm').attr('action', takeUrl);
+                            $('#takeForm input[name="end_user"], #takeForm input[name="location"], #takeForm input[name="trouble"]')
+                                .remove();
 
                             // pastikan input hidden ada
                             $('#takeForm').append(`
-                <input type="hidden" name="end_user" value="${escapeHtml(result.value.endUser)}">
-                <input type="hidden" name="location" value="${escapeHtml(result.value.location)}">
-                <input type="hidden" name="trouble" value="${escapeHtml(result.value.trouble)}">
-            `);
+        <input type="hidden" name="end_user" value="${escapeHtml(result.value.endUser)}">
+        <input type="hidden" name="location" value="${escapeHtml(result.value.location)}">
+        <input type="hidden" name="trouble" value="${escapeHtml(result.value.trouble)}">
+        `);
 
                             $('#takeForm').trigger('submit');
                         }
@@ -498,6 +552,7 @@
                 ]
             });
         </script>
+
     <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/dashboard_operator/index.blade.php ENDPATH**/ ?>

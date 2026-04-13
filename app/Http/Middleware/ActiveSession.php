@@ -17,7 +17,8 @@ class ActiveSession
         }
 
         $user = Auth::user();
-        if (!$user || $user->role !== 'OPERATOR') {
+        $allowRoles = ['OPERATOR', 'ADMIN', 'MANAGEMENT'];
+        if (!$user || !in_array($user->role, $allowRoles)) {
             return $next($request);
         }
 
