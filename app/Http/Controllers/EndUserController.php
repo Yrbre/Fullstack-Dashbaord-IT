@@ -25,9 +25,13 @@ class EndUserController extends Controller
             $endUser = EndUser::whereNotNull('name')
                 ->orderBy('name', 'asc')->get();
         }
+        $createdBy = EndUser::whereNotNull('name')
+            ->with('user:id,name')
+            ->get()
+            ->pluck('user.name', 'created_by');
 
 
-        return view('pages.enduser.index', compact('endUser', 'search'));
+        return view('pages.enduser.index', compact('endUser', 'search', 'createdBy'));
     }
 
     /**
@@ -50,7 +54,8 @@ class EndUserController extends Controller
 
         EndUser::firstOrCreate([
             'name' => $request->validated()['name'],
-            'department' => $department
+            'department' => $department,
+            'created_by' => auth()->id()
         ]);
 
         return redirect()->route('enduser.index')->with('success', 'End User created successfully.');

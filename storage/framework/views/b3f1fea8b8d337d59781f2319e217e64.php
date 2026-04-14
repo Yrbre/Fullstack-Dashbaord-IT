@@ -19,6 +19,7 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Department</th>
+                                        <th>Created By</th>
                                         <th>Create at</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -29,6 +30,7 @@
                                             <td><?php echo e($loop->iteration); ?></td>
                                             <td><?php echo e($item->name); ?></td>
                                             <td><?php echo e($item->department); ?></td>
+                                            <td><?php echo e($createdBy->get($item->created_by)); ?></td>
                                             <td><?php echo e($item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-'); ?>
 
                                             </td>

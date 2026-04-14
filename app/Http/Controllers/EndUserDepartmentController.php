@@ -22,7 +22,14 @@ class EndUserDepartmentController extends Controller
 
     public function store(StoreEndUserDepartmentRequest $request)
     {
-        EndUser::create($request->validated());
+        $endUserDepartment = $request->validated();
+        EndUser::firstOrCreate(
+            [
+                'name' => null,
+                'department' => $endUserDepartment['department'],
+                'created_by' => auth()->id()
+            ]
+        );
 
         return redirect()->route('enduser_department.index')->with('success', 'Department created successfully.');
     }

@@ -96,6 +96,7 @@ class TaskPersonalController extends Controller
                 $endUser = EndUser::firstOrCreate([
                     'name'       => null,
                     'department' => $data['other_department'],
+                    'created_by' => auth()->id()
                 ]);
                 $enduserId = $endUser->id;
             } else {
@@ -108,6 +109,7 @@ class TaskPersonalController extends Controller
                 $endUser = EndUser::firstOrCreate([
                     'name'       => $data['other_personal'],
                     'department' => $data['other_personal_department'] ?? null,
+                    'created_by' => auth()->id()
                 ]);
                 $enduserId = $endUser->id;
             } else {

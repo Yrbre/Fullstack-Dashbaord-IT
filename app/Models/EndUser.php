@@ -14,6 +14,7 @@ class EndUser extends Model
     protected $fillable = [
         'name',
         'department',
+        'created_by',
     ];
 
     protected $table = 'endusers';
@@ -21,5 +22,10 @@ class EndUser extends Model
     public function task()
     {
         return $this->hasMany(Task::class, 'enduser_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

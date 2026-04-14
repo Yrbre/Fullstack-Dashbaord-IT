@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tasks::class, 'delivered', 'id');
     }
+
+    public function created_tasks()
+    {
+        return $this->hasMany(Tasks::class, 'created_by', 'id');
+    }
 }

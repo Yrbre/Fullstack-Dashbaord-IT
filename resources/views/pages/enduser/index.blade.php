@@ -20,6 +20,7 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Department</th>
+                                        <th>Created By</th>
                                         <th>Create at</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -30,6 +31,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->department }}</td>
+                                            <td>{{ $createdBy->get($item->created_by) }}</td>
                                             <td>{{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
                                             </td>
                                             <td>
