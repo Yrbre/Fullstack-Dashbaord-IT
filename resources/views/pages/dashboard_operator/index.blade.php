@@ -229,11 +229,12 @@
                                         <td class="text-center">{{ $task->parent->name ?? '-' }}</td>
                                         <td class="text-center">{{ $task->assignedTo->name ?? '-' }}</td>
                                         <td class="text-center">{{ $task->priority }}</td>
-                                        <td class="text-center">{{ $task->schedule_start->format('d-m-Y H:i') ?? '-' }}
+                                        <td class="text-center">{{ $task->schedule_start?->format('d-m-Y H:i') ?? '-' }}
                                         </td>
-                                        <td class="text-center">{{ $task->schedule_end->format('d-m-Y H:i') ?? '-' }}</td>
-                                        <td class="text-center">{{ $task->actual_start->format('d-m-Y H:i') ?? '-' }}</td>
-                                        <td class="text-center">{{ $task->actual_end->format('d-m-Y H:i') ?? '-' }}</td>
+                                        <td class="text-center">{{ $task->schedule_end?->format('d-m-Y H:i') ?? '-' }}</td>
+                                        <td class="text-center">{{ $task->actual_start?->format('d-m-Y H:i') ?? '-' }}
+                                        </td>
+                                        <td class="text-center">{{ $task->actual_end?->format('d-m-Y H:i') ?? '-' }}</td>
                                     </tr>
                                 </tbody>
                             </table>

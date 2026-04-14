@@ -264,7 +264,7 @@ class TaskPersonalController extends Controller
 
 
         // Logic Set Progress, Actual End & Start
-        if (($data['status'] ?? $task->status) === 'COMPLETED' && !$task->actual_start) {
+        if (($data['status'] ?? $task->status) === 'COMPLETED') {
             $data['actual_start'] = now()->format('Y-m-d H:i');
             $data['actual_end']   = now()->format('Y-m-d H:i');
         }
