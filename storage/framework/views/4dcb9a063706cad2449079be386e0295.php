@@ -22,6 +22,7 @@
                                             <th>Schedule End</th>
                                             <th>Priority</th>
                                             <th>Progres</th>
+                                            <th>Status</th>
                                             <th>Location</th>
                                             <th>Description</th>
                                             <th>Action</th>
@@ -54,6 +55,19 @@
                                                         <?php endif; ?>
                                                     </td>
                                                     <td><?php echo e($item->progress); ?>%</td>
+                                                    <td>
+                                                        <?php if($item->status === 'COMPLETED'): ?>
+                                                            <span class="badge badge-success"><?php echo e($item->status); ?></span>
+                                                        <?php elseif($item->status === 'ON DUTY'): ?>
+                                                            <span class="badge badge-primary"><?php echo e($item->status); ?></span>
+                                                        <?php elseif($item->status === 'NEW'): ?>
+                                                            <span class="badge badge-info"><?php echo e($item->status); ?></span>
+                                                        <?php elseif($item->status === 'CANCELED'): ?>
+                                                            <span class="badge badge-warning"><?php echo e($item->status); ?></span>
+                                                        <?php else: ?>
+                                                            <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
+                                                        <?php endif; ?>
+                                                    </td>
                                                     <td><?php echo e($item->location->building ?? '-'); ?> -
                                                         <?php echo e($item->location->location ?? '-'); ?></td>
                                                     <td><?php echo e($item->description ?? ''); ?></td>
@@ -91,6 +105,19 @@
                                                         <?php endif; ?>
                                                     </td>
                                                     <td><?php echo e($item->progress); ?>%</td>
+                                                    <td>
+                                                        <?php if($item->status === 'COMPLETED'): ?>
+                                                            <span class="badge badge-success"><?php echo e($item->status); ?></span>
+                                                        <?php elseif($item->status === 'ON DUTY'): ?>
+                                                            <span class="badge badge-primary"><?php echo e($item->status); ?></span>
+                                                        <?php elseif($item->status === 'NEW'): ?>
+                                                            <span class="badge badge-info"><?php echo e($item->status); ?></span>
+                                                        <?php elseif($item->status === 'CANCELED'): ?>
+                                                            <span class="badge badge-warning"><?php echo e($item->status); ?></span>
+                                                        <?php else: ?>
+                                                            <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
+                                                        <?php endif; ?>
+                                                    </td>
                                                     <td><?php echo e($item->location->location ?? '-'); ?></td>
                                                     <td><?php echo e($item->description ?? ''); ?></td>
                                                     <td>
@@ -238,7 +265,9 @@
                                         <td class="text-center"><?php echo e($task->schedule_start?->format('d-m-Y H:i') ?? '-'); ?>
 
                                         </td>
-                                        <td class="text-center"><?php echo e($task->schedule_end?->format('d-m-Y H:i') ?? '-'); ?></td>
+                                        <td class="text-center"><?php echo e($task->schedule_end?->format('d-m-Y H:i') ?? '-'); ?>
+
+                                        </td>
                                         <td class="text-center"><?php echo e($task->actual_start?->format('d-m-Y H:i') ?? '-'); ?>
 
                                         </td>

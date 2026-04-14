@@ -23,6 +23,7 @@
                                             <th>Schedule End</th>
                                             <th>Priority</th>
                                             <th>Progres</th>
+                                            <th>Status</th>
                                             <th>Location</th>
                                             <th>Description</th>
                                             <th>Action</th>
@@ -53,6 +54,19 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $item->progress }}%</td>
+                                                    <td>
+                                                        @if ($item->status === 'COMPLETED')
+                                                            <span class="badge badge-success">{{ $item->status }}</span>
+                                                        @elseif ($item->status === 'ON DUTY')
+                                                            <span class="badge badge-primary">{{ $item->status }}</span>
+                                                        @elseif ($item->status === 'NEW')
+                                                            <span class="badge badge-info">{{ $item->status }}</span>
+                                                        @elseif ($item->status === 'CANCELED')
+                                                            <span class="badge badge-warning">{{ $item->status }}</span>
+                                                        @else
+                                                            <span class="badge badge-secondary">{{ $item->status }}</span>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $item->location->building ?? '-' }} -
                                                         {{ $item->location->location ?? '-' }}</td>
                                                     <td>{{ $item->description ?? '' }}</td>
@@ -88,6 +102,19 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $item->progress }}%</td>
+                                                    <td>
+                                                        @if ($item->status === 'COMPLETED')
+                                                            <span class="badge badge-success">{{ $item->status }}</span>
+                                                        @elseif ($item->status === 'ON DUTY')
+                                                            <span class="badge badge-primary">{{ $item->status }}</span>
+                                                        @elseif ($item->status === 'NEW')
+                                                            <span class="badge badge-info">{{ $item->status }}</span>
+                                                        @elseif ($item->status === 'CANCELED')
+                                                            <span class="badge badge-warning">{{ $item->status }}</span>
+                                                        @else
+                                                            <span class="badge badge-secondary">{{ $item->status }}</span>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $item->location->location ?? '-' }}</td>
                                                     <td>{{ $item->description ?? '' }}</td>
                                                     <td>
@@ -231,7 +258,8 @@
                                         <td class="text-center">{{ $task->priority }}</td>
                                         <td class="text-center">{{ $task->schedule_start?->format('d-m-Y H:i') ?? '-' }}
                                         </td>
-                                        <td class="text-center">{{ $task->schedule_end?->format('d-m-Y H:i') ?? '-' }}</td>
+                                        <td class="text-center">{{ $task->schedule_end?->format('d-m-Y H:i') ?? '-' }}
+                                        </td>
                                         <td class="text-center">{{ $task->actual_start?->format('d-m-Y H:i') ?? '-' }}
                                         </td>
                                         <td class="text-center">{{ $task->actual_end?->format('d-m-Y H:i') ?? '-' }}</td>
