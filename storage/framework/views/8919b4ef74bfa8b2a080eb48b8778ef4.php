@@ -57,6 +57,10 @@
                                                             <td><?php echo e($item->activity->name); ?></td>
                                                         <?php elseif($item->reference_type === 'TASK'): ?>
                                                             <td><?php echo e($item->task->name); ?></td>
+                                                        <?php elseif($item->reference_type === 'JOB'): ?>
+                                                            <td> <?php echo e($item->description ?? 'No description available'); ?>
+
+                                                            </td>
                                                         <?php else: ?>
                                                             <td> - </td>
                                                         <?php endif; ?>
@@ -77,6 +81,10 @@
                                                             <td><?php echo e($item->activity->name); ?></td>
                                                         <?php elseif($item->reference_type === 'TASK'): ?>
                                                             <td><?php echo e($item->task->name); ?></td>
+                                                        <?php elseif($item->reference_type === 'JOB'): ?>
+                                                            <td> <?php echo e($item->description ?? 'No description available'); ?>
+
+                                                            </td>
                                                         <?php else: ?>
                                                             <td> - </td>
                                                         <?php endif; ?>

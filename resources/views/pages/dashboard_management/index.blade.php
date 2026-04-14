@@ -58,6 +58,9 @@
                                                             <td>{{ $item->activity->name }}</td>
                                                         @elseif ($item->reference_type === 'TASK')
                                                             <td>{{ $item->task->name }}</td>
+                                                        @elseif ($item->reference_type === 'JOB')
+                                                            <td> {{ $item->description ?? 'No description available' }}
+                                                            </td>
                                                         @else
                                                             <td> - </td>
                                                         @endif
@@ -77,6 +80,9 @@
                                                             <td>{{ $item->activity->name }}</td>
                                                         @elseif ($item->reference_type === 'TASK')
                                                             <td>{{ $item->task->name }}</td>
+                                                        @elseif ($item->reference_type === 'JOB')
+                                                            <td> {{ $item->description ?? 'No description available' }}
+                                                            </td>
                                                         @else
                                                             <td> - </td>
                                                         @endif

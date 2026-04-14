@@ -235,12 +235,14 @@
                                         <td class="text-center"><?php echo e($task->parent->name ?? '-'); ?></td>
                                         <td class="text-center"><?php echo e($task->assignedTo->name ?? '-'); ?></td>
                                         <td class="text-center"><?php echo e($task->priority); ?></td>
-                                        <td class="text-center"><?php echo e($task->schedule_start->format('d-m-Y H:i') ?? '-'); ?>
+                                        <td class="text-center"><?php echo e($task->schedule_start?->format('d-m-Y H:i') ?? '-'); ?>
 
                                         </td>
-                                        <td class="text-center"><?php echo e($task->schedule_end->format('d-m-Y H:i') ?? '-'); ?></td>
-                                        <td class="text-center"><?php echo e($task->actual_start->format('d-m-Y H:i') ?? '-'); ?></td>
-                                        <td class="text-center"><?php echo e($task->actual_end->format('d-m-Y H:i') ?? '-'); ?></td>
+                                        <td class="text-center"><?php echo e($task->schedule_end?->format('d-m-Y H:i') ?? '-'); ?></td>
+                                        <td class="text-center"><?php echo e($task->actual_start?->format('d-m-Y H:i') ?? '-'); ?>
+
+                                        </td>
+                                        <td class="text-center"><?php echo e($task->actual_end?->format('d-m-Y H:i') ?? '-'); ?></td>
                                     </tr>
                                 </tbody>
                             </table>

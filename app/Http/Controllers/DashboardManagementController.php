@@ -24,7 +24,7 @@ class DashboardManagementController extends Controller
                     ->groupBy('user_id');
             })
             ->orWhere(function ($query) {
-                $query->where('reference_type', 'TASK')
+                $query->whereIn('reference_type', ['TASK', 'JOB'])
                     ->whereHas('task', function ($t) {
                         $t->where('location', 'like', '%IT OFFICE%');
                     })
@@ -49,7 +49,7 @@ class DashboardManagementController extends Controller
                     ->groupBy('user_id');
             })
             ->where(function ($query) {
-                $query->where('reference_type', 'TASK')
+                $query->whereIn('reference_type', ['TASK', 'JOB'])
                     ->whereHas('task', function ($t) {
                         $t->where('location', 'not like', '%IT OFFICE%');
                     })
