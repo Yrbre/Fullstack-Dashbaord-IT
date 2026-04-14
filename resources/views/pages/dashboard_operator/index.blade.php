@@ -352,30 +352,12 @@
 
                 const activityName = button.data('name');
                 const activityLocation = button.data('location');
-                const endUser = button.data('enduser');
-                const trouble = button.data('trouble');
                 const takeUrl = button.data('url');
-                const activityId = button.data('id');
+                const activityId = Number(button.data('id'));
                 let htmlContent = '';
 
-                // Kondisi normal
-                if (activityId != '9') {
-                    htmlContent = `
-            <div class="text-center">
-                <p class="mb-2">Are you sure you want to take this activity?</p>
-                <p class="mb-1">
-                    <strong>Activity Name:</strong>
-                    ${escapeHtml(activityName)}
-                </p>
-                <p class="mb-0">
-                    <strong>Location:</strong>
-                    ${escapeHtml(activityLocation)}
-                </p>
-            </div>
-        `;
-                }
-                // Kondisi aktivitas dadakan
-                else {
+                // Kondisi aktivitas dadakan (ID 9 wajib isi form)
+                if (activityId === 9) {
                     Swal.fire({
                         icon: 'question',
                         title: 'UNPLANNED ACTIVITY',
@@ -482,6 +464,75 @@
 
                     return; // IMPORTANT: stop eksekusi Swal bawah
                 }
+
+                if (activityId === 8) {
+                    Swal.fire({
+                        icon: 'question',
+                        title: 'INFORMATION ACTIVITY',
+                        theme: 'dark',
+                        html: `
+                    <div class="text-start" style="max-width: 560px; margin: 0 auto;">
+                        <div class="small text-muted mb-3">Lengkapi data berikut sebelum mengambil activity.</div>
+                        <div class="d-flex align-items-start mb-0" style="gap: 12px;">
+                            <label for="swal-trouble" class="form-label mb-0 pt-2" style="min-width: 120px;">Keterangan</label>
+                            <div style="flex: 1;">
+                                <textarea class="uppercase swal2-textarea" id="swal-trouble" style="margin: 0; width: 100%; min-height: 110px;" placeholder="Masukkan Keterangan"></textarea>
+                            </div>
+                        </div>
+                    </div>
+        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Take Activity',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonColor: '#2f7cf6',
+                        cancelButtonColor: '#6c757d',
+                        // VALIDASI sebelum submit
+                        preConfirm: () => {
+                            const trouble = $('#swal-trouble').val();
+
+                            if (!trouble) {
+                                Swal.showValidationMessage('Semua field wajib diisi');
+                                return false;
+                            }
+
+                            return {
+                                trouble
+                            };
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            // inject ke form sebelum submit
+                            $('#takeForm').attr('action', takeUrl);
+                            $('#takeForm input[name="trouble"]')
+                                .remove();
+                            // pastikan input hidden ada
+                            $('#takeForm').append(`
+        <input type="hidden" name="trouble" value="${escapeHtml(result.value.trouble)}">
+        `);
+
+                            $('#takeForm').trigger('submit');
+                        }
+                    });
+
+                    return; // IMPORTANT: stop eksekusi Swal bawah
+                }
+
+
+                // Selain ID 8 dan 9, hanya konfirmasi biasa
+                htmlContent = `
+            <div class="text-center">
+                <p class="mb-2">Are you sure you want to take this activity?</p>
+                <p class="mb-1">
+                    <strong>Activity Name:</strong>
+                    ${escapeHtml(activityName)}
+                </p>
+                <p class="mb-0">
+                    <strong>Location:</strong>
+                    ${escapeHtml(activityLocation)}
+                </p>
+            </div>
+        `;
 
                 Swal.fire({
                     icon: 'question',

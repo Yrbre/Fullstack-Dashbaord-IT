@@ -30,6 +30,9 @@
                                                 <?php if($activityHistory->reference_type == 'JOB'): ?>
                                                     <label for="activitySelect">End User - Description</label>
                                                     <textarea name='description' type="text" class="form-control mb-4 uppercase" id="activitySelect"><?php echo e(old('description', $activityHistory->description) ?? '-'); ?></textarea>
+                                                <?php elseif($activityHistory->reference_type == 'ACTIVITY' && $activityHistory->reference_id == 8): ?>
+                                                    <label for="activitySelect">Description</label>
+                                                    <textarea name='description' type="text" class="form-control mb-4 uppercase" id="activitySelect"><?php echo e(old('description', $activityHistory->description) ?? '-'); ?></textarea>
                                                 <?php endif; ?>
 
                                                 <label for="activitySelect">Duration :</label>

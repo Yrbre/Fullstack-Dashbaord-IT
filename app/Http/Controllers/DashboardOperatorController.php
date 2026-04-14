@@ -94,6 +94,19 @@ class DashboardOperatorController extends Controller
                     $nameTroble ?? '-'
                 ),
             ]);
+        } elseif ($activity->id == 8) {
+            $nameTroble = $request->input('trouble');
+            $activityHistory = ActivityHistory::create([
+                'user_id'           => auth()->id(),
+                'reference_id'      => $activity->id,
+                'reference_type'    => 'ACTIVITY',
+                'location'          => $activity->location,
+                'start_time'        => now(),
+                'description'       => sprintf(
+                    '%s',
+                    $nameTroble ?? '-'
+                ),
+            ]);
         } else {
             $activityHistory = ActivityHistory::create([
                 'user_id'           => auth()->id(),
