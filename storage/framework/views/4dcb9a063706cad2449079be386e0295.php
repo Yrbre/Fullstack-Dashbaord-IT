@@ -161,7 +161,9 @@
                                         <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto"></div>
 
                                         <h4 class="page-title font-weight-bold mb-2">
-                                            <i class="fe fe-alert-triangle text-warning"></i> ONSPOT JOB
+                                            <i class="fe fe-alert-triangle text-warning"></i>
+                                            <?php echo e($activityList->where('id', 9)->first()->name ?? '-'); ?>
+
                                         </h4>
                                         <p class="text-muted mb-0 small">Untuk pekerjaan dadakan yang langsung diambil.</p>
 
