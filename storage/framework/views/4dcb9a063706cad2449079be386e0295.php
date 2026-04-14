@@ -2,7 +2,7 @@
 <?php $__env->startSection('content'); ?>
     <div class="container-fluid py-4">
         <div class="mx-auto">
-            <div class="row">
+            <div class="row align-items-start">
                 <div class="col-8">
 
                     <h4 class="page-title justify-content-center"><i class="fe fe-send" style="color:orange"></i>
@@ -139,70 +139,96 @@
                     </div>
                 </div>
                 <div class="col-4 d-flex justify-content-center">
-                    <div class="d-flex flex-column align-items-center text-center h-100 w-100 px-3"
-                        style="max-width: 360px;">
-                        <!-- Icon dan Judul -->
-                        <div class="mb-4 w-100">
-                            <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto">
-                            </div>
+                    <div class="w-100" style="max-width: 390px;">
+                        <div class="shadow border-0 h-100">
+                            <div class="card-body p-3 p-xl-4">
+                                <div class="d-flex flex-column" style="gap: 1rem;">
+                                    <div class="rounded-lg p-3 text-center">
+                                        <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto"></div>
 
-                            <h4 class="page-title font-weight-bold mb-0"> <i class="fe fe-list text-primary"></i> PERSONAL
-                                ACTIVITY
-                            </h4>
+                                        <h4 class="page-title font-weight-bold mb-2">
+                                            <i class="fe fe-list text-primary"></i> PERSONAL ACTIVITY
+                                        </h4>
+                                        <p class="text-muted mb-0 small">Pilih activity personal yang akan dikerjakan.</p>
+
+                                        <button type="button" id="btnChooseActivity"
+                                            class="btn btn-primary btn-block px-4 py-2 shadow-sm mt-3">
+                                            SELECT
+                                        </button>
+                                    </div>
+
+                                    <div class="rounded-lg p-3 text-center">
+                                        <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto"></div>
+
+                                        <h4 class="page-title font-weight-bold mb-2">
+                                            <i class="fe fe-alert-triangle text-warning"></i> ONSPOT JOB
+                                        </h4>
+                                        <p class="text-muted mb-0 small">Untuk pekerjaan dadakan yang langsung diambil.</p>
+
+                                        <button type="button"
+                                            class="btn btn-primary btn-block px-4 py-2 shadow-sm mt-3 btn-take-activity"
+                                            data-id="9" data-name="ONSPOT JOB" data-location="-"
+                                            data-url="<?php echo e(route('dashboard_operator.take', 9)); ?>">
+                                            TAKE
+                                        </button>
+                                    </div>
+
+                                    <?php if(!empty($activeSession) && in_array($activeSession->reference_type, ['TASK', 'JOB'])): ?>
+                                        <div class="rounded-lg p-3 shadow-sm">
+                                            <div class="text-center mb-3">
+                                                <h4 class="page-title font-weight-bold mb-2 text-danger">
+                                                    <i class="fe fe-activity" style="color: chartreuse"></i>
+                                                    JOB IN PROGRESS
+                                                </h4>
+                                                <p class="text-muted mb-0 small">Satu job sedang aktif saat ini.</p>
+                                            </div>
+
+                                            <?php if($activeSession->reference_type === 'TASK'): ?>
+                                                <h5 class="page-title font-weight-bold mb-3 text-center text-break">
+                                                    <?php echo e($activeSession->task->name ?? '-'); ?>
+
+                                                </h5>
+                                                <div class="text-center">
+                                                    <a href="<?php echo e(route('dashboard_operator.idle_task', $activeSession->reference_id)); ?>"
+                                                        class="btn btn-sm btn-primary px-4 py-2">View</a>
+                                                </div>
+                                            <?php elseif($activeSession->reference_type === 'JOB'): ?>
+                                                <h5 class="page-title font-weight-bold mb-3 text-center text-break">
+                                                    <?php echo e($activeSession->activity->name ?? '-'); ?>
+
+                                                </h5>
+                                                <div class="text-center">
+                                                    <a href="<?php echo e(route('dashboard_operator.idle', $activeSession->id)); ?>"
+                                                        class="btn btn-sm btn-primary px-4 py-2">View</a>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if(!empty($activeSession) && $activeSession->reference_type === 'ACTIVITY'): ?>
+                                        <div class="rounded-lg p-3 shadow-sm"
+                                            style="background: #f0fff5; border: 1px solid #c8f0d8;">
+                                            <div class="text-center mb-3">
+                                                <h4 class="page-title font-weight-bold mb-2 text-success">
+                                                    <i class="fe fe-activity" style="color: chartreuse"></i>
+                                                    ACTIVITY IN PROGRESS
+                                                </h4>
+                                                <p class="text-muted mb-0 small">Activity personal sedang berjalan.</p>
+                                            </div>
+
+                                            <h5 class="page-title font-weight-bold mb-3 text-center text-break">
+                                                <?php echo e($activeSession->activity->name ?? '-'); ?>
+
+                                            </h5>
+                                            <div class="text-center">
+                                                <a href="<?php echo e(route('dashboard_operator.idle', $activeSession->id)); ?>"
+                                                    class="btn btn-sm btn-primary px-4 py-2">View</a>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Button -->
-                        <button type="button" id="btnChooseActivity" class="btn btn-primary px-4 py-2 shadow-sm">
-                            SELECT
-                        </button>
-
-                        <?php if(!empty($activeSession) && in_array($activeSession->reference_type, ['TASK', 'JOB'])): ?>
-                            <div class="mt-5 mb-4 w-100 py-4 m">
-
-
-                                <h4 class="page-title font-weight-bold mb-2" style="color: red"> <i class="fe fe-activity"
-                                        style="color:chartreuse"></i></i>
-                                    JOB IN PROGRESS
-                                </h4>
-                                <?php if($activeSession->reference_type === 'TASK'): ?>
-                                    <h5 class="page-title font-weight-bold py-4">
-                                        <?php echo e($activeSession->task->name ?? '-'); ?>
-
-                                    </h5>
-                                    <a href="<?php echo e(route('dashboard_operator.idle_task', $activeSession->reference_id)); ?>"
-                                        class="btn btn-sm btn-primary px-4 py-2">View</a>
-                                <?php elseif($activeSession->reference_type === 'JOB'): ?>
-                                    <h5 class="page-title font-weight-bold py-4">
-                                        <?php echo e($activeSession->activity->name ?? '-'); ?>
-
-                                    </h5>
-                                    <a href="<?php echo e(route('dashboard_operator.idle', $activeSession->id)); ?>"
-                                        class="btn btn-sm btn-primary px-4 py-2">View</a>
-                                <?php endif; ?>
-
-
-                            </div>
-
-                            <!-- Button -->
-                        <?php endif; ?>
-                        <?php if(!empty($activeSession) && $activeSession->reference_type === 'ACTIVITY'): ?>
-                            <div class="mt-5 mb-4 w-100 py-4 m">
-
-
-                                <h4 class="page-title font-weight-bold mb-2"> <i class="fe fe-activity"
-                                        style="color:chartreuse"></i></i>
-                                    ACTIVITY IN PROGRESS
-                                </h4>
-                                <h5 class="page-title font-weight-bold py-4">
-                                    <?php echo e($activeSession->activity->name ?? '-'); ?>
-
-                                </h5>
-                                <a href="<?php echo e(route('dashboard_operator.idle', $activeSession->id)); ?>"
-                                    class="btn btn-sm btn-primary px-4 py-2">View</a>
-                            </div>
-
-                            <!-- Button -->
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -219,6 +245,9 @@
                         </thead>
                         <tbody>
                             <?php $__currentLoopData = $activityList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if($item->id === 9): ?>
+                                    <?php continue; ?>
+                                <?php endif; ?>
                                 <tr>
                                     <td class="text-center"><?php echo e($item->name); ?></td>
                                     <td class="text-center"><?php echo e($item->location); ?></td>
@@ -369,7 +398,7 @@
                 if (activityId === 9) {
                     Swal.fire({
                         icon: 'question',
-                        title: 'UNPLANNED ACTIVITY',
+                        title: 'INFORMATION ACTIVITY',
                         theme: 'dark',
                         html: `
                     <div class="text-start" style="max-width: 560px; margin: 0 auto;">
