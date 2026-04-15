@@ -105,6 +105,12 @@
                     <span class="ml-3 item-text">Activity History</span>
                 </a>
             </li>
+            <li class="nav-item w-100">
+                <a class="nav-link" href="{{ route('absen.index') }}">
+                    <i class="fe fe-phone-off fe-16"></i>
+                    <span class="ml-3 item-text">Absen</span>
+                </a>
+            </li>
             <li class="nav-item dropdown">
                 <a href="#settings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
                     <i class="fe fe-settings fe-16"></i>

@@ -115,7 +115,8 @@
                                                             <span class="badge badge-secondary">{{ $item->status }}</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{ $item->location->location ?? '-' }}</td>
+                                                    <td>{{ $item->location->building ?? '-' }} -
+                                                        {{ $item->location->location ?? '-' }}</td>
                                                     <td>{{ $item->description ?? '' }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-primary btn-take-task"

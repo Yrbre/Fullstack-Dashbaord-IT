@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tasks::class, 'created_by', 'id');
     }
+
+    public function absences()
+    {
+        return $this->hasMany(Absen::class);
+    }
 }

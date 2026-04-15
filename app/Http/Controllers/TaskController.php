@@ -215,8 +215,9 @@ class TaskController extends Controller
     {
         $task = Tasks::findOrFail($id);
         $data = $request->validated();
+        $status = $data['status'] ?? $task->status;
 
-        if ($data['status'] === 'COMPLETED') {
+        if ($status === 'COMPLETED') {
             $data['actual_end'] = now()->format('Y-m-d H:i');
             if (!$task->actual_start) {
                 $data['actual_start'] = now()->format('Y-m-d H:i');

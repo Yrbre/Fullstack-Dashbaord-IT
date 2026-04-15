@@ -162,8 +162,8 @@
                 <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Progress</h2>
                 <div class="card shadow">
                     <div class="card-body dashboard-card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover dashboard-table mb-0">
+                        <div class="">
+                            <table class="table table-hover datatables" id="dataTable-2">
                                 <thead>
                                     <tr>
                                         <td>Activity Name</td>
@@ -312,5 +312,13 @@
             });
         @endif
     </script>
-
+    <script>
+        $('#dataTable-2').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [16, 32, 64, -1],
+                [16, 32, 64, "All"]
+            ]
+        });
+    </script>
 @endsection

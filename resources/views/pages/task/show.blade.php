@@ -89,6 +89,8 @@
                                 <tr>
                                     <td>Activity ID</td>
                                     <td>Activity Name</td>
+                                    <td>End User</td>
+                                    <td>Department</td>
                                     <td>Weight</td>
                                     <td>Assigned To</td>
                                     <td>Priority</td>
@@ -104,6 +106,8 @@
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->name }}</td>
+                                        <td>{{ $item->enduser->name ?? '-' }}</td>
+                                        <td>{{ $item->enduser->department ?? '-' }}</td>
                                         <td>{{ $item->task_load ?? 0 }}</td>
                                         <td>{{ $item->user->name ?? '-' }}</td>
                                         <td>

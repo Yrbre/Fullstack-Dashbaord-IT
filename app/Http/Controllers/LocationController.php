@@ -16,7 +16,7 @@ class LocationController extends Controller
     public function index(GetLocationRequest $request)
     {
 
-        $location = Location::orderBy('location', 'asc')->get();
+        $location = Location::orderBy('building', 'asc')->get();
 
 
         return view('pages.location.index', compact('location'));

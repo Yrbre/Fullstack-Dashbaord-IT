@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityHistoryController;
 use App\Http\Controllers\CategoryController;
@@ -60,6 +61,7 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::put('/profile/update', [ProfileNewController::class, 'update'])->name('profileNew.update');
     Route::get('/export-activity', [ActivityController::class, 'export']);
     Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
+    Route::get('/absen', [AbsenController::class, 'index'])->name('absen.index');
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], function () {

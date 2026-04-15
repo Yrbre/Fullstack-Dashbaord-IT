@@ -118,7 +118,8 @@
                                                             <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
                                                         <?php endif; ?>
                                                     </td>
-                                                    <td><?php echo e($item->location->location ?? '-'); ?></td>
+                                                    <td><?php echo e($item->location->building ?? '-'); ?> -
+                                                        <?php echo e($item->location->location ?? '-'); ?></td>
                                                     <td><?php echo e($item->description ?? ''); ?></td>
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-primary btn-take-task"
