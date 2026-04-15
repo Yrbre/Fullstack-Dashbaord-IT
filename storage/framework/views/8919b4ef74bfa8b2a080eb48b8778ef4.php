@@ -131,7 +131,7 @@
                                                             href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
                                                     </td>
                                                     <td><?php echo e($item->location); ?></td>
-                                                    <?php if($item->reference_id == '9'): ?>
+                                                    <?php if(in_array($item->reference_id, ['9', '8'])): ?>
                                                         <td><?php echo e($item->description ?? '-'); ?></td>
                                                     <?php elseif($item->reference_type === 'ACTIVITY'): ?>
                                                         <td><?php echo e($item->activity->name); ?></td>

@@ -128,7 +128,7 @@
                                                             href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
                                                     </td>
                                                     <td>{{ $item->location }}</td>
-                                                    @if ($item->reference_id == '9')
+                                                    @if (in_array($item->reference_id, ['9', '8']))
                                                         <td>{{ $item->description ?? '-' }}</td>
                                                     @elseif($item->reference_type === 'ACTIVITY')
                                                         <td>{{ $item->activity->name }}</td>
