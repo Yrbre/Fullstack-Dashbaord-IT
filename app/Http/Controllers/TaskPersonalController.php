@@ -60,7 +60,7 @@ class TaskPersonalController extends Controller
     {
         $assignTo       = User::orderBy('name', 'asc')->pluck('name', 'id');
         $category       = Category::orderBy('name', 'asc')->distinct()->get();
-        $location       = Location::orderBy('location', 'asc')->distinct('location')->get();
+        $location       = Location::orderBy('building', 'asc')->distinct('building')->get();
         $endUser        = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
         $department     = EndUser::whereNull('name')->orderBy('department', 'asc')->distinct()->get();
         $task           = Tasks::where('task_level', 'DEPARTMENT')

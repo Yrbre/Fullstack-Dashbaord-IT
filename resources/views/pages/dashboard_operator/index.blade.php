@@ -202,10 +202,9 @@
                                     @endif
 
                                     @if (!empty($activeSession) && $activeSession->reference_type === 'ACTIVITY')
-                                        <div class="rounded-lg p-3 shadow-sm"
-                                            style="background: #f0fff5; border: 1px solid #c8f0d8;">
+                                        <div class="rounded-lg p-3 shadow-sm">
                                             <div class="text-center mb-3">
-                                                <h4 class="page-title font-weight-bold mb-2 text-success">
+                                                <h4 class="page-title font-weight-bold mb-2 text-danger">
                                                     <i class="fe fe-activity" style="color: chartreuse"></i>
                                                     ACTIVITY IN PROGRESS
                                                 </h4>
