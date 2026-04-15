@@ -62,6 +62,11 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::get('/export-activity', [ActivityController::class, 'export']);
     Route::get('/activity_history', [ActivityHistoryController::class, 'index'])->name('activity_history.index');
     Route::get('/absen', [AbsenController::class, 'index'])->name('absen.index');
+    Route::get('/absen/create', [AbsenController::class, 'create'])->name('absen.create');
+    Route::post('/absen', [AbsenController::class, 'store'])->name('absen.store');
+    Route::get('/absen/edit/{id}', [AbsenController::class, 'edit'])->name('absen.edit');
+    Route::put('/absen/update/{id}', [AbsenController::class, 'update'])->name('absen.update');
+    Route::delete('/absen/{id}', [AbsenController::class, 'destroy'])->name('absen.destroy');
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], function () {

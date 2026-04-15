@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absen;
 use App\Models\ActivityHistory;
 use App\Models\Tasks;
+use Carbon\Carbon;
 
 class DashboardManagementController extends Controller
 {
@@ -85,6 +87,21 @@ class DashboardManagementController extends Controller
             });
 
         $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
-        return view('pages.dashboard_management.index', compact('standBy', 'outSide', 'taskProgress', 'weight'));
+
+        // Logika untuk menampilkan data absen hanya sampai pukul 16:30
+        $cutoff = Carbon::today()->setTime(16, 30);
+        if (Carbon::now()->gt($cutoff)) {
+            // Sudah lewat 16:30 → kosongkan hasil
+            $absences = collect();
+        } else {
+            // Masih sebelum 16:30 → ambil data hari ini sampai 16:30
+            $absences = Absen::with('user')
+                ->whereBetween('absent_at', [
+                    Carbon::today(),
+                    $cutoff
+                ])
+                ->get();
+        }
+        return view('pages.dashboard_management.index', compact('standBy', 'outSide', 'taskProgress', 'weight', 'absences'));
     }
 }
