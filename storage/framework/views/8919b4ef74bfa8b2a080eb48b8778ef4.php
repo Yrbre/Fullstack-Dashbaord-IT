@@ -10,6 +10,7 @@
             min-width: 640px;
         }
 
+
         @media (max-width: 767.98px) {
             .page-title {
                 font-size: 1.1rem;
@@ -161,17 +162,53 @@
                 </div>
             </div>
         </div>
+        <div class="row mx-auto my-4 justify-content-end">
+            <div class="col-6">
+                <h2 class="page-title"> <i class="fe fe-phone-off" style="color:rgb(255, 0, 0)"></i> Absent Today</h2>
+                <div class="card shadow">
+                    <div class="card-body dashboard-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <td>Name</td>
+                                        <td>Date</td>
+                                        <td>Description</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $__empty_1 = true; $__currentLoopData = $absences; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                        <tr>
+                                            <td><?php echo e($loop->iteration); ?></td>
+                                            <td class="text-danger"><?php echo e($item->user->name); ?></td>
+                                            <td><?php echo e(\Carbon\Carbon::parse($item->absent_at)->format('d M Y')); ?></td>
+                                            <td class="text-danger"><?php echo e($item->description ?? '-'); ?></td>
+                                        </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                        <tr>
+                                            <td colspan="4" class="text-center">No absences today.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row mx-auto my-4 justify-content-center">
             <div class="col-12">
                 <h2 class="page-title"> <i class="fe fe-server" style="color:coral"></i> Activity Progress</h2>
                 <div class="card shadow">
                     <div class="card-body dashboard-card-body">
-                        <div class="">
-                            <table class="table table-hover datatables" id="dataTable-2">
+                        <div class="table-responsive">
+                            <table class="table table-hover datatables" id="dataTable-activity-progress">
                                 <thead>
                                     <tr>
                                         <td>Activity Name</td>
                                         <td>Responsibility</td>
+                                        <td>Category</td>
                                         <td>Client</td>
                                         <td>Priority</td>
                                         <td class="text-center">Progress</td>
@@ -185,6 +222,7 @@
                                         <tr>
                                             <td><?php echo e($item->name); ?></td>
                                             <td><?php echo e($item->user->name); ?></td>
+                                            <td><?php echo e($item->category->name ?? '-'); ?></td>
                                             <td><?php echo e($item->enduser->department ?? '-'); ?></td>
                                             <?php if($item->priority === 'CRITICAL'): ?>
                                                 <td><span class="badge badge-danger"><?php echo e($item->priority); ?></span></td>
@@ -245,7 +283,6 @@
                 </div>
             </div>
         </div>
-
 
     </div>
     <script>
@@ -317,12 +354,13 @@
         <?php endif; ?>
     </script>
     <script>
-        $('#dataTable-2').DataTable({
+        $('#dataTable-activity-progress').DataTable({
             autoWidth: true,
             "lengthMenu": [
                 [16, 32, 64, -1],
                 [16, 32, 64, "All"]
-            ]
+            ],
+            order: [2, 'asc'],
         });
     </script>
 <?php $__env->stopSection(); ?>

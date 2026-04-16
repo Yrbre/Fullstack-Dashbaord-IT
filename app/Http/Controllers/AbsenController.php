@@ -41,14 +41,16 @@ class AbsenController extends Controller
         $absen = Absen::create($request->validated());
         $absen->load('user');
 
-        // Ambil data semua email dari user
-        $emails = User::all()->pluck('email')->toArray();
+        // Ambil email langsung dari DB supaya tidak meload seluruh model User ke memori.
+        $emails = User::query()
+            ->whereNotNull('email')
+            ->pluck('email')
+            ->map(static fn($email) => strtolower(trim((string) $email)))
+            ->filter(static fn($email) => $email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL))
+            ->unique()
+            ->values();
 
-
-        // filter email yang valid dan unik
-        $emails = array_values(array_unique(array_filter(array_map(function ($email) {
-            return strtolower(trim((string) $email));
-        }, $emails))));
+        // $emails = 'support@tifico.co.id';
 
 
         // Kirim email ke semua email yang valid
@@ -60,17 +62,31 @@ class AbsenController extends Controller
         $configuredAllowedDomains = collect(explode(',', (string) env('MAIL_ALLOWED_DOMAINS', $fromDomain)))
             ->map(fn($domain) => strtolower(trim($domain)))
             ->filter()
+            ->unique()
             ->values();
+
+        $allowedDomainLookup = array_fill_keys($configuredAllowedDomains->all(), true);
+        $allowedDomainSuffixes = $configuredAllowedDomains
+            ->map(static fn($domain) => '.' . $domain)
+            ->all();
 
 
         // filter berdasarkan domain yang dizinkan
-        $deliverableEmails = collect($emails)
-            ->filter(function ($email) use ($configuredAllowedDomains) {
+        $deliverableEmails = $emails
+            ->filter(function ($email) use ($allowedDomainLookup, $allowedDomainSuffixes) {
                 $emailDomain = strtolower(Str::after((string) $email, '@'));
 
-                return $configuredAllowedDomains->contains(function ($allowedDomain) use ($emailDomain) {
-                    return $emailDomain === $allowedDomain || Str::endsWith($emailDomain, '.' . $allowedDomain);
-                });
+                if (isset($allowedDomainLookup[$emailDomain])) {
+                    return true;
+                }
+
+                foreach ($allowedDomainSuffixes as $suffix) {
+                    if (Str::endsWith($emailDomain, $suffix)) {
+                        return true;
+                    }
+                }
+
+                return false;
             })
             ->values()
             ->all();
@@ -112,7 +128,7 @@ class AbsenController extends Controller
 
         $redirect = redirect()->route('absen.index')->with('success', 'Absence created successfully.');
         $warnings = [];
-        if (count($deliverableEmails) < count($emails)) {
+        if (count($deliverableEmails) < $emails->count()) {
             $warnings[] = 'Some email recipients were skipped because they are not allowed by SMTP relay policy.';
         }
         if (!empty($failedEmails)) {
@@ -121,7 +137,12 @@ class AbsenController extends Controller
         if (!empty($warnings)) {
             $redirect->with('warning', implode(' ', $warnings));
         }
+
         return $redirect;
+
+
+
+        return redirect()->route('absen.index')->with('success', 'Absence created successfully.');
     }
 
     /**

@@ -67,7 +67,7 @@ class DashboardManagementController extends Controller
             ->latest()
             ->get();
 
-        $taskProgress = Tasks::with(['user', 'enduser', 'children'])
+        $taskProgress = Tasks::with(['user', 'enduser', 'children', 'category'])
             ->whereHas('user')
             ->where('status', '!=', 'COMPLETED')
             ->where('task_level', 'DEPARTMENT')
