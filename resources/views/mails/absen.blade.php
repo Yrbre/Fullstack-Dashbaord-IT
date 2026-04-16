@@ -199,7 +199,7 @@
                     <div class="detail-item">
                         <div class="detail-label">Tanggal Absen</div>
                         <div class="detail-value">
-                            {{ $absentAt ? $absentAt->format('d F Y, H:i') : '-' }}
+                            {{ $absentAt ? $absentAt->format('d F Y') : '-' }}
                         </div>
                     </div>
                 </div>
