@@ -134,16 +134,27 @@
 
                     <div class="form-group col-md-6">
                         <label for="simple-select2">End User / Dept PIC</label>
-                        <input type="text" id="select-personal"
-                            class="form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
-                            value="{{ old('enduser_id', $task->enduser->name . ' - ' . $task->enduser->department) }}"
-                            readonly>
+                        @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
+                            <select class="form-control select2" id="select-assign" name="enduser_id">
+                                <optgroup label="Select End User / Dept PIC">
+                                    @foreach ($endUser as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ old('enduser_id', $task->enduser_id) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->name }} - {{ $item->department }}</option>
+                                    @endforeach
+                                </optgroup>
+                            </select>
+                        @else
+                            <input type="text" class="form-control @error('enduser_id') is-invalid @enderror"
+                                value="{{ old('enduser_id', $task->enduser->name . ' - ' . $task->enduser->department) }}"
+                                readonly>
+                        @endif
                         @error('enduser_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="form-group col-md-6">
+                    {{-- <div class="form-group col-md-6">
                         <label for="simple-select2">Department</label>
                         <input type="text" id="select-department"
                             class="form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
@@ -151,7 +162,7 @@
                         @error('enduser_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     @if (Auth::check() && in_array(Auth::user()->role, ['MANAGEMENT', 'ADMIN']))
                         <div class="form-group col-md-6">

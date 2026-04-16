@@ -33,6 +33,7 @@ class UpdateTaskPersonalRequest extends FormRequest
             'assign_to'             => 'sometimes|exists:users,id',
             'enduser_department'    => 'sometimes|exists:endusers,id',
             'enduser_personal'      => 'sometimes|exists:endusers,id',
+            'enduser_id'            => 'sometimes|exists:endusers,id',
             'status'                => 'sometimes|string|in:NEW,ON DUTY,COMPLETED,ON HOLD,CANCELLED',
             'progress'              => 'sometimes|integer|min:0|max:100',
             'task_load'             => 'sometimes|integer|min:1|max:100',
