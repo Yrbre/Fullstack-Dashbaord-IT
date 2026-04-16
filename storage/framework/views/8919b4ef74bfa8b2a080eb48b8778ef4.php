@@ -49,7 +49,7 @@
                                                 <?php if(
                                                     $item->reference_type === 'ACTIVITY' &&
                                                         (int) optional($item->activity)->id === 1 &&
-                                                        \Carbon\Carbon::parse($item->start_time)->diffInMinutes(now()) > 3): ?>
+                                                        \Carbon\Carbon::parse($item->start_time)->diffInMinutes(now()) > 5): ?>
                                                     <tr style="color: yellow">
                                                         <td><a class="link-black"
                                                                 href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>

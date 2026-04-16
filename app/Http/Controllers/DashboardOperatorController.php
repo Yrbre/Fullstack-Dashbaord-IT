@@ -303,6 +303,7 @@ class DashboardOperatorController extends Controller
             ]);
 
             $activityHistory->update([
+                'user_id' => auth()->id(),
                 'status' => $request->status,
                 'end_time' => now()->format('Y-m-d H:i:s'),
             ]);
