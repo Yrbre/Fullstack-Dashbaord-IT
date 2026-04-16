@@ -28,7 +28,7 @@ class CategoryController extends Controller
     }
     public function create()
     {
-        $category = Category::select('type')->distinct()->orderBy('type', 'asc')->pluck('type');
+        $category = Category::select('name')->distinct()->orderBy('name', 'asc')->pluck('name');
         return view('pages.category.create', compact('category'));
     }
 
