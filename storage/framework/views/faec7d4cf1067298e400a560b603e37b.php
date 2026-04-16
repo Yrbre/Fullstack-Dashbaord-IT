@@ -199,7 +199,7 @@
                     <div class="detail-item">
                         <div class="detail-label">Tanggal Absen</div>
                         <div class="detail-value">
-                            <?php echo e($absentAt ? $absentAt->format('d F Y, H:i') : '-'); ?>
+                            <?php echo e($absentAt ? $absentAt->format('d F Y') : '-'); ?>
 
                         </div>
                     </div>

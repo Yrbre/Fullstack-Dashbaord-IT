@@ -46,7 +46,9 @@ class AbsenController extends Controller
 
 
         // filter email yang valid dan unik
-        $emails = array_values(array_unique(array_filter($emails)));
+        $emails = array_values(array_unique(array_filter(array_map(function ($email) {
+            return strtolower(trim((string) $email));
+        }, $emails))));
 
 
         // Kirim email ke semua email yang valid
@@ -75,26 +77,49 @@ class AbsenController extends Controller
 
         // Send Email Notification
         $failedEmails = [];
+        $maxRetryAttempts = 3;
         if (!empty($deliverableEmails)) {
             foreach ($deliverableEmails as $recipient) {
-                try {
-                    Mail::to($recipient)->send(new NotifAbsen($absen));
-                } catch (Throwable $e) {
-                    $failedEmails[] = $recipient;
-                    Log::error('Failed to send absence notification email.', [
-                        'error' => $e->getMessage(),
-                        'recipient' => $recipient,
-                    ]);
+                $attempt = 0;
+                while ($attempt < $maxRetryAttempts) {
+                    try {
+                        Mail::to($recipient)->send(new NotifAbsen($absen));
+                        break;
+                    } catch (Throwable $e) {
+                        $attempt++;
+                        $errorMessage = $e->getMessage();
+                        $isTooManyMessages = Str::contains(strtolower($errorMessage), ['421', 'too many messages']);
+
+                        if ($isTooManyMessages && $attempt < $maxRetryAttempts) {
+                            sleep($attempt * 2);
+                            continue;
+                        }
+
+                        $failedEmails[] = $recipient;
+                        Log::error('Failed to send absence notification email.', [
+                            'error' => $errorMessage,
+                            'recipient' => $recipient,
+                            'attempt' => $attempt,
+                        ]);
+                        break;
+                    }
                 }
+
+                // Hindari burst request ke SMTP relay yang memicu throttling.
+                usleep(300000);
             }
         }
 
         $redirect = redirect()->route('absen.index')->with('success', 'Absence created successfully.');
+        $warnings = [];
         if (count($deliverableEmails) < count($emails)) {
-            $redirect->with('warning', 'Some email recipients were skipped because they are not allowed by SMTP relay policy.');
+            $warnings[] = 'Some email recipients were skipped because they are not allowed by SMTP relay policy.';
         }
         if (!empty($failedEmails)) {
-            $redirect->with('warning', 'Some email recipients failed to receive notification: ' . implode(', ', $failedEmails));
+            $warnings[] = 'Some email recipients failed to receive notification: ' . implode(', ', $failedEmails);
+        }
+        if (!empty($warnings)) {
+            $redirect->with('warning', implode(' ', $warnings));
         }
         return $redirect;
     }
