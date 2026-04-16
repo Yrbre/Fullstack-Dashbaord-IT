@@ -59,6 +59,7 @@ class DashboardOperatorController extends Controller
             ->user_task()
             ->where('status', 'COMPLETED')
             ->where('task_level', 'PERSONAL')
+            ->orderBy('actual_end', 'desc')
             ->get();
 
         $endUser = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();

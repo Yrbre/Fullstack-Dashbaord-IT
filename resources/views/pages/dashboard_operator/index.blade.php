@@ -4,139 +4,158 @@
     <div class="container-fluid py-4">
         <div class="mx-auto">
             <div class="row align-items-start">
-                <div class="col-8">
+                <div class="col-9">
 
                     <h4 class="page-title justify-content-center"><i class="fe fe-send" style="color:orange"></i>
                         JOB ASSIGNMENT</h4>
                     <div class="">
                         <div class="card shadow">
                             <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover datatables" id="dataTable-2">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Activity Name</th>
+                                                <th>Parent Job</th>
+                                                <th>Deliver By</th>
+                                                <th>Schedule Start</th>
+                                                <th>Schedule End</th>
+                                                <th>Priority</th>
+                                                <th>Progres</th>
+                                                <th>Status</th>
+                                                <th>Location</th>
+                                                <th>Description</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                <table class="table table-responsive datatables" id="dataTable-2">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Activity Name</th>
-                                            <th>Parent Job</th>
-                                            <th>Deliver By</th>
-                                            <th>Schedule Start</th>
-                                            <th>Schedule End</th>
-                                            <th>Priority</th>
-                                            <th>Progres</th>
-                                            <th>Status</th>
-                                            <th>Location</th>
-                                            <th>Description</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @foreach ($taskReady as $item)
-                                            @if ($item->schedule_start != now()->format('Y-m-d H:i') && $item->schedule_start > now())
-                                                <tr style="color:yellow">
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $item->name }}</td>
-                                                    <td>{{ $item->parent->name ?? '-' }}</td>
-                                                    <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
-                                                    </td>
-                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
-                                                    </td>
-                                                    <td>
-                                                        @if ($item->priority === 'CRITICAL')
-                                                            <span class="badge badge-danger">{{ $item->priority }}</span>
-                                                        @elseif ($item->priority === 'HIGH')
-                                                            <span class="badge badge-warning">{{ $item->priority }}</span>
-                                                        @elseif ($item->priority === 'MEDIUM')
-                                                            <span class="badge badge-info">{{ $item->priority }}</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">{{ $item->priority }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->progress }}%</td>
-                                                    <td>
-                                                        @if ($item->status === 'COMPLETED')
-                                                            <span class="badge badge-success">{{ $item->status }}</span>
-                                                        @elseif ($item->status === 'ON DUTY')
-                                                            <span class="badge badge-primary">{{ $item->status }}</span>
-                                                        @elseif ($item->status === 'NEW')
-                                                            <span class="badge badge-info">{{ $item->status }}</span>
-                                                        @elseif ($item->status === 'CANCELED')
-                                                            <span class="badge badge-warning">{{ $item->status }}</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">{{ $item->status }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->location->building ?? '-' }} -
-                                                        {{ $item->location->location ?? '-' }}</td>
-                                                    <td>{{ $item->description ?? '' }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                                                            data-location="{{ $item->location->building ?? '-' }} - {{ $item->location->location ?? '-' }}"
-                                                            data-url="{{ route('active_task.index', $item->id) }}">
-                                                            Take
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @else
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $item->name }}</td>
-                                                    <td>{{ $item->parent->name ?? '-' }}</td>
-                                                    <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
-                                                    </td>
-                                                    <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
-                                                    </td>
-                                                    <td>
-                                                        @if ($item->priority === 'CRITICAL')
-                                                            <span class="badge badge-danger">{{ $item->priority }}</span>
-                                                        @elseif ($item->priority === 'HIGH')
-                                                            <span class="badge badge-warning">{{ $item->priority }}</span>
-                                                        @elseif ($item->priority === 'MEDIUM')
-                                                            <span class="badge badge-info">{{ $item->priority }}</span>
-                                                        @else
-                                                            <span
-                                                                class="badge badge-secondary">{{ $item->priority }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->progress }}%</td>
-                                                    <td>
-                                                        @if ($item->status === 'COMPLETED')
-                                                            <span class="badge badge-success">{{ $item->status }}</span>
-                                                        @elseif ($item->status === 'ON DUTY')
-                                                            <span class="badge badge-primary">{{ $item->status }}</span>
-                                                        @elseif ($item->status === 'NEW')
-                                                            <span class="badge badge-info">{{ $item->status }}</span>
-                                                        @elseif ($item->status === 'CANCELED')
-                                                            <span class="badge badge-warning">{{ $item->status }}</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">{{ $item->status }}</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->location->building ?? '-' }} -
-                                                        {{ $item->location->location ?? '-' }}</td>
-                                                    <td>{{ $item->description ?? '' }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                                                            data-location="{{ $item->location->location ?? '-' }}"
-                                                            data-url="{{ route('active_task.index', $item->id) }}">
-                                                            Take
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
+                                            @foreach ($taskReady as $item)
+                                                @if ($item->schedule_start != now()->format('Y-m-d H:i') && $item->schedule_start > now())
+                                                    <tr style="color:yellow">
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td>{{ $item->parent->name ?? '-' }}</td>
+                                                        <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
+                                                        </td>
+                                                        <td>
+                                                            @if ($item->priority === 'CRITICAL')
+                                                                <span
+                                                                    class="badge badge-danger">{{ $item->priority }}</span>
+                                                            @elseif ($item->priority === 'HIGH')
+                                                                <span
+                                                                    class="badge badge-warning">{{ $item->priority }}</span>
+                                                            @elseif ($item->priority === 'MEDIUM')
+                                                                <span class="badge badge-info">{{ $item->priority }}</span>
+                                                            @else
+                                                                <span
+                                                                    class="badge badge-secondary">{{ $item->priority }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->progress }}%</td>
+                                                        <td>
+                                                            @if ($item->status === 'COMPLETED')
+                                                                <span
+                                                                    class="badge badge-success">{{ $item->status }}</span>
+                                                            @elseif ($item->status === 'ON DUTY')
+                                                                <span
+                                                                    class="badge badge-primary">{{ $item->status }}</span>
+                                                            @elseif ($item->status === 'NEW')
+                                                                <span class="badge badge-info">{{ $item->status }}</span>
+                                                            @elseif ($item->status === 'CANCELED')
+                                                                <span
+                                                                    class="badge badge-warning">{{ $item->status }}</span>
+                                                            @else
+                                                                <span
+                                                                    class="badge badge-secondary">{{ $item->status }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->location->building ?? '-' }} -
+                                                            {{ $item->location->location ?? '-' }}</td>
+                                                        <td>{{ $item->description ?? '' }}</td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-primary btn-take-task"
+                                                                data-id="{{ $item->id }}"
+                                                                data-name="{{ $item->name }}"
+                                                                data-location="{{ $item->location->building ?? '-' }} - {{ $item->location->location ?? '-' }}"
+                                                                data-url="{{ route('active_task.index', $item->id) }}">
+                                                                Take
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $item->name }}</td>
+                                                        <td>{{ $item->parent->name ?? '-' }}</td>
+                                                        <td>{{ $item->deliveredUser?->name ?? ($item->delivered ?? '-') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') }}
+                                                        </td>
+                                                        <td>
+                                                            @if ($item->priority === 'CRITICAL')
+                                                                <span
+                                                                    class="badge badge-danger">{{ $item->priority }}</span>
+                                                            @elseif ($item->priority === 'HIGH')
+                                                                <span
+                                                                    class="badge badge-warning">{{ $item->priority }}</span>
+                                                            @elseif ($item->priority === 'MEDIUM')
+                                                                <span class="badge badge-info">{{ $item->priority }}</span>
+                                                            @else
+                                                                <span
+                                                                    class="badge badge-secondary">{{ $item->priority }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->progress }}%</td>
+                                                        <td>
+                                                            @if ($item->status === 'COMPLETED')
+                                                                <span
+                                                                    class="badge badge-success">{{ $item->status }}</span>
+                                                            @elseif ($item->status === 'ON DUTY')
+                                                                <span
+                                                                    class="badge badge-primary">{{ $item->status }}</span>
+                                                            @elseif ($item->status === 'NEW')
+                                                                <span class="badge badge-info">{{ $item->status }}</span>
+                                                            @elseif ($item->status === 'CANCELED')
+                                                                <span
+                                                                    class="badge badge-warning">{{ $item->status }}</span>
+                                                            @else
+                                                                <span
+                                                                    class="badge badge-secondary">{{ $item->status }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->location->building ?? '-' }} -
+                                                            {{ $item->location->location ?? '-' }}</td>
+                                                        <td>{{ $item->description ?? '' }}</td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-primary btn-take-task"
+                                                                data-id="{{ $item->id }}"
+                                                                data-name="{{ $item->name }}"
+                                                                data-location="{{ $item->location->location ?? '-' }}"
+                                                                data-url="{{ route('active_task.index', $item->id) }}">
+                                                                Take
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-4 d-flex justify-content-center">
+                <div class="col-3 d-flex justify-content-center">
                     <div class="w-100" style="max-width: 390px;">
                         <div class="shadow border-0 h-100">
                             <div class="card-body p-3 p-xl-4">
