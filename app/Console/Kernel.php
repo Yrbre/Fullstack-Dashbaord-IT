@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
     {
         // Schedule No Activity Notification every 5 minutes
         $schedule->call(function () {
+            // Cek Schedule jalan atau tidak
+            // Log::info('Schedule: RUNNING ' . now()->format('d M Y H:i:s'));
             $batchSize = max((int) env('NO_ACTIVITY_MAIL_BATCH_SIZE', 20), 1);
 
             ActivityHistory::with('user')

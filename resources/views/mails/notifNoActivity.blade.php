@@ -182,7 +182,7 @@
 
     <div class="email-shell">
         <div class="header">
-            <h1>No Activity Detected</h1>
+            <h1>DEV-No Activity Detected</h1>
             <p>Informasi notifikasi aktivitas terbaru dari sistem IT Department.</p>
         </div>
 
