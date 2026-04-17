@@ -38,6 +38,11 @@ class UpdateParentTaskStatus extends Command
             foreach ($parentTasks as $parentTask) {
                 $children = $parentTask->children;
 
+                // Preserve parent tasks that were manually completed from parent flow
+                if (strtoupper((string) $parentTask->status) === 'COMPLETED') {
+                    continue;
+                }
+
                 // Skip if no children
                 if ($children->isEmpty()) {
                     continue;
