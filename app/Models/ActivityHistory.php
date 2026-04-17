@@ -22,6 +22,7 @@ class ActivityHistory extends Model
         'start_time',
         'end_time',
         'description',
+        'last_notified_minute',
     ];
 
     public function user()

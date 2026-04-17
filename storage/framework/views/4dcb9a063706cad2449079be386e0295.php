@@ -3,143 +3,164 @@
     <div class="container-fluid py-4">
         <div class="mx-auto">
             <div class="row align-items-start">
-                <div class="col-8">
+                <div class="col-9">
 
                     <h4 class="page-title justify-content-center"><i class="fe fe-send" style="color:orange"></i>
                         JOB ASSIGNMENT</h4>
                     <div class="">
                         <div class="card shadow">
                             <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover datatables" id="dataTable-2">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Activity Name</th>
+                                                <th>Parent Job</th>
+                                                <th>Deliver By</th>
+                                                <th>Schedule Start</th>
+                                                <th>Schedule End</th>
+                                                <th>Priority</th>
+                                                <th>Progres</th>
+                                                <th>Status</th>
+                                                <th>Location</th>
+                                                <th>Description</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                <table class="table table-responsive datatables" id="dataTable-2">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Activity Name</th>
-                                            <th>Parent Job</th>
-                                            <th>Deliver By</th>
-                                            <th>Schedule Start</th>
-                                            <th>Schedule End</th>
-                                            <th>Priority</th>
-                                            <th>Progres</th>
-                                            <th>Status</th>
-                                            <th>Location</th>
-                                            <th>Description</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                            <?php $__currentLoopData = $taskReady; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if($item->schedule_start != now()->format('Y-m-d H:i') && $item->schedule_start > now()): ?>
+                                                    <tr style="color:yellow">
+                                                        <td><?php echo e($loop->iteration); ?></td>
+                                                        <td><?php echo e($item->name); ?></td>
+                                                        <td><?php echo e($item->parent->name ?? '-'); ?></td>
+                                                        <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?>
 
-                                        <?php $__currentLoopData = $taskReady; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <?php if($item->schedule_start != now()->format('Y-m-d H:i') && $item->schedule_start > now()): ?>
-                                                <tr style="color:yellow">
-                                                    <td><?php echo e($loop->iteration); ?></td>
-                                                    <td><?php echo e($item->name); ?></td>
-                                                    <td><?php echo e($item->parent->name ?? '-'); ?></td>
-                                                    <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?></td>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
+                                                        </td>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
 
-                                                    </td>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
+                                                        </td>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
 
-                                                    </td>
-                                                    <td>
-                                                        <?php if($item->priority === 'CRITICAL'): ?>
-                                                            <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
-                                                        <?php elseif($item->priority === 'HIGH'): ?>
-                                                            <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
-                                                        <?php elseif($item->priority === 'MEDIUM'): ?>
-                                                            <span class="badge badge-info"><?php echo e($item->priority); ?></span>
-                                                        <?php else: ?>
-                                                            <span class="badge badge-secondary"><?php echo e($item->priority); ?></span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?php echo e($item->progress); ?>%</td>
-                                                    <td>
-                                                        <?php if($item->status === 'COMPLETED'): ?>
-                                                            <span class="badge badge-success"><?php echo e($item->status); ?></span>
-                                                        <?php elseif($item->status === 'ON DUTY'): ?>
-                                                            <span class="badge badge-primary"><?php echo e($item->status); ?></span>
-                                                        <?php elseif($item->status === 'NEW'): ?>
-                                                            <span class="badge badge-info"><?php echo e($item->status); ?></span>
-                                                        <?php elseif($item->status === 'CANCELED'): ?>
-                                                            <span class="badge badge-warning"><?php echo e($item->status); ?></span>
-                                                        <?php else: ?>
-                                                            <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?php echo e($item->location->building ?? '-'); ?> -
-                                                        <?php echo e($item->location->location ?? '-'); ?></td>
-                                                    <td><?php echo e($item->description ?? ''); ?></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
-                                                            data-location="<?php echo e($item->location->building ?? '-'); ?> - <?php echo e($item->location->location ?? '-'); ?>"
-                                                            data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
-                                                            Take
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td><?php echo e($loop->iteration); ?></td>
-                                                    <td><?php echo e($item->name); ?></td>
-                                                    <td><?php echo e($item->parent->name ?? '-'); ?></td>
-                                                    <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?></td>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if($item->priority === 'CRITICAL'): ?>
+                                                                <span
+                                                                    class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                            <?php elseif($item->priority === 'HIGH'): ?>
+                                                                <span
+                                                                    class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                            <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                                <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                            <?php else: ?>
+                                                                <span
+                                                                    class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td><?php echo e($item->progress); ?>%</td>
+                                                        <td>
+                                                            <?php if($item->status === 'COMPLETED'): ?>
+                                                                <span
+                                                                    class="badge badge-success"><?php echo e($item->status); ?></span>
+                                                            <?php elseif($item->status === 'ON DUTY'): ?>
+                                                                <span
+                                                                    class="badge badge-primary"><?php echo e($item->status); ?></span>
+                                                            <?php elseif($item->status === 'NEW'): ?>
+                                                                <span class="badge badge-info"><?php echo e($item->status); ?></span>
+                                                            <?php elseif($item->status === 'CANCELED'): ?>
+                                                                <span
+                                                                    class="badge badge-warning"><?php echo e($item->status); ?></span>
+                                                            <?php else: ?>
+                                                                <span
+                                                                    class="badge badge-secondary"><?php echo e($item->status); ?></span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td><?php echo e($item->location->building ?? '-'); ?> -
+                                                            <?php echo e($item->location->location ?? '-'); ?></td>
+                                                        <td><?php echo e($item->description ?? ''); ?></td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-primary btn-take-task"
+                                                                data-id="<?php echo e($item->id); ?>"
+                                                                data-name="<?php echo e($item->name); ?>"
+                                                                data-location="<?php echo e($item->location->building ?? '-'); ?> - <?php echo e($item->location->location ?? '-'); ?>"
+                                                                data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
+                                                                Take
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td><?php echo e($loop->iteration); ?></td>
+                                                        <td><?php echo e($item->name); ?></td>
+                                                        <td><?php echo e($item->parent->name ?? '-'); ?></td>
+                                                        <td><?php echo e($item->deliveredUser?->name ?? ($item->delivered ?? '-')); ?>
 
-                                                    </td>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
+                                                        </td>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i')); ?>
 
-                                                    </td>
-                                                    <td>
-                                                        <?php if($item->priority === 'CRITICAL'): ?>
-                                                            <span class="badge badge-danger"><?php echo e($item->priority); ?></span>
-                                                        <?php elseif($item->priority === 'HIGH'): ?>
-                                                            <span class="badge badge-warning"><?php echo e($item->priority); ?></span>
-                                                        <?php elseif($item->priority === 'MEDIUM'): ?>
-                                                            <span class="badge badge-info"><?php echo e($item->priority); ?></span>
-                                                        <?php else: ?>
-                                                            <span
-                                                                class="badge badge-secondary"><?php echo e($item->priority); ?></span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?php echo e($item->progress); ?>%</td>
-                                                    <td>
-                                                        <?php if($item->status === 'COMPLETED'): ?>
-                                                            <span class="badge badge-success"><?php echo e($item->status); ?></span>
-                                                        <?php elseif($item->status === 'ON DUTY'): ?>
-                                                            <span class="badge badge-primary"><?php echo e($item->status); ?></span>
-                                                        <?php elseif($item->status === 'NEW'): ?>
-                                                            <span class="badge badge-info"><?php echo e($item->status); ?></span>
-                                                        <?php elseif($item->status === 'CANCELED'): ?>
-                                                            <span class="badge badge-warning"><?php echo e($item->status); ?></span>
-                                                        <?php else: ?>
-                                                            <span class="badge badge-secondary"><?php echo e($item->status); ?></span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?php echo e($item->location->building ?? '-'); ?> -
-                                                        <?php echo e($item->location->location ?? '-'); ?></td>
-                                                    <td><?php echo e($item->description ?? ''); ?></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-primary btn-take-task"
-                                                            data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
-                                                            data-location="<?php echo e($item->location->location ?? '-'); ?>"
-                                                            data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
-                                                            Take
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </tbody>
-                                </table>
+                                                        </td>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i')); ?>
 
+                                                        </td>
+                                                        <td>
+                                                            <?php if($item->priority === 'CRITICAL'): ?>
+                                                                <span
+                                                                    class="badge badge-danger"><?php echo e($item->priority); ?></span>
+                                                            <?php elseif($item->priority === 'HIGH'): ?>
+                                                                <span
+                                                                    class="badge badge-warning"><?php echo e($item->priority); ?></span>
+                                                            <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                                <span class="badge badge-info"><?php echo e($item->priority); ?></span>
+                                                            <?php else: ?>
+                                                                <span
+                                                                    class="badge badge-secondary"><?php echo e($item->priority); ?></span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td><?php echo e($item->progress); ?>%</td>
+                                                        <td>
+                                                            <?php if($item->status === 'COMPLETED'): ?>
+                                                                <span
+                                                                    class="badge badge-success"><?php echo e($item->status); ?></span>
+                                                            <?php elseif($item->status === 'ON DUTY'): ?>
+                                                                <span
+                                                                    class="badge badge-primary"><?php echo e($item->status); ?></span>
+                                                            <?php elseif($item->status === 'NEW'): ?>
+                                                                <span class="badge badge-info"><?php echo e($item->status); ?></span>
+                                                            <?php elseif($item->status === 'CANCELED'): ?>
+                                                                <span
+                                                                    class="badge badge-warning"><?php echo e($item->status); ?></span>
+                                                            <?php else: ?>
+                                                                <span
+                                                                    class="badge badge-secondary"><?php echo e($item->status); ?></span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td><?php echo e($item->location->building ?? '-'); ?> -
+                                                            <?php echo e($item->location->location ?? '-'); ?></td>
+                                                        <td><?php echo e($item->description ?? ''); ?></td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-primary btn-take-task"
+                                                                data-id="<?php echo e($item->id); ?>"
+                                                                data-name="<?php echo e($item->name); ?>"
+                                                                data-location="<?php echo e($item->location->location ?? '-'); ?>"
+                                                                data-url="<?php echo e(route('active_task.index', $item->id)); ?>">
+                                                                Take
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-4 d-flex justify-content-center">
+                <div class="col-3 d-flex justify-content-center">
                     <div class="w-100" style="max-width: 390px;">
                         <div class="shadow border-0 h-100">
                             <div class="card-body p-3 p-xl-4">
