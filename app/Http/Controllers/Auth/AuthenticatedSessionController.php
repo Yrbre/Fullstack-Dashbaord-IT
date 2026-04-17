@@ -35,6 +35,10 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
+        if (Auth::user()->id == 1) {
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
         $activityHisotry = ActivityHistory::where('user_id', $request->user()->id)
             ->whereNull('end_time')
             ->latest()
