@@ -54,6 +54,10 @@ class Kernel extends ConsoleKernel
                     }
                 });
         })->everyMinute();
+
+        // Schedule to update parent task status based on child task statuses
+        // Runs every 5 minutes
+        $schedule->command('task:update-parent-status')->everyMinute();
     }
 
 

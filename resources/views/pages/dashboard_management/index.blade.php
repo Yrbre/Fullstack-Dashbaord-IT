@@ -202,6 +202,7 @@
                             <table class="table table-hover datatables" id="dataTable-activity-progress">
                                 <thead>
                                     <tr>
+                                        <td>#</td>
                                         <td>Activity Name</td>
                                         <td>Responsibility</td>
                                         <td>Category</td>
@@ -216,6 +217,7 @@
 
                                     @foreach ($taskProgress as $item)
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->user->name }}</td>
                                             <td>{{ $item->category->name ?? '-' }}</td>
@@ -266,9 +268,89 @@
                                                         @csrf
                                                         @method('PUT')
                                                         <button type="submit"
-                                                            class="btn btn-sm btn-success">Completed</button>
+                                                            class="btn btn-sm btn-success">Completed?</button>
                                                     </form>
                                                 @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mx-auto my-4 justify-content-center">
+            <div class="col-12">
+                <h2 class="page-title"> <i class="fe fe-check-square" style="color:rgb(95, 255, 95)"></i> Activity Completed
+                </h2>
+                <div class="card shadow">
+                    <div class="card-body dashboard-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover datatables" id="dataTable-activity-completed">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <td>Activity Name</td>
+                                        <td>Responsibility</td>
+                                        <td>Category</td>
+                                        <td>Client</td>
+                                        <td>Priority</td>
+                                        <td class="text-center">Progress</td>
+                                        <td class="text-center">Status</td>
+                                        <td class="text-center">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach ($taskCompleted as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->user->name }}</td>
+                                            <td>{{ $item->category->name ?? '-' }}</td>
+                                            <td>{{ $item->enduser->department ?? '-' }}</td>
+                                            @if ($item->priority === 'CRITICAL')
+                                                <td><span class="badge badge-danger">{{ $item->priority }}</span></td>
+                                            @elseif ($item->priority === 'HIGH')
+                                                <td><span class="badge badge-warning">{{ $item->priority }}</span></td>
+                                            @elseif ($item->priority === 'MEDIUM')
+                                                <td><span class="badge badge-info">{{ $item->priority }}</span></td>
+                                            @elseif ($item->priority === 'LOW')
+                                                <td><span class="badge badge-secondary">{{ $item->priority }}</span></td>
+                                            @endif
+                                            <td>
+                                                @if (($weight[$item->id] ?? 0) > 100)
+                                                    <h6 class="text-center text-danger">
+                                                        Activity Weight Overload <span
+                                                            class="badge badge-danger">{{ $weight[$item->id] ?? 0 }}%</span>
+                                                    </h6>
+                                                @elseif (($weight[$item->id] ?? 0) <= 100)
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="progress flex-grow-1 position-relative"
+                                                            style="height: 20px;">
+                                                            <div class="progress-bar {{ $item->progress_color }}"
+                                                                role="progressbar" style="width: {{ $item->progress }}%;"
+                                                                aria-valuenow="{{ $item->progress }}" aria-valuemin="0"
+                                                                aria-valuemax="100">
+                                                            </div>
+                                                            <span class="position-absolute w-100 text-center fw-bold"
+                                                                style="top: 0; left: 0; line-height: 20px; font-size: 12px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.7);">
+                                                                {{ $item->progress }}%
+                                                            </span>
+                                                        </div>
+                                                        <small
+                                                            class="ms-2 text-muted progress-label-mobile">{{ $item->progress_label }}</small>
+                                                    </div>
+                                                @endif
+                                            </td>
+
+                                            <td class="text-center">{{ $item->status }}</td>
+                                            <td class="text-center text-nowrap">
+                                                <a href="{{ route('task.show', $item->id) }}"
+                                                    class="btn btn-sm btn-primary">View</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -353,8 +435,18 @@
         $('#dataTable-activity-progress').DataTable({
             autoWidth: true,
             "lengthMenu": [
-                [16, 32, 64, -1],
-                [16, 32, 64, "All"]
+                [10, 15, 20, -1],
+                [10, 15, 20, "All"]
+            ],
+            order: [2, 'asc'],
+        });
+    </script>
+    <script>
+        $('#dataTable-activity-completed').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [10, 15, 20, -1],
+                [10, 15, 20, "All"]
             ],
             order: [2, 'asc'],
         });

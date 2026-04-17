@@ -206,6 +206,7 @@
                             <table class="table table-hover datatables" id="dataTable-activity-progress">
                                 <thead>
                                     <tr>
+                                        <td>#</td>
                                         <td>Activity Name</td>
                                         <td>Responsibility</td>
                                         <td>Category</td>
@@ -220,6 +221,7 @@
 
                                     <?php $__currentLoopData = $taskProgress; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
+                                            <td><?php echo e($loop->iteration); ?></td>
                                             <td><?php echo e($item->name); ?></td>
                                             <td><?php echo e($item->user->name); ?></td>
                                             <td><?php echo e($item->category->name ?? '-'); ?></td>
@@ -270,9 +272,89 @@
                                                         <?php echo csrf_field(); ?>
                                                         <?php echo method_field('PUT'); ?>
                                                         <button type="submit"
-                                                            class="btn btn-sm btn-success">Completed</button>
+                                                            class="btn btn-sm btn-success">Completed?</button>
                                                     </form>
                                                 <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mx-auto my-4 justify-content-center">
+            <div class="col-12">
+                <h2 class="page-title"> <i class="fe fe-check-square" style="color:rgb(95, 255, 95)"></i> Activity Completed
+                </h2>
+                <div class="card shadow">
+                    <div class="card-body dashboard-card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover datatables" id="dataTable-activity-completed">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <td>Activity Name</td>
+                                        <td>Responsibility</td>
+                                        <td>Category</td>
+                                        <td>Client</td>
+                                        <td>Priority</td>
+                                        <td class="text-center">Progress</td>
+                                        <td class="text-center">Status</td>
+                                        <td class="text-center">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php $__currentLoopData = $taskCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                            <td><?php echo e($loop->iteration); ?></td>
+                                            <td><?php echo e($item->name); ?></td>
+                                            <td><?php echo e($item->user->name); ?></td>
+                                            <td><?php echo e($item->category->name ?? '-'); ?></td>
+                                            <td><?php echo e($item->enduser->department ?? '-'); ?></td>
+                                            <?php if($item->priority === 'CRITICAL'): ?>
+                                                <td><span class="badge badge-danger"><?php echo e($item->priority); ?></span></td>
+                                            <?php elseif($item->priority === 'HIGH'): ?>
+                                                <td><span class="badge badge-warning"><?php echo e($item->priority); ?></span></td>
+                                            <?php elseif($item->priority === 'MEDIUM'): ?>
+                                                <td><span class="badge badge-info"><?php echo e($item->priority); ?></span></td>
+                                            <?php elseif($item->priority === 'LOW'): ?>
+                                                <td><span class="badge badge-secondary"><?php echo e($item->priority); ?></span></td>
+                                            <?php endif; ?>
+                                            <td>
+                                                <?php if(($weight[$item->id] ?? 0) > 100): ?>
+                                                    <h6 class="text-center text-danger">
+                                                        Activity Weight Overload <span
+                                                            class="badge badge-danger"><?php echo e($weight[$item->id] ?? 0); ?>%</span>
+                                                    </h6>
+                                                <?php elseif(($weight[$item->id] ?? 0) <= 100): ?>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="progress flex-grow-1 position-relative"
+                                                            style="height: 20px;">
+                                                            <div class="progress-bar <?php echo e($item->progress_color); ?>"
+                                                                role="progressbar" style="width: <?php echo e($item->progress); ?>%;"
+                                                                aria-valuenow="<?php echo e($item->progress); ?>" aria-valuemin="0"
+                                                                aria-valuemax="100">
+                                                            </div>
+                                                            <span class="position-absolute w-100 text-center fw-bold"
+                                                                style="top: 0; left: 0; line-height: 20px; font-size: 12px; color: #fff; text-shadow: 0 0 3px rgba(0,0,0,0.7);">
+                                                                <?php echo e($item->progress); ?>%
+                                                            </span>
+                                                        </div>
+                                                        <small
+                                                            class="ms-2 text-muted progress-label-mobile"><?php echo e($item->progress_label); ?></small>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+
+                                            <td class="text-center"><?php echo e($item->status); ?></td>
+                                            <td class="text-center text-nowrap">
+                                                <a href="<?php echo e(route('task.show', $item->id)); ?>"
+                                                    class="btn btn-sm btn-primary">View</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -357,8 +439,18 @@
         $('#dataTable-activity-progress').DataTable({
             autoWidth: true,
             "lengthMenu": [
-                [16, 32, 64, -1],
-                [16, 32, 64, "All"]
+                [10, 15, 20, -1],
+                [10, 15, 20, "All"]
+            ],
+            order: [2, 'asc'],
+        });
+    </script>
+    <script>
+        $('#dataTable-activity-completed').DataTable({
+            autoWidth: true,
+            "lengthMenu": [
+                [10, 15, 20, -1],
+                [10, 15, 20, "All"]
             ],
             order: [2, 'asc'],
         });

@@ -86,6 +86,12 @@ class DashboardManagementController extends Controller
                 return $task;
             });
 
+        $taskCompleted = Tasks::with(['user', 'enduser', 'children', 'category'])
+            ->whereHas('user')
+            ->where('status', 'COMPLETED')
+            ->where('task_level', 'DEPARTMENT')
+            ->get();
+
         $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
 
         // Logika untuk menampilkan data absen hanya sampai pukul 16:30
@@ -102,6 +108,6 @@ class DashboardManagementController extends Controller
                 ])
                 ->get();
         }
-        return view('pages.dashboard_management.index', compact('standBy', 'outSide', 'taskProgress', 'weight', 'absences'));
+        return view('pages.dashboard_management.index', compact('standBy', 'outSide', 'taskProgress', 'weight', 'absences', 'taskCompleted'));
     }
 }
