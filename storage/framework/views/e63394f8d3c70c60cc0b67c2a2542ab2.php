@@ -116,6 +116,7 @@
                                             <th>Member</th>
                                             <th>Reference Type</th>
                                             <th>Activity</th>
+                                            <th>End User</th>
                                             <th>Location</th>
                                             <th>Priority</th>
                                             <th>Start Time</th>
@@ -146,6 +147,7 @@
                                                 <?php else: ?>
                                                     <td>-</td>
                                                 <?php endif; ?>
+                                                <td><?php echo e($item->task->enduser->name ?? '-'); ?></td>
 
                                                 <td>
                                                     <?php echo e($item->location ?? '-'); ?>

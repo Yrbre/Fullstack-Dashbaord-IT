@@ -113,6 +113,7 @@
                                             <th>Member</th>
                                             <th>Reference Type</th>
                                             <th>Activity</th>
+                                            <th>End User</th>
                                             <th>Location</th>
                                             <th>Priority</th>
                                             <th>Start Time</th>
@@ -143,6 +144,7 @@
                                                 @else
                                                     <td>-</td>
                                                 @endif
+                                                <td>{{ $item->task->enduser->name ?? '-' }}</td>
 
                                                 <td>
                                                     {{ $item->location ?? '-' }}
