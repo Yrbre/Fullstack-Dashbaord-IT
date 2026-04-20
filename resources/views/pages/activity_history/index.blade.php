@@ -144,7 +144,12 @@
                                                 @else
                                                     <td>-</td>
                                                 @endif
-                                                <td>{{ $item->task->enduser->name ?? '-' }}</td>
+
+                                                @if (in_array($item->reference_type, ['TASK', 'JOB']))
+                                                    <td>{{ $item->task->enduser->name ?? '-' }}</td>
+                                                @elseif ($item->reference_type === 'ACTIVITY')
+                                                    <td>-</td>
+                                                @endif
 
                                                 <td>
                                                     {{ $item->location ?? '-' }}
