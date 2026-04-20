@@ -58,13 +58,10 @@ class UpdateParentTaskStatus extends Command
                 if ($parentTask->status !== $newStatus) {
                     $parentTask->update(['status' => $newStatus]);
                     $updatedCount++;
-
-                    Log::info("Updated parent task #{$parentTask->id} status from '{$parentTask->status}' to '{$newStatus}'");
                 }
             }
 
             $this->info("Parent task status update completed. Updated: {$updatedCount} tasks.");
-            Log::info("Parent task status update completed. Updated: {$updatedCount} tasks.");
         } catch (\Exception $e) {
             $this->error('Error updating parent task status: ' . $e->getMessage());
             Log::error('Error updating parent task status: ' . $e->getMessage(), [
