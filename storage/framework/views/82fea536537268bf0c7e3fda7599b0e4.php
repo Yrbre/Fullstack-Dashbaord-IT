@@ -100,16 +100,16 @@
                                             <?php endif; ?>
                                         </td>
                                         <td><?php echo e($item->progress); ?>%</td>
-                                        <td><?php echo e($item->schedule_start ? \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:m:i') : '-'); ?>
+                                        <td><?php echo e($item->schedule_start ? \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') : '-'); ?>
 
                                             -
-                                            <?php echo e($item->schedule_end ? \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:m:i') : '-'); ?>
+                                            <?php echo e($item->schedule_end ? \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') : '-'); ?>
 
                                         </td>
-                                        <td><?php echo e($item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d M Y H:m:i') : 'Null'); ?>
+                                        <td><?php echo e($item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d M Y H:i') : 'Null'); ?>
 
                                             -
-                                            <?php echo e($item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d M Y H:m:i') : 'Null'); ?>
+                                            <?php echo e($item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d M Y H:i') : 'Null'); ?>
 
                                         </td>
                                         <td><?php echo e($item->status); ?></td>

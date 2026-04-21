@@ -122,13 +122,13 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->progress }}%</td>
-                                        <td>{{ $item->schedule_start ? \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:m:i') : '-' }}
+                                        <td>{{ $item->schedule_start ? \Carbon\Carbon::parse($item->schedule_start)->format('d M Y H:i') : '-' }}
                                             -
-                                            {{ $item->schedule_end ? \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:m:i') : '-' }}
+                                            {{ $item->schedule_end ? \Carbon\Carbon::parse($item->schedule_end)->format('d M Y H:i') : '-' }}
                                         </td>
-                                        <td>{{ $item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d M Y H:m:i') : 'Null' }}
+                                        <td>{{ $item->actual_start ? \Carbon\Carbon::parse($item->actual_start)->format('d M Y H:i') : 'Null' }}
                                             -
-                                            {{ $item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d M Y H:m:i') : 'Null' }}
+                                            {{ $item->actual_end ? \Carbon\Carbon::parse($item->actual_end)->format('d M Y H:i') : 'Null' }}
                                         </td>
                                         <td>{{ $item->status }}</td>
                                         <td>
