@@ -147,7 +147,12 @@
                                                 <?php else: ?>
                                                     <td>-</td>
                                                 <?php endif; ?>
-                                                <td><?php echo e($item->task->enduser->name ?? '-'); ?></td>
+
+                                                <?php if(in_array($item->reference_type, ['TASK', 'JOB'])): ?>
+                                                    <td><?php echo e($item->task->enduser->name ?? '-'); ?></td>
+                                                <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                                    <td>-</td>
+                                                <?php endif; ?>
 
                                                 <td>
                                                     <?php echo e($item->location ?? '-'); ?>

@@ -11,6 +11,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -70,20 +71,35 @@ class AuthenticatedSessionController extends Controller
             ->whereNull('end_time')
             ->latest()
             ->first();
-        if ($activityHistory->referance_type == "TASK") {
-            Tasks::where('id', $activityHistory->referance_id)
-                ->update(['status' => 'ON HOLD']);
-            $activityHistory->update([
-                'status' => 'ON HOLD',
-                'end_time' => now(),
-            ]);
-        } else {
-            $activityHistory->update([
-                'status' => 'LOGOUT',
-                'end_time' => now(),
-            ]);
-        }
 
+        if ($activityHistory) {
+            if ($activityHistory->reference_type === "TASK") {
+                DB::transaction(function () use ($activityHistory, $request) {
+                    $task = Tasks::find($activityHistory->reference_id); // fix typo
+
+                    if ($task) {
+                        $task->update([
+                            'status' => 'ON HOLD'
+                        ]);
+
+                        // Update pivot hanya untuk user yang logout
+                        $task->task_user()->updateExistingPivot($request->user()->id, [
+                            'taken' => false  // fix: hanya user ini, field 'taken'
+                        ]);
+                    }
+
+                    $activityHistory->update([
+                        'status' => 'ON HOLD & LOGOUT',
+                        'end_time' => now(),
+                    ]);
+                });
+            } else {
+                $activityHistory->update([
+                    'status' => 'LOGOUT',
+                    'end_time' => now(),
+                ]);
+            }
+        }
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
