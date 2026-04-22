@@ -11,7 +11,8 @@
             <strong class="card-title">Edit Job Assignment</strong>
         </div>
         <div class="card-body">
-            <form method="post" action="<?php echo e(route('task_personal.update', $task->id)); ?>" enctype="multipart/form-data">
+            <form method="post" id="myForm" action="<?php echo e(route('task_personal.update', $task->id)); ?>"
+                enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
                 <div class="form-row">
@@ -455,7 +456,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
                 <div class="d-flex align-items-end justify-content-end">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
@@ -545,6 +546,20 @@ unset($__errorArgs, $__bag); ?>
         });
     </script>
 
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            const btn = document.getElementById('submitBtn');
+
+            if (btn.disabled) {
+                e.preventDefault(); // cegah submit kedua
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Loading...';
+        });
+    </script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/pages/task_personal/edit.blade.php ENDPATH**/ ?>

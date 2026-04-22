@@ -5,7 +5,7 @@
         <div class="card-header">
         </div>
         <div class="card-body">
-            <form method="post" action="{{ route('task_personal.store') }}" enctype="multipart/form-data">
+            <form method="post" id="myForm" action="{{ route('task_personal.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-row">
 
@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-end justify-content-end">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
@@ -385,6 +385,20 @@
             multiple: true,
             theme: 'bootstrap4',
             width: '100%',
+        });
+    </script>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            const btn = document.getElementById('submitBtn');
+
+            if (btn.disabled) {
+                e.preventDefault(); // cegah submit kedua
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Loading...';
         });
     </script>
 @endsection
