@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Activity;
 use App\Models\ActivityHistory;
+use App\Models\Tasks;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -69,12 +70,20 @@ class AuthenticatedSessionController extends Controller
             ->whereNull('end_time')
             ->latest()
             ->first();
-        if ($activityHistory) {
+        if ($activityHistory->referance_type == "TASK") {
+            Tasks::where('id', $activityHistory->referance_id)
+                ->update(['status' => 'ON HOLD']);
+            $activityHistory->update([
+                'status' => 'ON HOLD',
+                'end_time' => now(),
+            ]);
+        } else {
             $activityHistory->update([
                 'status' => 'LOGOUT',
                 'end_time' => now(),
             ]);
         }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

@@ -287,6 +287,12 @@ class TaskPersonalController extends Controller
             $changes = $task->task_user()->sync([]);
         }
 
+        // if ($data['status'] === 'ON HOLD') {
+        //     DB::table('task_user')
+        //         ->where('tasks_id', $task->id)
+        //         ->update(['taken' => false]);
+        // }
+
         $newMembers = $changes['attached'];
 
         if (!empty($newMembers)) {
