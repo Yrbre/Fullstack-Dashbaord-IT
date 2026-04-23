@@ -5,7 +5,7 @@
             <strong class="card-title">Create Absence</strong>
         </div>
         <div class="card-body">
-            <form method="post" action="<?php echo e(route('absen.store')); ?>">
+            <form method="post" id="myForm" action="<?php echo e(route('absen.store')); ?>">
                 <?php echo csrf_field(); ?>
                 <div class="form-row">
                     <div class="form-group col-12">
@@ -84,7 +84,9 @@ endif;
 unset($__errorArgs, $__bag); ?>
 
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
+                </div>
             </form>
         </div>
     </div>
@@ -121,6 +123,19 @@ unset($__errorArgs, $__bag); ?>
         $('.select2-multi').select2({
             multiple: true,
             theme: 'bootstrap4',
+        });
+    </script>
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            const btn = document.getElementById('submitBtn');
+
+            if (btn.disabled) {
+                e.preventDefault(); // cegah submit kedua
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Loading...';
         });
     </script>
 <?php $__env->stopSection(); ?>
