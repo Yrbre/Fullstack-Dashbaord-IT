@@ -126,7 +126,7 @@ unset($__errorArgs, $__bag); ?>
 
                     <?php if($user->photo): ?>
                         <p class="mt-2">File saat ini:
-                            <a href="<?php echo e(Storage::url($user->photo)); ?>" target="_blank"
+                            <a href="<?php echo e(asset('storage/' . $user->photo)); ?>" target="_blank"
                                 class="btn btn-primary btn-sm">Download photo</a>
                         </p>
                     <?php endif; ?>

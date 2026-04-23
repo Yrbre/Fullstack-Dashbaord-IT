@@ -57,7 +57,7 @@
 
                     @if ($user->photo)
                         <p class="mt-2">File saat ini:
-                            <a href="{{ Storage::url($user->photo) }}" target="_blank"
+                            <a href="{{ asset('storage/' . $user->photo) }}" target="_blank"
                                 class="btn btn-primary btn-sm">Download photo</a>
                         </p>
                     @endif
