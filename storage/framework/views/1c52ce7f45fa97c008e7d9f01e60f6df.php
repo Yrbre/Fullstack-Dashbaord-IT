@@ -20,7 +20,7 @@
                     <a class="nav-link dropdown-toggle d-flex align-items-center text-muted" href="#"
                         id="navbarDropdownMenuLink" role="button" data-toggle="dropdown">
 
-                        <img src="<?php echo e(Auth::user()->photo ? Storage::url(Auth::user()->photo) : asset('dark/assets/avatars/face-1.jpg')); ?>"
+                        <img src="<?php echo e(Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('dark/assets/avatars/face-1.jpg')); ?>"
                             class="rounded-circle mr-2" width="35" height="35">
 
                         <span><?php echo e(Auth::user()->name); ?></span>
