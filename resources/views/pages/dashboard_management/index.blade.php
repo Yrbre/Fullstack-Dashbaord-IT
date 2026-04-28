@@ -438,7 +438,7 @@
                 [10, 15, 20, -1],
                 [10, 15, 20, "All"]
             ],
-            order: [2, 'asc'],
+            order: [0, 'asc'],
         });
     </script>
     <script>
@@ -448,7 +448,7 @@
                 [10, 15, 20, -1],
                 [10, 15, 20, "All"]
             ],
-            order: [2, 'asc'],
+            order: [0, 'asc'],
         });
     </script>
 @endsection
