@@ -13,7 +13,8 @@
                             <div class="card shadow">
                                 <div class="card-body">
                                     <div>
-                                        <form action="{{ route('dashboard_operator.complete', $activityHistory->id) }}"
+                                        <form id="myForm"
+                                            action="{{ route('dashboard_operator.complete', $activityHistory->id) }}"
                                             method="POST">
                                             @csrf
                                             @method('PUT') <div class="form-group">
@@ -46,7 +47,7 @@
                                                         class="btn btn-secondary mt-3 mr-2">
                                                         Back
                                                     </a>
-                                                    <button type="submit" class="btn btn-success mt-3">
+                                                    <button type="submit" id="submitBtn" class="btn btn-success mt-3">
                                                         <i class="fe fe-log-out"></i> Back to IT Office
                                                     </button>
                                         </form>
@@ -86,6 +87,20 @@
                     showConfirmButton: false,
                 });
             @endif
+        </script>
+        {{-- loading --}}
+        <script>
+            document.getElementById('myForm').addEventListener('submit', function(e) {
+                const btn = document.getElementById('submitBtn');
+
+                if (btn.disabled) {
+                    e.preventDefault(); // cegah submit kedua
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Loading...';
+            });
         </script>
     @endpush
 

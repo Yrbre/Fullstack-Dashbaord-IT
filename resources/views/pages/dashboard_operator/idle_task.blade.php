@@ -13,7 +13,7 @@
                                 <div class="card-body">
                                     <div>
                                         <div class="form-group">
-                                            <form method="POST"
+                                            <form method="POST" id="myForm"
                                                 action="{{ route('dashboard_operator.update_task', $task->id) }}">
                                                 @csrf
                                                 @method('PUT')
@@ -104,7 +104,8 @@
                                                 <div class="d-flex justify-content-end">
                                                     <a href="{{ route('dashboard_operator.index') }}"
                                                         class="btn btn-secondary mt-4 mr-2">Back</a>
-                                                    <button type="submit" class="btn btn-primary mt-4 ">Update
+                                                    <button type="submit" id="submitBtn"
+                                                        class="btn btn-primary mt-4 ">Update
                                                         Activity</button>
                                                 </div>
                                             </form>
@@ -210,6 +211,20 @@
                 if ((e.altKey && e.key === 'ArrowLeft') || e.key === 'BrowserBack') {
                     e.preventDefault();
                 }
+            });
+        </script>
+        {{-- loading --}}
+        <script>
+            document.getElementById('myForm').addEventListener('submit', function(e) {
+                const btn = document.getElementById('submitBtn');
+
+                if (btn.disabled) {
+                    e.preventDefault(); // cegah submit kedua
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Loading...';
             });
         </script>
     @endpush
