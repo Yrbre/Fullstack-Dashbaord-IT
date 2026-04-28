@@ -127,28 +127,53 @@
                                         </thead>
                                         <tbody>
                                             <?php $__currentLoopData = $outSide; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <tr>
-                                                    <td><a class="link-black"
-                                                            href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
-                                                    </td>
-                                                    <td><?php echo e($item->location); ?></td>
-                                                    <?php if(in_array($item->reference_id, ['9', '8'])): ?>
-                                                        <td><?php echo e($item->description ?? '-'); ?></td>
-                                                    <?php elseif($item->reference_type === 'ACTIVITY'): ?>
-                                                        <td><?php echo e($item->activity->name); ?></td>
-                                                    <?php elseif($item->reference_type === 'TASK'): ?>
-                                                        <td><?php echo e($item->task->name); ?></td>
-                                                    <?php else: ?>
-                                                        <td> - </td>
-                                                    <?php endif; ?>
-                                                    <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
+                                                <?php if(in_array($item->reference_id, ['9', '8'])): ?>
+                                                    <tr class="text-warning">
+                                                        <td><a class="link-black"
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                        </td>
+                                                        <td><?php echo e($item->location); ?></td>
+                                                        <?php if(in_array($item->reference_id, ['9', '8'])): ?>
+                                                            <td><?php echo e($item->description ?? '-'); ?></td>
+                                                        <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                                            <td><?php echo e($item->activity->name); ?></td>
+                                                        <?php elseif($item->reference_type === 'TASK'): ?>
+                                                            <td><?php echo e($item->task->name); ?></td>
+                                                        <?php else: ?>
+                                                            <td> - </td>
+                                                        <?php endif; ?>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
 
-                                                    </td>
-                                                    <td style="color:greenyellow">
-                                                        <span class="live-duration"
-                                                            data-start="<?php echo e(\Carbon\Carbon::parse($item->start_time)->toISOString()); ?>"></span>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="<?php echo e(\Carbon\Carbon::parse($item->start_time)->toISOString()); ?>"></span>
+                                                        </td>
+                                                    </tr>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td><a class="link-black"
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                        </td>
+                                                        <td><?php echo e($item->location); ?></td>
+                                                        <?php if(in_array($item->reference_id, ['9', '8'])): ?>
+                                                            <td><?php echo e($item->description ?? '-'); ?></td>
+                                                        <?php elseif($item->reference_type === 'ACTIVITY'): ?>
+                                                            <td><?php echo e($item->activity->name); ?></td>
+                                                        <?php elseif($item->reference_type === 'TASK'): ?>
+                                                            <td><?php echo e($item->task->name); ?></td>
+                                                        <?php else: ?>
+                                                            <td> - </td>
+                                                        <?php endif; ?>
+                                                        <td><?php echo e(\Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i')); ?>
+
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="<?php echo e(\Carbon\Carbon::parse($item->start_time)->toISOString()); ?>"></span>
+                                                        </td>
+                                                    </tr>
+                                                <?php endif; ?>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
@@ -288,7 +313,8 @@
 
         <div class="row mx-auto my-4 justify-content-center">
             <div class="col-12">
-                <h2 class="page-title"> <i class="fe fe-check-square" style="color:rgb(95, 255, 95)"></i> Activity Completed
+                <h2 class="page-title"> <i class="fe fe-check-square" style="color:rgb(95, 255, 95)"></i> Activity
+                    Completed
                 </h2>
                 <div class="card shadow">
                     <div class="card-body dashboard-card-body">
@@ -442,7 +468,7 @@
                 [10, 15, 20, -1],
                 [10, 15, 20, "All"]
             ],
-            order: [2, 'asc'],
+            order: [0, 'asc'],
         });
     </script>
     <script>
@@ -452,7 +478,7 @@
                 [10, 15, 20, -1],
                 [10, 15, 20, "All"]
             ],
-            order: [2, 'asc'],
+            order: [0, 'asc'],
         });
     </script>
 <?php $__env->stopSection(); ?>

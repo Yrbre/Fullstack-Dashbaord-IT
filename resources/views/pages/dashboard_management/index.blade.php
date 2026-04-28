@@ -124,27 +124,51 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($outSide as $item)
-                                                <tr>
-                                                    <td><a class="link-black"
-                                                            href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
-                                                    </td>
-                                                    <td>{{ $item->location }}</td>
-                                                    @if (in_array($item->reference_id, ['9', '8']))
-                                                        <td>{{ $item->description ?? '-' }}</td>
-                                                    @elseif($item->reference_type === 'ACTIVITY')
-                                                        <td>{{ $item->activity->name }}</td>
-                                                    @elseif ($item->reference_type === 'TASK')
-                                                        <td>{{ $item->task->name }}</td>
-                                                    @else
-                                                        <td> - </td>
-                                                    @endif
-                                                    <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
-                                                    </td>
-                                                    <td style="color:greenyellow">
-                                                        <span class="live-duration"
-                                                            data-start="{{ \Carbon\Carbon::parse($item->start_time)->toISOString() }}"></span>
-                                                    </td>
-                                                </tr>
+                                                @if (in_array($item->reference_id, ['9', '8']))
+                                                    <tr class="text-warning">
+                                                        <td><a class="link-black"
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                        </td>
+                                                        <td>{{ $item->location }}</td>
+                                                        @if (in_array($item->reference_id, ['9', '8']))
+                                                            <td>{{ $item->description ?? '-' }}</td>
+                                                        @elseif($item->reference_type === 'ACTIVITY')
+                                                            <td>{{ $item->activity->name }}</td>
+                                                        @elseif ($item->reference_type === 'TASK')
+                                                            <td>{{ $item->task->name }}</td>
+                                                        @else
+                                                            <td> - </td>
+                                                        @endif
+                                                        <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="{{ \Carbon\Carbon::parse($item->start_time)->toISOString() }}"></span>
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td><a class="link-black"
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                        </td>
+                                                        <td>{{ $item->location }}</td>
+                                                        @if (in_array($item->reference_id, ['9', '8']))
+                                                            <td>{{ $item->description ?? '-' }}</td>
+                                                        @elseif($item->reference_type === 'ACTIVITY')
+                                                            <td>{{ $item->activity->name }}</td>
+                                                        @elseif ($item->reference_type === 'TASK')
+                                                            <td>{{ $item->task->name }}</td>
+                                                        @else
+                                                            <td> - </td>
+                                                        @endif
+                                                        <td>{{ \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') }}
+                                                        </td>
+                                                        <td style="color:greenyellow">
+                                                            <span class="live-duration"
+                                                                data-start="{{ \Carbon\Carbon::parse($item->start_time)->toISOString() }}"></span>
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
 
 
@@ -284,7 +308,8 @@
 
         <div class="row mx-auto my-4 justify-content-center">
             <div class="col-12">
-                <h2 class="page-title"> <i class="fe fe-check-square" style="color:rgb(95, 255, 95)"></i> Activity Completed
+                <h2 class="page-title"> <i class="fe fe-check-square" style="color:rgb(95, 255, 95)"></i> Activity
+                    Completed
                 </h2>
                 <div class="card shadow">
                     <div class="card-body dashboard-card-body">
