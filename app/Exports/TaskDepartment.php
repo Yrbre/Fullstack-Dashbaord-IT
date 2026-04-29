@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpParser\Node\Expr\Cast\String_;
 
 class TaskDepartment implements FromQuery, WithMapping, WithHeadings
 {
@@ -38,6 +39,17 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
 
     public function map($task): array
     {
+
+        $durationSchedule = null;
+        if ($task->schedule_start && $task->schedule_end) {
+            $durationSchedule = $this->formatDuration($task->schedule_start, $task->schedule_end);
+        }
+
+        $durationActual = null;
+        if ($task->actual_start && $task->actual_end) {
+            $durationActual = $this->formatDuration($task->actual_start, $task->actual_end);
+        }
+
         return [
             ++$this->rowNumber,
             $task->id,
@@ -59,9 +71,12 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
             $task->in_timeline ? 'On Schedule' : 'Late',
             $task->schedule_start ? $task->schedule_start->format('Y-m-d H:i') : null,
             $task->schedule_end ? $task->schedule_end->format('Y-m-d H:i') : null,
+            $durationSchedule,
             $task->actual_start ? $task->actual_start->format('Y-m-d H:i') : null,
             $task->actual_end ? $task->actual_end->format('Y-m-d H:i') : null,
+            $durationActual,
             $task->description,
+            $task->created_at->format('d-m-Y'),
         ];
     }
 
@@ -84,9 +99,17 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
             'Timeline Status',
             'Schedule Start',
             'Schedule End',
+            'Duration Schedule',
             'Actual Start',
             'Actual End',
+            'Duration Actual',
             'Description',
+            'Created At',
         ];
+    }
+
+    private function formatDuration($start, $end): int
+    {
+        return (int) $start->diffInMinutes($end);
     }
 }
