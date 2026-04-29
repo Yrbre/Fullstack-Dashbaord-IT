@@ -226,7 +226,6 @@ class TaskController extends Controller
         }
 
 
-
         $task->update($data);
 
         return redirect()->route('task.index')->with('success', 'Task updated successfully.');

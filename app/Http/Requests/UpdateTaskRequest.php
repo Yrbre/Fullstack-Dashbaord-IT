@@ -26,7 +26,7 @@ class UpdateTaskRequest extends FormRequest
             'priority'              => 'sometimes|string|in:LOW,MEDIUM,HIGH,CRITICAL',
             'category_id'           => 'sometimes|exists:category_lists,id',
             'assign_to'             => 'sometimes|exists:users,id',
-            'enduser_department'    => 'sometimes|exists:endusers,id',
+            'enduser_id'            => 'sometimes|exists:endusers,id',
             'enduser_personal'      => 'sometimes|exists:endusers,id',
             'status'                => 'sometimes|string|in:NEW,ON PROGRESS,ON DUTY,COMPLETED,ON HOLD,CANCELLED',
             'progress'              => 'sometimes|integer|min:0|max:100',

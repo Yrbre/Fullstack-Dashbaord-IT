@@ -105,22 +105,28 @@
                     @enderror
                 </div> --}}
 
-                    <div class="form-group col-md-6">
+                    {{-- <div class="form-group col-md-6">
                         <label for="simple-select2">User</label>
                         <input type="text" id="select-personal"
                             class="form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
-                            value="{{ old('enduser_id', $task->enduser->name . ' - ' . $task->enduser->department) }}"
-                            readonly>
+                            value="{{ old('enduser_id', $task->enduser->name . ' - ' . $task->enduser->department) }}">
                         @error('enduser_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="form-group col-md-6">
                         <label for="simple-select2">Department</label>
-                        <input type="text" id="select-department"
-                            class="uppercase form-control @error('enduser_id') is-invalid @enderror" name="enduser_id"
-                            value="{{ old('enduser_id', $task->enduser->department) }}" readonly>
+                        <select class="form-control select2" id="select-department" name="enduser_id">
+                            <optgroup label="Select Department">
+                                <option value=""disabled>Select Department</option>
+                                @foreach ($department as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('enduser_id', $task->enduser_id) == $item->id ? 'selected' : '' }}>
+                                        {{ $item->department }}</option>
+                                @endforeach
+                            </optgroup>
+                        </select>
                         @error('enduser_id')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -236,8 +242,8 @@
 
                     <div class="form-group col-12">
                         <label for="">Description</label>
-                        <textarea type="text" class="uppercase form-control @error('description') is-invalid @enderror"
-                            name="description" value="{{ old('description') }}">{{ old('description', $task->description) }}</textarea>
+                        <textarea type="text" class="uppercase form-control @error('description') is-invalid @enderror" name="description"
+                            value="{{ old('description') }}">{{ old('description', $task->description) }}</textarea>
                         @error('description')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
