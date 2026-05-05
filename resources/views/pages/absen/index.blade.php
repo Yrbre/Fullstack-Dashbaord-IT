@@ -27,9 +27,9 @@
                                     @foreach ($absences as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->user->name }}</td>
+                                            <td>{{ $item->user->name ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->absent_at)->format('d-M-Y') }}</td>
-                                            <td>{{ $item->description }}</td>
+                                            <td>{{ $item->description ?? '-' }}</td>
                                             <td>
                                                 <div class="dropdown d-flex justify-content-center">
                                                     <button class="btn btn-sm btn-info dropdown-toggle" type="button"
@@ -40,8 +40,8 @@
                                                             href="{{ route('absen.edit', $item->id) }}">Edit</a>
                                                         <a class="dropdown-item js-delete-task"
                                                             data-id="{{ $item->id }}"
-                                                            data-name="{{ $item->user->name }}"
-                                                            data-desc="{{ $item->description }}"
+                                                            data-name="{{ $item->user->name ?? '-' }}"
+                                                            data-desc="{{ $item->description ?? '-' }}"
                                                             data-url="{{ route('absen.destroy', $item->id) }}"
                                                             href="#">Remove</a>
                                                     </div>
