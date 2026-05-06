@@ -437,6 +437,673 @@ php artisan db:seed
 
 ---
 
+## � Dokumentasi Fungsi & APIs
+
+### 1. Task Management Controllers
+
+#### A. TaskController (Task Departemen)
+
+**Lokasi:** `app/Http/Controllers/TaskController.php`
+
+| Method       | HTTP      | URI                          | Deskripsi                                           | Middleware              |
+| ------------ | --------- | ---------------------------- | --------------------------------------------------- | ----------------------- |
+| `index()`    | GET       | `/task/department`           | Tampilkan daftar task departemen dengan pagination  | `role:ADMIN,MANAGEMENT` |
+| `create()`   | GET       | `/task/department/create`    | Tampilkan form create task departemen               | `role:ADMIN,MANAGEMENT` |
+| `store()`    | POST      | `/task/department`           | Simpan task departemen baru ke database             | `role:ADMIN,MANAGEMENT` |
+| `show()`     | GET       | `/task/department/{id}`      | Tampilkan detail task departemen                    | `role:ADMIN,MANAGEMENT` |
+| `edit()`     | GET       | `/task/department/{id}/edit` | Tampilkan form edit task departemen                 | `role:ADMIN,MANAGEMENT` |
+| `update()`   | PUT/PATCH | `/task/department/{id}`      | Update task departemen                              | `role:ADMIN,MANAGEMENT` |
+| `destroy()`  | DELETE    | `/task/department/{id}`      | Soft delete task departemen                         | `role:ADMIN,MANAGEMENT` |
+| `complete()` | PUT       | `/task/{id}/complete`        | Mark task as completed (100%)                       | `role:ADMIN,MANAGEMENT` |
+| `getTask()`  | GET       | `/task-{id}`                 | Get task data as JSON (untuk AJAX)                  | `auth`                  |
+| `export()`   | GET       | `/export-task-department`    | Export task ke Excel dengan optional filter tanggal | `role:ADMIN,MANAGEMENT` |
+
+**Flow Store Task Departemen:**
+
+```
+Manager → POST /task/department
+  ↓
+TaskController@store()
+  ├─ Validate dengan StoreTaskRequest
+  ├─ Buat/cari EndUser (jika belum ada)
+  ├─ Buat/cari Location
+  ├─ Create Tasks record dengan:
+  │  ├─ name, priority, category_id, location_id
+  │  ├─ enduser_id, assign_to, task_level = 'DEPARTMENT'
+  │  ├─ status = 'NEW', progress = 0, in_timeline = true
+  │  └─ schedule_start, schedule_end
+  ├─ Jika parent task ada: attach children via relation_task
+  ├─ Send email notification ke assignee (jika configured)
+  └─ Redirect dengan success message
+```
+
+#### B. TaskPersonalController (Task Personal)
+
+**Lokasi:** `app/Http/Controllers/TaskPersonalController.php`
+
+| Method      | HTTP      | URI                        | Deskripsi                                 | Middleware |
+| ----------- | --------- | -------------------------- | ----------------------------------------- | ---------- |
+| `index()`   | GET       | `/task/personal`           | Tampilkan daftar task personal (my tasks) | `auth`     |
+| `create()`  | GET       | `/task/personal/create`    | Form create task personal                 | `auth`     |
+| `store()`   | POST      | `/task/personal`           | Simpan task personal baru                 | `auth`     |
+| `show()`    | GET       | `/task/personal/{id}`      | Detail task personal                      | `auth`     |
+| `edit()`    | GET       | `/task/personal/{id}/edit` | Form edit task personal                   | `auth`     |
+| `update()`  | PUT/PATCH | `/task/personal/{id}`      | Update task personal                      | `auth`     |
+| `destroy()` | DELETE    | `/task/personal/{id}`      | Delete task personal                      | `auth`     |
+
+**Flow Take Task (Ambil Task Personal):**
+
+```
+Operator → GET /active_task/{id}
+  ↓
+DashboardOperatorController@takeTask()
+  ├─ Check: apakah user punya active session?
+  │    └─ Ya → Redirect ke /activity/active/{id} (idle)
+  ├─ End previous session (set end_time, hitung durasi)
+  ├─ Create ActivityHistory baru:
+  │  ├─ user_id = Auth::id()
+  │  ├─ reference_type = 'TASK'
+  │  ├─ reference_id = {task_id}
+  │  ├─ start_time = now()
+  │  └─ location = request location
+  ├─ Update task:
+  │  ├─ status = 'ON DUTY'
+  │  ├─ progress = 10%
+  │  ├─ actual_start = now()
+  │  └─ Attach to pivot table (taken = 1)
+  ├─ Jika task punya parent: update parent status → 'ON PROGRESS'
+  ├─ Redirect ke /task/active/{id}
+  └─ Display idle task screen dengan timer
+```
+
+---
+
+### 2. Dashboard Controllers
+
+#### A. DashboardOperatorController
+
+**Lokasi:** `app/Http/Controllers/DashboardOperatorController.php`
+
+| Method               | HTTP | URI                                 | Deskripsi                | Purpose                                    |
+| -------------------- | ---- | ----------------------------------- | ------------------------ | ------------------------------------------ |
+| `index()`            | GET  | `/dashboard/operator`               | Main operator dashboard  | Display active jobs queue & personal tasks |
+| `takeActivity()`     | POST | `/dashboard_operator/take/{id}`     | Take/start activity      | Start work session on activity             |
+| `completeActivity()` | PUT  | `/dashboard_operator/complete/{id}` | Complete activity        | End activity session                       |
+| `takeTask()`         | GET  | `/active_task/{id}`                 | Take/start personal task | Start work session on personal task        |
+| `updateTask()`       | PUT  | `/task/update/{id}`                 | Update active task       | Update task progress & status              |
+| `idle()`             | GET  | `/activity/active/{id}`             | Idle activity screen     | Display ongoing activity session           |
+| `idleTask()`         | GET  | `/task/active/{id}`                 | Idle task screen         | Display ongoing task session               |
+
+**Data Returned (index):**
+
+```php
+[
+  'standbys' => Collection of standby activities,
+  'activities' => Collection of available activities (not STAND BY),
+  'activeActivity' => Current active activity session (if any),
+  'personalTasks' => Personal tasks yang belum di-assign/not started,
+  'activeTask' => Current active personal task (if any),
+  'completedTasks' => Completed tasks history (today)
+]
+```
+
+#### B. DashboardManagementController
+
+**Lokasi:** `app/Http/Controllers/DashboardManagementController.php`
+
+| Method    | HTTP | URI                     | Deskripsi     | Purpose                          |
+| --------- | ---- | ----------------------- | ------------- | -------------------------------- |
+| `index()` | GET  | `/dashboard/management` | KPI dashboard | Monitor team performance & tasks |
+
+**Logic Flow:**
+
+```
+GET /dashboard/management
+  ↓
+DashboardManagementController@index()
+  ├─ Get all users (OPERATOR role)
+  │   └─ For each user:
+  │      ├─ Check latest ActivityHistory
+  │      ├─ Determine status: AT OFFICE, ON FIELD, UNKNOWN
+  │      ├─ Get assigned tasks
+  │      └─ Calculate task progress (weighted)
+  ├─ Get all department tasks
+  │   ├─ Calculate parent task progress = SUM(child_load × progress) / SUM(child_load)
+  │   └─ Flag in_timeline status
+  ├─ Get absence data (cutoff 4:30 PM untuk hari ini)
+  ├─ Prepare KPI metrics:
+  │   ├─ Total operators online/offline
+  │   ├─ Task progress overview
+  │   ├─ Absence summary
+  │   └─ Task completion rate
+  └─ Return data ke view
+```
+
+**Data Returned:**
+
+```php
+[
+  'users' => [
+    'id' => user_id,
+    'name' => user name,
+    'status' => 'AT_OFFICE' | 'ON_FIELD' | 'UNKNOWN',
+    'lastLocation' => location string,
+    'tasks' => [assigned tasks array],
+    'taskProgress' => percentage
+  ],
+  'tasks' => [
+    'departmentTasks' => all department tasks with progress,
+    'totalProgress' => weighted average,
+    'inTimeline' => count of in-timeline tasks,
+    'completed' => count of completed tasks
+  ],
+  'absences' => [absences from today]
+]
+```
+
+---
+
+### 3. Master Data Controllers
+
+#### A. UserController
+
+**Lokasi:** `app/Http/Controllers/UserController.php`
+
+| Method       | HTTP      | URI                  | Deskripsi                          | Middleware              |
+| ------------ | --------- | -------------------- | ---------------------------------- | ----------------------- |
+| `index()`    | GET       | `/user`              | List semua user (active only)      | `role:ADMIN,MANAGEMENT` |
+| `create()`   | GET       | `/user/create`       | Form create user                   | `role:ADMIN,MANAGEMENT` |
+| `store()`    | POST      | `/user`              | Simpan user baru                   | `role:ADMIN,MANAGEMENT` |
+| `show()`     | GET       | `/user/{id}`         | Detail user                        | `role:ADMIN,MANAGEMENT` |
+| `edit()`     | GET       | `/user/{id}/edit`    | Form edit user                     | `role:ADMIN,MANAGEMENT` |
+| `update()`   | PUT/PATCH | `/user/{id}`         | Update user + photo upload         | `role:ADMIN,MANAGEMENT` |
+| `destroy()`  | DELETE    | `/user/{id}`         | Soft delete user                   | `role:ADMIN,MANAGEMENT` |
+| `inactive()` | GET       | `/user-inactive`     | List soft-deleted (inactive) users | `role:ADMIN,MANAGEMENT` |
+| `restore()`  | PUT       | `/user/{id}/restore` | Restore soft-deleted user          | `role:ADMIN,MANAGEMENT` |
+
+**Store User Flow:**
+
+```
+Admin → POST /user
+  ↓
+UserController@store()
+  ├─ Validate input (name, email, password, role, phone)
+  ├─ Hash password
+  ├─ Handle photo upload → storage/app/public/users/
+  ├─ Create User record dengan:
+  │  ├─ name, email, hashed password
+  │  ├─ phone, role (ADMIN|MANAGEMENT|OPERATOR)
+  │  ├─ photo path (jika ada)
+  │  └─ email_verified_at = null
+  ├─ Send welcome email (optional)
+  └─ Redirect dengan success
+```
+
+#### B. ActivityController
+
+**Lokasi:** `app/Http/Controllers/ActivityController.php`
+
+| Method      | HTTP      | URI                   | Deskripsi                     | Middleware              |
+| ----------- | --------- | --------------------- | ----------------------------- | ----------------------- |
+| `index()`   | GET       | `/activity`           | List master activities        | `auth`                  |
+| `create()`  | GET       | `/activity/create`    | Form create activity          | `role:ADMIN,MANAGEMENT` |
+| `store()`   | POST      | `/activity`           | Simpan activity baru          | `role:ADMIN,MANAGEMENT` |
+| `show()`    | GET       | `/activity/{id}`      | Detail activity               | `auth`                  |
+| `edit()`    | GET       | `/activity/{id}/edit` | Form edit activity            | `role:ADMIN,MANAGEMENT` |
+| `update()`  | PUT/PATCH | `/activity/{id}`      | Update activity               | `role:ADMIN,MANAGEMENT` |
+| `destroy()` | DELETE    | `/activity/{id}`      | Delete activity (soft)        | `role:ADMIN,MANAGEMENT` |
+| `export()`  | GET       | `/export-activity`    | Export activity list to Excel | `auth`                  |
+
+#### C. Other Master Data Controllers
+
+| Controller                      | URI                   | Methods                                           | Purpose                                         |
+| ------------------------------- | --------------------- | ------------------------------------------------- | ----------------------------------------------- |
+| **CategoryController**          | `/category`           | index, create, store, show, edit, update, destroy | Manage task categories                          |
+| **LocationController**          | `/location`           | index, create, store, show, edit, update, destroy | Manage work locations                           |
+| **EndUserController**           | `/enduser`            | index, create, store, show, edit, update, destroy | Manage end users (clients/contacts)             |
+| **EndUserDepartmentController** | `/enduser-department` | index, create, store, show, edit, update, destroy | Manage end user departments                     |
+| **AbsenController**             | `/absen`              | index, create, store, show, edit, update, destroy | Manage absences/leaves                          |
+| **PriorityController**          | `/priority`           | index, create, store, show, edit, update, destroy | Manage task priorities (not exposed in web.php) |
+| **StatusController**            | `/status`             | index, create, store, show, edit, update, destroy | Manage task statuses (not exposed in web.php)   |
+
+---
+
+### 4. Activity & History Controllers
+
+#### A. ActivityHistoryController
+
+**Lokasi:** `app/Http/Controllers/ActivityHistoryController.php`
+
+| Method         | HTTP      | URI                                      | Deskripsi                        | Middleware              |
+| -------------- | --------- | ---------------------------------------- | -------------------------------- | ----------------------- |
+| `index()`      | GET       | `/activity_history`                      | List semua activity history      | `role:ADMIN,MANAGEMENT` |
+| `show()`       | GET       | `/activity_history/{id}`                 | Detail activity history record   | `role:ADMIN,MANAGEMENT` |
+| `list()`       | GET       | `/activity_history/list/{userId}`        | List history per user            | `role:ADMIN,MANAGEMENT` |
+| `listFilter()` | GET       | `/activity_history/list/{userId}/filter` | Filter history dengan date range | `role:ADMIN,MANAGEMENT` |
+| `edit()`       | GET       | `/activity_history/{id}/edit`            | Form edit history (admin only)   | `role:ADMIN`            |
+| `update()`     | PUT/PATCH | `/activity_history/{id}`                 | Update history record            | `role:ADMIN`            |
+| `destroy()`    | DELETE    | `/activity_history/{id}`                 | Delete history record            | `role:ADMIN`            |
+
+**Activity History Record Structure:**
+
+```php
+[
+  'id' => id,
+  'user_id' => user who performed activity,
+  'reference_type' => 'ACTIVITY' | 'TASK' | 'JOB',
+  'reference_id' => activity_id/task_id,
+  'location' => location string,
+  'start_time' => timestamp,
+  'end_time' => timestamp,
+  'duration' => calculated in minutes,
+  'description' => optional notes
+]
+```
+
+#### B. ProfileNewController
+
+**Lokasi:** `app/Http/Controllers/ProfileNewController.php`
+
+| Method     | HTTP      | URI                  | Deskripsi             | Middleware |
+| ---------- | --------- | -------------------- | --------------------- | ---------- |
+| `edit()`   | GET       | `/profile/edit/{id}` | Form edit profil user | `auth`     |
+| `update()` | PUT/PATCH | `/profile/update`    | Update profil user    | `auth`     |
+
+---
+
+## 🔄 Data Flow Diagrams
+
+### Flow 1: Operator Mengambil Task Departemen
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ OPERATOR TAKES DEPARTMENT TASK FLOW                             │
+└─────────────────────────────────────────────────────────────────┘
+
+START: Operator click "Take Activity" on Dashboard
+  │
+  ├──→ DashboardOperatorController::index()
+  │      └─ Display available activities
+  │
+  ├──→ Operator selects activity
+  │
+  ├──→ POST /dashboard_operator/take/{activityId}
+  │
+  ├──→ DashboardOperatorController::takeActivity()
+  │      │
+  │      ├─ Check: Active session exists?
+  │      │   ├─ YES → End previous session (end_time = now)
+  │      │   │        Calculate duration
+  │      │   │        Update ActivityHistory
+  │      │   │
+  │      │   └─ NO → Continue
+  │      │
+  │      ├─ Create NEW ActivityHistory:
+  │      │   ├─ user_id = Auth::id()
+  │      │   ├─ reference_type = 'ACTIVITY'
+  │      │   ├─ reference_id = activityId
+  │      │   ├─ location = from form/session
+  │      │   ├─ start_time = Carbon::now()
+  │      │   └─ end_time = null (ongoing)
+  │      │
+  │      └─ Redirect to /activity/active/{activityId}
+  │
+  ├──→ Display Idle Screen with Timer
+  │
+  └──→ Operator completes activity
+       │
+       └─→ PUT /dashboard_operator/complete/{historyId}
+           │
+           └─→ Update ActivityHistory:
+               ├─ end_time = now()
+               ├─ duration = calculated
+               └─ Redirect to dashboard/operator (STAND BY)
+
+END
+```
+
+### Flow 2: Manager Creates Department Task & Assigns to Operator
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ CREATE & ASSIGN DEPARTMENT TASK FLOW                            │
+└─────────────────────────────────────────────────────────────────┘
+
+START: Manager navigates to /task/department/create
+  │
+  ├──→ TaskController::create()
+  │      └─ Render form dengan:
+  │         ├─ Categories dropdown
+  │         ├─ Locations dropdown
+  │         ├─ Users dropdown (for assign_to)
+  │         ├─ End users dropdown (or create new)
+  │         └─ Parent task selector (for sub-tasks)
+  │
+  ├──→ Manager fills form and submits
+  │
+  ├──→ POST /task/department
+  │
+  ├──→ TaskController::store()
+  │      │
+  │      ├─ Validate input (StoreTaskRequest)
+  │      │
+  │      ├─ Create/Find EndUser
+  │      │   └─ If create new: EndUser::create()
+  │      │
+  │      ├─ Create/Find Location
+  │      │   └─ If create new: Location::create()
+  │      │
+  │      ├─ Create Tasks record:
+  │      │   ├─ name, description
+  │      │   ├─ category_id, location_id
+  │      │   ├─ enduser_id, assign_to (user_id)
+  │      │   ├─ priority (string), task_level = 'DEPARTMENT'
+  │      │   ├─ status = 'NEW'
+  │      │   ├─ progress = 0
+  │      │   ├─ schedule_start, schedule_end
+  │      │   ├─ in_timeline = true
+  │      │   └─ relation_task = parent_id (if sub-task)
+  │      │
+  │      ├─ Send Email Notification to assignee
+  │      │   │
+  │      │   ├─ Build email using NotifCreateActivityDept mailable
+  │      │   ├─ Filter by MAIL_ALLOWED_DOMAINS
+  │      │   ├─ Queue for sending (retry 3x if failed)
+  │      │   │
+  │      │   └─ Log notification sent
+  │      │
+  │      └─ Redirect with success message
+  │
+  ├──→ Assigned Operator receives email notification
+  │
+  ├──→ Operator logs in and sees new task on dashboard
+  │
+  └──→ Operator can:
+       ├─ Click "Take Task" → Start session
+       │   └─ Creates ActivityHistory
+       │   └─ Updates task status to ON_DUTY
+       │   └─ Redirect to idle screen
+       │
+       └─ Or schedule for later
+
+END
+```
+
+### Flow 3: Task Progress Calculation (Weighted)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ WEIGHTED TASK PROGRESS CALCULATION                              │
+└─────────────────────────────────────────────────────────────────┘
+
+SCENARIO: Parent task has 3 subtasks with different loads
+
+  Parent Task (ID: 1)
+    ├─ SubTask 1: task_load = 30%, progress = 50% → Contribution = 30% × 50% = 15%
+    ├─ SubTask 2: task_load = 40%, progress = 100% → Contribution = 40% × 100% = 40%
+    └─ SubTask 3: task_load = 30%, progress = 0% → Contribution = 30% × 0% = 0%
+
+  Parent Progress = (15% + 40% + 0%) = 55%
+
+
+TRIGGER: When subtask is updated (on Dashboard Management load)
+
+  DashboardManagementController::index()
+    │
+    ├─ For each parent task:
+    │   │
+    │   ├─ Get all children (where relation_task = parent_id)
+    │   │
+    │   ├─ Calculate: weightedProgress = 0
+    │   │   For each child:
+    │   │     ├─ child_contribution = (child.task_load / 100) × (child.progress / 100)
+    │   │     ├─ weightedProgress += child_contribution
+    │   │     └─ Aggregate by sum
+    │   │
+    │   ├─ Update parent task:
+    │   │   └─ progress = weightedProgress
+    │   │
+    │   ├─ Check timeline:
+    │   │   ├─ If progress == 100 && actual_end > schedule_end:
+    │   │   │   └─ in_timeline = false
+    │   │   │   └─ Flag as LATE
+    │   │   │
+    │   │   └─ Else:
+    │   │       └─ in_timeline = true
+    │   │
+    │   └─ Persist to database
+    │
+    └─ Display updated progress on dashboard (with color coding)
+
+END
+```
+
+### Flow 4: Absence Notification System
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ ABSENCE/LEAVE NOTIFICATION FLOW                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+START: Admin/Management creates absence record
+  │
+  ├──→ GET /absen (or /absen/create)
+  │
+  ├──→ AbsenController::create() or store()
+  │      │
+  │      ├─ Validate input (user_id, date, reason)
+  │      │
+  │      ├─ Create Absen record
+  │      │
+  │      ├─ Trigger: Send Absence Notification
+  │      │   │
+  │      │   ├─ Get all users (broadcast to all)
+  │      │   │
+  │      │   ├─ Filter emails by MAIL_ALLOWED_DOMAINS
+  │      │   │
+  │      │   ├─ Build email using NotifAbsen mailable
+  │      │   │   ├─ Include:
+  │      │   │   │  ├─ Absent user name
+  │      │   │   │  ├─ Date of absence
+  │      │   │   │  ├─ Reason
+  │      │   │   │  └─ Generated at
+  │      │   │   │
+  │      │   │   └─ Template: resources/views/emails/absence.blade.php
+  │      │   │
+  │      │   ├─ Send via Mail::to($emails)->send($mailable)
+  │      │   │
+  │      │   └─ Retry 3x if failed (queue retry logic)
+  │      │
+  │      └─ Log notification sent
+  │
+  ├──→ All staff receive absence notification email
+  │
+  └──→ On dashboard/management:
+       └─ Absence data pulled cutoff 4:30 PM
+          (for today's absence tracking)
+
+END
+```
+
+---
+
+## 📊 Model Relationships & Data Structure
+
+### Complete Model Diagrams
+
+**User Model:**
+
+```php
+class User {
+  Has Many: tasks (via assign_to)
+  Has Many: delivered_tasks (via ask_to)
+  Has Many: created_tasks (via created_by)
+  Has Many: activity_histories (via user_id)
+  Has Many: absences (via user_id)
+
+  Properties:
+    - id, name, email, password
+    - phone, photo, role
+    - email_verified_at, deleted_at (SoftDeletes)
+}
+```
+
+**Tasks Model:**
+
+```php
+class Tasks {
+  Belongs To: category (category_id)
+  Belongs To: location (location_id)
+  Belongs To: enduser (enduser_id)
+  Belongs To: assignee User (assign_to)
+  Belongs To: parent Task (relation_task)
+  Has Many: children Tasks (relation_task)
+  Has Many: activity_histories (polymorphic)
+
+  Properties:
+    - id, name, description
+    - priority (string), category_id, location_id
+    - enduser_id, assign_to (user_id)
+    - task_level ('DEPARTMENT' | 'PERSONAL')
+    - status ('NEW' | 'ON_DUTY' | 'ON_HOLD' | 'ON_PROGRESS' | 'COMPLETED' | 'CANCELLED')
+    - progress (percentage 0-100)
+    - task_load (percentage, for weighted calculation)
+    - schedule_start, schedule_end
+    - actual_start, actual_end
+    - in_timeline (boolean)
+    - relation_task (parent_id)
+    - deleted_at (SoftDeletes)
+}
+```
+
+**ActivityHistory Model (for tracking):**
+
+```php
+class ActivityHistory {
+  Belongs To: user (user_id)
+  Belongs To: activity or task (polymorphic reference_type/reference_id)
+
+  Properties:
+    - id
+    - user_id (who performed activity)
+    - reference_type ('ACTIVITY' | 'TASK' | 'JOB')
+    - reference_id (id of activity/task)
+    - location (string)
+    - start_time, end_time
+    - duration (calculated in minutes)
+    - description (optional)
+    - deleted_at (SoftDeletes)
+}
+```
+
+---
+
+## 🔌 Email Notification System
+
+### Mailable Classes
+
+| File                                   | Purpose                      | Triggered                 | Domain Filtering           |
+| -------------------------------------- | ---------------------------- | ------------------------- | -------------------------- |
+| `app/Mail/NotifCreate.php`             | General task notification    | Task created              | Yes (MAIL_ALLOWED_DOMAINS) |
+| `app/Mail/NotifCreateActivityDept.php` | Department task notification | Department task created   | Yes                        |
+| `app/Mail/NotifAbsen.php`              | Absence broadcast            | Absence recorded          | Yes                        |
+| `app/Mail/NotifNoActivity.php`         | No activity alert            | (Optional/custom trigger) | Yes                        |
+
+### Configuration
+
+**Environment (.env):**
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@example.com
+MAIL_FROM_NAME="Dashboard IT"
+
+# Domain whitelist for email sending
+MAIL_ALLOWED_DOMAINS=tifico.co.id,tificoventures.com
+```
+
+---
+
+## 💾 Excel Export Functions
+
+### Export Task Department
+
+**Handler:** `TaskController::export()`
+
+**URL:** `GET /export-task-department`
+
+**Parameters:**
+
+-   `start_date` (optional): Format Y-m-d
+-   `end_date` (optional): Format Y-m-d
+
+**Returns:** Excel file `Task_Department_{Y-m-d_H-i-s}.xlsx`
+
+**Columns in Export:**
+
+-   Task ID, Name, Priority, Category
+-   Location, Assigned To, Status, Progress
+-   Schedule Start, Schedule End, Actual Start, Actual End
+-   In Timeline, Description
+
+### Export Activity List
+
+**Handler:** `ActivityController::export()`
+
+**URL:** `GET /export-activity`
+
+**Parameters:** None (exports all activities)
+
+**Returns:** Excel file `Activity_List_{Y-m-d_H-i-s}.xlsx`
+
+**Columns in Export:**
+
+-   Activity ID, Name, Location, Description
+
+---
+
+## 🛡 Middleware & Authorization
+
+### RoleMiddleware
+
+**File:** `app/Http/Middleware/RoleMiddleware.php`
+
+**Usage:** `role:ADMIN,MANAGEMENT,OPERATOR`
+
+**Logic:**
+
+```
+if user not authenticated → redirect to login
+if user's role not in allowed roles → abort 403 Forbidden
+else → proceed
+```
+
+### ActiveSession Middleware
+
+**File:** `app/Http/Middleware/ActiveSession.php`
+
+**Usage:** Routes yang require session check
+
+**Logic:**
+
+```
+Check: Does user have active ActivityHistory (end_time = null)?
+  ├─ YES:
+  │  └─ Store active session info in session
+  │  └─ User can interact but cannot take new activity/task
+  │     (automatic redirect to idle page)
+  │
+  └─ NO:
+     └─ Proceed normally
+```
+
+---
+
 ## 📝 Catatan Penting
 
 -   Semua model utama menggunakan **Soft Delete** — data yang dihapus tidak hilang permanen dari database.
@@ -445,6 +1112,8 @@ php artisan db:seed
 -   Task mendukung **relasi parent-child** untuk mengelola sub-task di bawah task departemen.
 -   Progress task departemen dihitung secara **weighted** berdasarkan `task_load` masing-masing sub-task.
 -   Flag `in_timeline` otomatis di-set `false` jika task selesai melewati `schedule_end`.
+-   Email notification hanya dikirim ke domain yang terdaftar di `MAIL_ALLOWED_DOMAINS`.
+-   Setiap email notification memiliki retry logic 3x jika gagal terkirim.
 
 ---
 
