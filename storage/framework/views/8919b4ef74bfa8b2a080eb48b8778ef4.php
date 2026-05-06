@@ -28,7 +28,7 @@
     
     <div class="container-fluid py-4">
         <div class="custom-control custom-checkbox d-flex justify-content-end">
-            <input type="checkbox" class="custom-control-input" id="autoRefresh" checked>
+            <input type="checkbox" class="custom-control-input" id="autoRefresh">
             <label class="custom-control-label" for="autoRefresh">Auto Refresh</label>
             <span id="countdownDisplay" class="text-muted small ms-2"></span>
         </div>
@@ -497,14 +497,10 @@
         function startCountdown() {
             seconds = 30;
             countdownDisplay.textContent = '(' + seconds + 's)';
-
             countdownTimer = setInterval(() => {
                 seconds--;
                 countdownDisplay.textContent = '(' + seconds + 's)';
-
-                if (seconds <= 0) {
-                    seconds = 30;
-                }
+                if (seconds <= 0) seconds = 30;
             }, 1000);
         }
 
@@ -527,13 +523,21 @@
             stopCountdown();
         }
 
-        // Langsung jalankan saat halaman load
-        startRefresh();
+        // Baca state dari localStorage saat halaman load
+        const savedState = localStorage.getItem('autoRefresh');
+        if (savedState === 'false') {
+            toggle.checked = false; // tetap uncheck
+        } else {
+            toggle.checked = true;
+            startRefresh(); // default aktif
+        }
 
         toggle.addEventListener('change', () => {
             if (toggle.checked) {
+                localStorage.setItem('autoRefresh', 'true');
                 startRefresh();
             } else {
+                localStorage.setItem('autoRefresh', 'false');
                 stopRefresh();
             }
         });
