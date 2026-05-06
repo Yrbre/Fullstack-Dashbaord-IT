@@ -83,6 +83,8 @@ class DashboardManagementController extends Controller
                 $totalCount = $task->children->count();
                 $task->progress_label = $completedCount . '/' . $totalCount;
                 $task->progress_color = $task->progress == 100 ? 'bg-success' : ($task->progress >= 50 ? 'bg-info' : 'bg-warning');
+
+                Tasks::where('id', $task->id)->update(['progress' => $task->progress]);
                 return $task;
             });
 
