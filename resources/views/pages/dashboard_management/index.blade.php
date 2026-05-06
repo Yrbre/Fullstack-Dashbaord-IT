@@ -26,8 +26,13 @@
             }
         }
     </style>
-    <meta http-equiv="refresh" content="60">
+    {{-- <meta http-equiv="refresh" content="60"> --}}
     <div class="container-fluid py-4">
+        <div class="custom-control custom-checkbox d-flex justify-content-end">
+            <input type="checkbox" class="custom-control-input" id="autoRefresh" checked>
+            <label class="custom-control-label" for="autoRefresh">Auto Refresh</label>
+            <span id="countdownDisplay" class="text-muted small ms-2"></span>
+        </div>
         <div class="row mx-auto justify-content-center g-3">
             <div class="col-12 col-xl-6">
                 <h2 class="page-title"> <i class="fe fe-home" style="color:aqua"> </i> IT Office</h2>
@@ -474,6 +479,58 @@
                 [10, 15, 20, "All"]
             ],
             order: [0, 'asc'],
+        });
+    </script>
+
+    <script>
+        const toggle = document.getElementById('autoRefresh');
+        const countdownDisplay = document.getElementById('countdownDisplay');
+        let refreshTimer = null;
+        let countdownTimer = null;
+        let seconds = 30;
+
+        function startCountdown() {
+            seconds = 30;
+            countdownDisplay.textContent = '(' + seconds + 's)';
+
+            countdownTimer = setInterval(() => {
+                seconds--;
+                countdownDisplay.textContent = '(' + seconds + 's)';
+
+                if (seconds <= 0) {
+                    seconds = 30;
+                }
+            }, 1000);
+        }
+
+        function stopCountdown() {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            countdownDisplay.textContent = '';
+        }
+
+        function startRefresh() {
+            refreshTimer = setInterval(() => {
+                window.location.reload();
+            }, 30000);
+            startCountdown();
+        }
+
+        function stopRefresh() {
+            clearInterval(refreshTimer);
+            refreshTimer = null;
+            stopCountdown();
+        }
+
+        // Langsung jalankan saat halaman load
+        startRefresh();
+
+        toggle.addEventListener('change', () => {
+            if (toggle.checked) {
+                startRefresh();
+            } else {
+                stopRefresh();
+            }
         });
     </script>
 @endsection
