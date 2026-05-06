@@ -429,11 +429,6 @@
         setInterval(updateDurations, 1000);
     </script>
     <script>
-        setTimeout(function() {
-            location.reload();
-        }, 30000);
-    </script>
-    <script>
         function confirmComplete(event) {
             event.preventDefault();
             const form = event.target;
@@ -492,15 +487,16 @@
         const countdownDisplay = document.getElementById('countdownDisplay');
         let refreshTimer = null;
         let countdownTimer = null;
-        let seconds = 30;
+        const INTERVAL = 30; // detik
 
         function startCountdown() {
-            seconds = 30;
+            let seconds = INTERVAL;
             countdownDisplay.textContent = '(' + seconds + 's)';
+            clearInterval(countdownTimer);
             countdownTimer = setInterval(() => {
                 seconds--;
+                if (seconds <= 0) seconds = INTERVAL;
                 countdownDisplay.textContent = '(' + seconds + 's)';
-                if (seconds <= 0) seconds = 30;
             }, 1000);
         }
 
@@ -511,9 +507,10 @@
         }
 
         function startRefresh() {
+            clearInterval(refreshTimer); // pastikan tidak double timer
             refreshTimer = setInterval(() => {
                 window.location.reload();
-            }, 30000);
+            }, INTERVAL * 1000);
             startCountdown();
         }
 
@@ -523,13 +520,12 @@
             stopCountdown();
         }
 
-        // Baca state dari localStorage saat halaman load
         const savedState = localStorage.getItem('autoRefresh');
         if (savedState === 'false') {
-            toggle.checked = false; // tetap uncheck
+            toggle.checked = false;
         } else {
             toggle.checked = true;
-            startRefresh(); // default aktif
+            startRefresh();
         }
 
         toggle.addEventListener('change', () => {

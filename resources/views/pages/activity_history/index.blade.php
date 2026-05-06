@@ -32,7 +32,7 @@
                                         @foreach ($activity_history as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->user->name }}</td>
+                                                <td>{{ $item->user->name ?? '-' }}</td>
                                                 @if (in_array($item->reference_type, ['TASK', 'JOB']))
                                                     <td>JOB</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
@@ -128,7 +128,7 @@
                                         @foreach ($activityHistoryOp as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->user->name }}</td>
+                                                <td>{{ $item->user->name ?? '-' }}</td>
                                                 @if (in_array($item->reference_type, ['TASK', 'JOB']))
                                                     <td>JOB</td>
                                                 @elseif ($item->reference_type === 'ACTIVITY')
