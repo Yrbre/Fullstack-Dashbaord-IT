@@ -57,6 +57,11 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
             $durationActual = max(1, $total); // jika 0 atau kurang, tetap tulis 1
         }
 
+        $durationActualDepartment = null;
+        if ($task->actual_start && $task->actual_end) {
+            $durationActualDepartment = $this->formatDuration($task->actual_start, $task->actual_end);
+        }
+
         return [
             ++$this->rowNumber,
             $task->id,
@@ -81,7 +86,7 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
             $durationSchedule,
             $task->actual_start ? $task->actual_start->format('Y-m-d H:i') : null,
             $task->actual_end ? $task->actual_end->format('Y-m-d H:i') : null,
-            $durationActual,
+            $task->task_level === 'DEPARTMENT' ? $durationActualDepartment : $durationActual,
             $task->description,
             $task->created_at->format('d-m-Y'),
         ];
