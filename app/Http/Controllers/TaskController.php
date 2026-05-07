@@ -250,6 +250,11 @@ class TaskController extends Controller
             'progress' => 100,
             'actual_end' => now()->format('Y-m-d H:i'),
         ]);
+        if ($task->actual_start === null) {
+            $task->update([
+                'actual_start' => now()->format('Y-m-d H:i'),
+            ]);
+        }
         return redirect()->back()->with('success', 'Task marked as completed.');
     }
 
