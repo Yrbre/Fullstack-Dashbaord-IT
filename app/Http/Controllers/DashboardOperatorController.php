@@ -167,12 +167,12 @@ class DashboardOperatorController extends Controller
                 ->update([
                     'progress' => 10,
                 ]);
-
+        }
+        if ($relationTask && $relationTask->actual_start == null) {
             $relationTask->where('id', $relationTask->id)
                 ->whereNull('actual_start')
                 ->update(['actual_start' => now()->format('Y-m-d H:i:s'),]);
         }
-
 
         ActivityHistory::create([
             'user_id'           => auth()->id(),
