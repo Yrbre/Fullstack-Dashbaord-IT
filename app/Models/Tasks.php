@@ -96,10 +96,10 @@ class Tasks extends Model
             $minutes = abs($diffInMinutes) % 60;
 
             if ($diffInMinutes < 0) {
-                return "-{$days}d {$hours}h {$minutes}m";
+                return "{$hours}h {$minutes}m";
             }
 
-            return "+{$days}d {$hours}h {$minutes}m";
+            return "{$hours}h {$minutes}m";
         }
         return null;
     }
