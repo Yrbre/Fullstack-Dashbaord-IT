@@ -3,11 +3,11 @@
 namespace App\Exports;
 
 use App\Models\Tasks;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use PhpParser\Node\Expr\Cast\String_;
 
 class TaskDepartment implements FromQuery, WithMapping, WithHeadings
 {
@@ -25,7 +25,7 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
 
     public function query()
     {
-        $query = Tasks::query();
+        $query = Tasks::query()->with(['activityHistories']);
 
         if ($this->startDate && $this->endDate) {
             $query->whereBetween('created_at', [
@@ -46,8 +46,15 @@ class TaskDepartment implements FromQuery, WithMapping, WithHeadings
         }
 
         $durationActual = null;
-        if ($task->actual_start && $task->actual_end) {
-            $durationActual = $this->formatDuration($task->actual_start, $task->actual_end);
+        $histories = $task->activityHistories
+            ->filter(fn($h) => $h->start_time && $h->end_time);
+
+        if ($histories->isNotEmpty()) {
+            $total = $histories->sum(
+                fn($h) => Carbon::parse($h->start_time)->diffInMinutes(Carbon::parse($h->end_time))
+            );
+
+            $durationActual = max(1, $total); // jika 0 atau kurang, tetap tulis 1
         }
 
         return [

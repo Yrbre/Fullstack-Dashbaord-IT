@@ -12,7 +12,7 @@
                                 <div class="card-body">
                                     <div>
                                         <div class="form-group">
-                                            <form method="POST"
+                                            <form method="POST" id="myForm"
                                                 action="<?php echo e(route('dashboard_operator.update_task', $task->id)); ?>">
                                                 <?php echo csrf_field(); ?>
                                                 <?php echo method_field('PUT'); ?>
@@ -131,7 +131,8 @@ unset($__errorArgs, $__bag); ?>" name="description"
                                                 <div class="d-flex justify-content-end">
                                                     <a href="<?php echo e(route('dashboard_operator.index')); ?>"
                                                         class="btn btn-secondary mt-4 mr-2">Back</a>
-                                                    <button type="submit" class="btn btn-primary mt-4 ">Update
+                                                    <button type="submit" id="submitBtn"
+                                                        class="btn btn-primary mt-4 ">Update
                                                         Activity</button>
                                                 </div>
                                             </form>
@@ -237,6 +238,20 @@ unset($__errorArgs, $__bag); ?>" name="description"
                 if ((e.altKey && e.key === 'ArrowLeft') || e.key === 'BrowserBack') {
                     e.preventDefault();
                 }
+            });
+        </script>
+        
+        <script>
+            document.getElementById('myForm').addEventListener('submit', function(e) {
+                const btn = document.getElementById('submitBtn');
+
+                if (btn.disabled) {
+                    e.preventDefault(); // cegah submit kedua
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Loading...';
             });
         </script>
     <?php $__env->stopPush(); ?>
