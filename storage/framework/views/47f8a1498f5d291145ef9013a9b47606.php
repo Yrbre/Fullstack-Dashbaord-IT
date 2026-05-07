@@ -41,7 +41,6 @@ unset($__errorArgs, $__bag); ?>
                                     <option value="<?php echo e($item); ?>"<?php if(old('department', $item) == $endUser->department): ?> selected <?php endif; ?>>
                                         <?php echo e($item); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <option value="other">Other</option>
                             </optgroup>
                         </select>
                     </div>

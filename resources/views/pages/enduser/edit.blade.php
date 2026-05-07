@@ -28,7 +28,6 @@
                                     <option value="{{ $item }}"@if (old('department', $item) == $endUser->department) selected @endif>
                                         {{ $item }}</option>
                                 @endforeach
-                                <option value="other">Other</option>
                             </optgroup>
                         </select>
                     </div>

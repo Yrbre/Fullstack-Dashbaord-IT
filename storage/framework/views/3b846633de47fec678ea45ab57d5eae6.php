@@ -39,7 +39,6 @@ unset($__errorArgs, $__bag); ?>
                                 <?php $__currentLoopData = $department; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item); ?>"><?php echo e($item); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <option value="other">Other</option>
                             </optgroup>
                         </select>
                     </div>

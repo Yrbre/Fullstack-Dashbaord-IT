@@ -26,7 +26,6 @@
                                 @foreach ($department as $item)
                                     <option value="{{ $item }}">{{ $item }}</option>
                                 @endforeach
-                                <option value="other">Other</option>
                             </optgroup>
                         </select>
                     </div>

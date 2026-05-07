@@ -39,7 +39,8 @@ class EndUserController extends Controller
      */
     public function create()
     {
-        $department = EndUser::select('department')->distinct()->orderBy('department', 'asc')->pluck('department');
+        // $department = EndUser::select('department')->distinct()->orderBy('department', 'asc')->pluck('department');
+        $department = EndUser::whereNull('name')->distinct()->orderBy('department', 'asc')->pluck('department');
         return view('pages.enduser.create', compact('department'));
     }
 
@@ -75,7 +76,7 @@ class EndUserController extends Controller
     public function edit(string $id)
     {
         $endUser = EndUser::findOrFail($id);
-        $department = EndUser::select('department')->distinct()->orderBy('department', 'asc')->pluck('department');
+        $department = EndUser::whereNull('name')->distinct()->orderBy('department', 'asc')->pluck('department');
         return view('pages.enduser.edit', compact('endUser', 'department'));
     }
 
