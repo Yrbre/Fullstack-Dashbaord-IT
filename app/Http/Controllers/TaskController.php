@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DetailActivityHistory;
 use App\Exports\TaskDepartment;
 use App\Http\Requests\GetTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
@@ -274,6 +275,19 @@ class TaskController extends Controller
         return (new TaskDepartment(
             $validated['start_date'] ?? null,
             $validated['end_date'] ?? null
-        ))->download('Activity List' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx');
+        ))->download('Activity List ' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx');
+    }
+
+    public function exportDetail(Request $request)
+    {
+        $validated = $request->validate([
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
+        ]);
+
+        return (new DetailActivityHistory(
+            $validated['start_date'] ?? null,
+            $validated['end_date'] ?? null
+        ))->download('Detail Activity History ' . Carbon::now()->format('Y-m-d_H-i-s') . '.xlsx');
     }
 }

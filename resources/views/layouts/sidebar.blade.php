@@ -168,7 +168,13 @@
                     <li class="nav-item w-100">
                         <a class="nav-link @yield('menulocation')" href="#" id="export-data">
                             <i class="fe fe-download fe-16"></i>
-                            <span class="ml-3 item-text">Export Job Activity</span>
+                            <span class="ml-3 item-text">Export Job Summary</span>
+                        </a>
+                    </li>
+                    <li class="nav-item w-100">
+                        <a class="nav-link @yield('menulocation')" href="#" id="export-data-detail">
+                            <i class="fe fe-download fe-16"></i>
+                            <span class="ml-3 item-text">Export Job Detail</span>
                         </a>
                     </li>
                 </ul>

@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:MANAGEMENT,ADMIN']], fu
     Route::resource('/task/department', TaskController::class)->names('task');
     Route::put('/task/{id}/complete', [TaskController::class, 'complete'])->name('task.complete');
     Route::get('/export-task-department', [TaskController::class, 'export'])->name('task.export');
+    Route::get('/export-task-department-detail', [TaskController::class, 'exportDetail'])->name('task.export.detail');
 });
 
 // Edit Activity History, Privilage only for Admin
