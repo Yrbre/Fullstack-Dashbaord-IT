@@ -20,20 +20,21 @@ class DetailActivityHistory implements FromCollection, WithHeadings, ShouldAutoS
 
     public function __construct(?string $startDate = null, ?string $endDate = null)
     {
-        $this->startDate = $startDate;
-        $this->endDate   = $endDate;
+        $this->startDate      = $startDate;
+        $this->endDate        = $endDate;
         $this->holidayService = new HolidayService();
     }
 
     // =========================================================
-    // COLLECTION — 1 row per ActivityHistory (bukan per task_user)
+    // COLLECTION — 1 row per ActivityHistory
     // =========================================================
     public function collection()
     {
         $query = ActivityHistory::query()
             ->where('reference_type', 'TASK')
+            ->whereHas('task')               // skip history yang tasknya sudah tidak ada
             ->with([
-                'user',         // user yang mengerjakan (pemilik history)
+                'user',
                 'task',
                 'task.parent',
                 'task.category',
@@ -54,7 +55,10 @@ class DetailActivityHistory implements FromCollection, WithHeadings, ShouldAutoS
         foreach ($histories as $history) {
             $task = $history->task;
 
-            // ── Duration Schedule (menit) ──────────────────────
+            // Guard: skip jika task null (jaga-jaga)
+            if (!$task) continue;
+
+            // ── Duration Schedule (menit, hitung hari kerja) ──
             $durationSchedule = null;
             if ($task->schedule_start && $task->schedule_end) {
                 $durationSchedule = $this->holidayService->countWorkingMinutes(
@@ -63,40 +67,46 @@ class DetailActivityHistory implements FromCollection, WithHeadings, ShouldAutoS
                 );
             }
 
-            // ── Duration Actual: hitung dari start_time & end_time history ini ──
+            // ── Duration Actual (menit biasa) ─────────────────
             $durationActual = null;
             if ($history->start_time && $history->end_time) {
                 $minutes        = $this->diffMinutes($history->start_time, $history->end_time);
-                $durationActual = max(1, $minutes); // satuan: menit
+                $durationActual = max(1, $minutes);
             }
 
-            // ── Assigned To: dari user pemilik history ──
+            // ── Timeline Status ────────────────────────────────
+            // in_timeline bisa null → tampilkan '-', bukan 'LATE'
+            $timelineStatus = '-';
+            if (!is_null($task->in_timeline)) {
+                $timelineStatus = $task->in_timeline ? 'ON SCHEDULE' : 'LATE';
+            }
+
+            // ── Assigned To ────────────────────────────────────
             $assignedTo = $history->user?->name ?? '-';
 
             $rows->push([
                 $no++,
                 $history->reference_id ?? '-',
-                $task?->name ?? '-',
-                $task?->parent?->name ?? '-',
-                $task?->category?->name ?? '-',
+                $task->name ?? '-',
+                $task->parent?->name ?? '-',
+                $task->category?->name ?? '-',
                 $assignedTo,
-                $task?->level ?? '-',
-                $task?->end_user ?? '-',
-                $task?->status ?? '-',
-                $task?->progress ?? '-',
-                $task?->task_load ?? '-',
+                $task->enduser->name ?? '-',
+                $history->status ?? '-',
+                $task->progress ?? '-',
+                $task->task_load ?? '-',
                 $history->location ?? '-',
-                $task?->in_timeline ? 'ON SCHEDULE' : 'LATE' ?? '-',
-                $task?->schedule_start ? Carbon::parse($task->schedule_start)->format('d/m/Y') : '-',
-                $task?->schedule_start ? Carbon::parse($task->schedule_start)->format('H:i')   : '-',
-                $task?->schedule_end   ? Carbon::parse($task->schedule_end)->format('d/m/Y')   : '-',
-                $task?->schedule_end   ? Carbon::parse($task->schedule_end)->format('H:i')     : '-',
-                $durationSchedule,
+                $timelineStatus,
+                $task->schedule_start ? Carbon::parse($task->schedule_start)->format('d/m/Y') : '-',
+                $task->schedule_start ? Carbon::parse($task->schedule_start)->format('H:i')   : '-',
+                $task->schedule_end   ? Carbon::parse($task->schedule_end)->format('d/m/Y')   : '-',
+                $task->schedule_end   ? Carbon::parse($task->schedule_end)->format('H:i')     : '-',
+                $durationSchedule ?? '-',
                 $history->start_time ? Carbon::parse($history->start_time)->format('d/m/Y') : '-',
                 $history->start_time ? Carbon::parse($history->start_time)->format('H:i')   : '-',
                 $history->end_time   ? Carbon::parse($history->end_time)->format('d/m/Y')   : '-',
                 $history->end_time   ? Carbon::parse($history->end_time)->format('H:i')     : '-',
-                $durationActual,
+                $durationActual ?? '-',
                 $history->description ?? '-',
                 Carbon::parse($history->created_at)->format('d/m/Y H:i'),
             ]);
@@ -117,7 +127,6 @@ class DetailActivityHistory implements FromCollection, WithHeadings, ShouldAutoS
             'Parent Activity',
             'Category',
             'Assigned To',
-            'Activity Level',
             'End User',
             'Status',
             'Progress (%)',
