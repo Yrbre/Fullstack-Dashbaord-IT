@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateTaskActiveRequest;
+use App\Mail\NotifUpdateStatusJob;
 use App\Models\Activity;
 use App\Models\ActivityHistory;
 use App\Models\EndUser;
@@ -12,6 +13,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class DashboardOperatorController extends Controller
 {
@@ -286,6 +289,8 @@ class DashboardOperatorController extends Controller
 
 
 
+
+
         if ($request->status == 'ON DUTY') {
             return redirect()->route('dashboard_operator.idle_task', $task->id)->with('success', 'Task updated successfully.');
         } else {
@@ -307,7 +312,21 @@ class DashboardOperatorController extends Controller
                 'user_id' => auth()->id(),
                 'status' => $request->status,
                 'end_time' => now()->format('Y-m-d H:i:s'),
+                'description' => $data['description'] ?? $activityHistory->description,
             ]);
+
+            $mailData   = (object) $activityHistory;
+            $taskData   = (object) $task;
+            $managementEmail    = User::where('role', 'MANAGEMENT')->pluck('email')->toArray();
+            $deliveredEmail     = User::where('id', $task->delivered)->pluck('email')->toArray();
+            $email      = array_unique(array_merge($managementEmail, $deliveredEmail));
+
+            try {
+                Mail::to($email)->send(new NotifUpdateStatusJob($mailData, $taskData));
+            } catch (\Exception $e) {
+                // Log the error or handle it as needed
+                Log::error('Failed to send email: ' . $e->getMessage());
+            }
 
 
             $standby = Activity::where('id', '1')->first();

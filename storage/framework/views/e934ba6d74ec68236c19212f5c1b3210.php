@@ -130,7 +130,6 @@ unset($__errorArgs, $__bag); ?>
                                 class="btn btn-primary btn-sm">Download photo</a>
                         </p>
                     <?php endif; ?>
-                    <p>URL: <?php echo e(asset('storage/' . $user->photo)); ?></p>
 
                     <div class="form-group col-12">
                         <label for="simple-select2">role</label>
