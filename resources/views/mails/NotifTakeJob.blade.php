@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UPDATE JOB NOTIFICATION</title>
+    <title>TAKE JOB NOTIFICATION</title>
     <style>
         * {
             margin: 0;
@@ -390,120 +390,42 @@
             <!-- Job Title dengan Icon -->
             <div class="job-title">
                 <div class="job-name">
-                    <h2 class="uppercase"><?php echo e($task->name); ?></h2>
-                    <span>Change Information</span>
+                    <h2 class="uppercase">{{ $task->name }}</h2>
+                    <span>JOB TAKEN</span>
                 </div>
             </div>
 
             <!-- Grid informasi -->
             <div class="info-grid">
-                <!-- Priority Card -->
-                <div class="info-item">
-                    <div class="info-label">
-                        <span>⚡</span> Change Status
-                    </div>
-                    <?php
-                        $priorityClass = '';
-                        if ($mailData->status == 'COMPLETED') {
-                            $priorityClass = 'priority-low';
-                        } elseif ($mailData->status == 'ON DUTY') {
-                            $priorityClass = 'priority-medium';
-                        } elseif ($mailData->status == 'ON HOLD') {
-                            $priorityClass = 'priority-secondary';
-                        } elseif ($mailData->status == 'CANCELLED') {
-                            $priorityClass = 'priority-high';
-                        }
-                    ?>
-                    <div>
-                        <span class="priority-badge <?php echo e($priorityClass); ?>">
-                            <?php echo e($mailData->status); ?>
-
-                        </span>
-                    </div>
-                </div>
-
                 <div class="schedule-container">
                     <div class="schedule-header">
                         <span>INFORMATION</span>
                     </div>
 
                     <div class="timeline">
-                        <!-- Parent Activity -->
+                        {{-- Schedule Info --}}
                         <div class="timeline-item">
                             <div class="timeline-dot"></div>
-                            <div class="timeline-label">Parent Activity</div>
-                            <div class="timeline-date"><?php echo e($task->parent->name ?? '-'); ?></div>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-label">Job Owner</div>
-                            <div class="timeline-date"><?php echo e($mailData->user->name ?? '-'); ?></div>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-label">Schedule Info</div>
-                            <div class="timeline-date">Start:
-                                <?php echo e(Carbon\Carbon::parse($task->schedule_start)->format('d M Y H:i') ?? '-'); ?></div>
-                            <div class="timeline-date">End:
-                                <?php echo e(Carbon\Carbon::parse($task->schedule_end)->format('d M Y H:i') ?? '-'); ?></div>
-                            <div class="timeline-date">Duration: <?php echo e($durationSchedule); ?></div>
-                        </div>
-
-
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-label">Actual Info</div>
-                            <div class="timeline-date">Start:
-                                <?php echo e(Carbon\Carbon::parse($mailData->start_time)->format('d M Y H:i') ?? '-'); ?></div>
-                            <div class="timeline-date">End:
-                                <?php echo e($mailData->end_time ? Carbon\Carbon::parse($mailData->end_time)->format('d M Y H:i') : '-'); ?>
-
+                            <div class="timeline-label">Take At</div>
+                            <div class="timeline-date">Date & Time:
+                                {{ $data->start_time ? \Carbon\Carbon::parse($data->start_time)->format('d M Y H:i') : '-' }}
                             </div>
-                            <div class="timeline-date">Duration: <?php echo e($durationActual); ?></div>
-                        </div>
-
-
-
-
-                    </div>
-
-                    <!-- Duration Badge -->
-
-
-                    <div class="schedule-header">
-                        <span>📝</span> Description
-                    </div>
-                    <div class="timeline">
-                        <!-- Start Time -->
-                        <div class="timeline-item">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-label">Description</div>
-                            <div class="timeline-date"><?php echo e($mailData->description); ?></div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- Additional Info -->
-
-        </div>
-
-        <!-- Footer dengan CTA -->
-        <div class="footer">
-            <div class="footer-note">
-                <strong>Need help?</strong> Contact your supervisor<br>
-            </div>
-            <div class="company-info">
-                © <?php echo e(date('Y')); ?> PT.TIFICO FIBER INDONESIA,Tbk . All rights reserved.<br>
-                IT Department
+            <!-- Footer dengan CTA -->
+            <div class="footer">
+                <div class="footer-note">
+                    <strong>Need help?</strong> Contact your supervisor<br>
+                </div>
+                <div class="company-info">
+                    © {{ date('Y') }} PT.TIFICO FIBER INDONESIA,Tbk . All rights reserved.<br>
+                    IT Department
+                </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>
-<?php /**PATH C:\xampp\htdocs\dashboard-it\resources\views/mails/NotifUpdateTask.blade.php ENDPATH**/ ?>

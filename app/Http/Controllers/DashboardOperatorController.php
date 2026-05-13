@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateTaskActiveRequest;
+use App\Mail\NotifTakeJob;
 use App\Mail\NotifUpdateStatusJob;
 use App\Models\Activity;
 use App\Models\ActivityHistory;
@@ -177,7 +178,7 @@ class DashboardOperatorController extends Controller
                 ->update(['actual_start' => now()->format('Y-m-d H:i:s'),]);
         }
 
-        ActivityHistory::create([
+        $activityHistory = ActivityHistory::create([
             'user_id'           => auth()->id(),
             'reference_id'      => $task->id,
             'reference_type'    => 'TASK',
@@ -189,6 +190,22 @@ class DashboardOperatorController extends Controller
             'start_time'        => now(),
             'description'       => $task->description ?? null,
         ]);
+
+        // SEND EMAIL NOTIFICATION
+        $mailData           = (object) $activityHistory;
+        $taskData           = (object) $task;
+        $managementEmail    = User::where('role', 'MANAGEMENT')->pluck('email')->toArray();
+        $deliveredEmail     = User::where('id', $task->delivered)->pluck('email')->toArray();
+        $email      = array_unique(array_merge($managementEmail, $deliveredEmail));
+
+        try {
+            Mail::to($email)->send(new NotifTakeJob($mailData, $taskData));
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to send email: ' . $e->getMessage());
+        }
+
+
 
         return redirect()->route('dashboard_operator.index')->with('success', 'Task taken successfully.');
     }

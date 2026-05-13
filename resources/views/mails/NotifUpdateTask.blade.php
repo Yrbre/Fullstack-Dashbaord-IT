@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Job Assignment Notification</title>
+    <title>UPDATE JOB NOTIFICATION</title>
     <style>
         * {
             margin: 0;
@@ -437,7 +437,7 @@
                         <div class="timeline-item">
                             <div class="timeline-dot"></div>
                             <div class="timeline-label">Job Owner</div>
-                            <div class="timeline-date">{{ $task->deliveredUser->name ?? '-' }}</div>
+                            <div class="timeline-date">{{ $mailData->user->name ?? '-' }}</div>
                         </div>
                         {{-- Schedule Info --}}
                         <div class="timeline-item">
