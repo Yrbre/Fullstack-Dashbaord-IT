@@ -70,7 +70,7 @@ class NotifUpdateStatusJob extends Mailable
         return new Envelope(
             from: new Address('noreply.actmon@intra.tifico.co.id', 'Activity Monitoring'),
             replyTo: [new Address('support@tifico.co.id', 'IT Support')],
-            subject: 'JOB STATUS CHANGE : ' . $this->mailData->status,
+            subject: 'JOBSTAT CHANGED by ' . $this->mailData->user->name . ' : ' . $this->mailData->status,
         );
     }
 
