@@ -11,6 +11,7 @@ use App\Http\Controllers\EndUserDepartmentController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileNewController;
+use App\Http\Controllers\RoutineWorkController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskPersonalController;
 use App\Http\Controllers\UserController;
@@ -48,11 +49,13 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::resource('/enduser', EndUserController::class)->names('enduser');
     Route::resource('/enduser-department', EndUserDepartmentController::class)->names('enduser_department');
     Route::resource('/task/personal', TaskPersonalController::class)->names('task_personal');
+    Route::resource('/routine-works', RoutineWorkController::class)->names('routine_works');
     Route::get('/task-{id}', [TaskController::class, 'getTask'])->name('task.get');
 
     Route::get('/dashboard/operator', [DashboardOperatorController::class, 'index'])->name('dashboard_operator.index');
     Route::post('/dashboard_operator/take/{id}', [DashboardOperatorController::class, 'takeActivity'])->name('dashboard_operator.take');
     Route::put('/dashboard_operator/complete/{id}', [DashboardOperatorController::class, 'completeActivity'])->name('dashboard_operator.complete');
+    Route::post('/dashboard_operator/routine', [DashboardOperatorController::class, 'takeRoutineActivity'])->name('dashboard_operator.take_routine');
     Route::get('/activity/active/{id}', [DashboardOperatorController::class, 'idle'])->name('dashboard_operator.idle');
     Route::get('/active_task/{id}', [DashboardOperatorController::class, 'takeTask'])->name('active_task.index');
     Route::get('/task/active/{id}', [DashboardOperatorController::class, 'idleTask'])->name('dashboard_operator.idle_task');

@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Absen::class);
     }
+
+    public function routineWork()
+    {
+        return $this->hasMany(RoutineWork::class, 'assign_to', 'id');
+    }
 }
