@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateTaskActiveRequest;
+use App\Mail\NotifCreate;
 use App\Mail\NotifTakeJob;
 use App\Mail\NotifUpdateStatusJob;
 use App\Models\Activity;
 use App\Models\ActivityHistory;
 use App\Models\EndUser;
 use App\Models\Location;
+use App\Models\RoutineWork;
 use App\Models\Tasks;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -38,9 +41,10 @@ class DashboardOperatorController extends Controller
             ->latest()
             ->first();
 
-
-
-
+        $routineActivityList = RoutineWork::where('owner_id', auth()->id())
+            ->with('enduser', 'location')
+            ->orderBy('name', 'asc')
+            ->get();
 
         $activityList = Activity::where('id', '!=', '1')
             ->orderBy('name', 'asc')
@@ -68,7 +72,7 @@ class DashboardOperatorController extends Controller
 
         $endUser = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
         $location       = Location::orderBy('location', 'asc')->distinct('location')->get();
-        return view('pages.dashboard_operator.index', compact('activityList', 'taskReady', 'taskCompleted', 'activeSession', 'endUser', 'location'));
+        return view('pages.dashboard_operator.index', compact('activityList', 'routineActivityList', 'taskReady', 'taskCompleted', 'activeSession', 'endUser', 'location'));
     }
 
     public function takeActivity(string $id, Request $request)
@@ -361,5 +365,87 @@ class DashboardOperatorController extends Controller
 
 
         return redirect()->route('dashboard_operator.index')->with('success', 'Task updated successfully.');
+    }
+
+    public function takeRoutineActivity(Request $request)
+    {
+        $activityHistory = ActivityHistory::where('user_id', auth()->id())
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+        if (!empty($activityHistory)) {
+            $activityHistory->update([
+                'end_time' => now()->format('Y-m-d H:i:s'),
+            ]);
+        }
+
+        $data = $request->all();
+        $member = User::where('id', auth()->id())->pluck('id')->toArray();
+        $emails = User::where('id', $member)->pluck('email')->first();
+
+        $data['priority'] = 'MEDIUM';
+        $data['category_id'] = '6';
+        $data['assign_to'] = auth()->id();
+        $data['task_level'] = 'PERSONAL';
+        $data['status'] = 'ON DUTY';
+        $data['delivered'] = auth()->id();
+        $data['progress'] = 10;
+        $data['schedule_start'] = now()->format('Y-m-d H:i:s');
+        $data['schedule_end'] = Carbon::parse($data['schedule_start'])->addMinutes($data['duration'])->format('Y-m-d H:i:s');
+        $data['actual_start'] = now()->format('Y-m-d H:i:s');
+        $data['in_timeline'] = true;
+
+        DB::Transaction(function () use ($data) {
+            $task = Tasks::create([
+                'relation_task' => null,
+                'name'          => $data['name'],
+                'priority'      => $data['priority'],
+                'category_id'   => $data['category_id'],
+                'assign_to'     => $data['assign_to'],
+                'task_level'    => $data['task_level'],
+                'enduser_id'    => $data['enduser_id'],
+                'status'        => $data['status'],
+                'progress'      => $data['progress'],
+                'task_load'     => 100,
+                'delivered'     => $data['delivered'],
+                'location_id'   => $data['location_id'],
+                'in_timeline'   => $data['in_timeline'],
+                'schedule_start' => $data['schedule_start'],
+                'schedule_end'  => $data['schedule_end'],
+                'actual_start'  => $data['actual_start'],
+                'description'   => $data['description'],
+            ]);
+
+            ActivityHistory::create([
+                'user_id'           => auth()->id(),
+                'reference_id'      => $task->id,
+                'reference_type'    => 'TASK',
+                'location'          => sprintf(
+                    '%s - %s',
+                    $task->location?->building ?? '-',
+                    $task->location?->location ?? '-'
+                ),
+                'start_time'        => now(),
+                'description'       => $task->description ?? null,
+            ]);
+
+            $task->task_user()->attach($data['assign_to'], [
+                'taken' => true,
+            ]);
+        });
+
+
+        $mailData = (object) $data;
+
+
+
+        try {
+            Mail::to($emails)->send(new NotifCreate($mailData));
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to send email: ' . $e->getMessage());
+        }
+
+        return redirect()->route('dashboard_operator.index')->with('success', 'Routine activity taken successfully.');
     }
 }

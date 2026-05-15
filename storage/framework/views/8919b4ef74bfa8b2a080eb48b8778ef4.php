@@ -57,7 +57,7 @@
                                                         \Carbon\Carbon::parse($item->start_time)->diffInMinutes(now()) > 5): ?>
                                                     <tr style="color: yellow">
                                                         <td><a class="link-black"
-                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name ?? '-'); ?></a>
                                                         </td>
                                                         <?php if($item->reference_type === 'ACTIVITY'): ?>
                                                             <td><?php echo e($item->activity->name); ?></td>
@@ -81,7 +81,7 @@
                                                 <?php else: ?>
                                                     <tr>
                                                         <td><a class="link-black"
-                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name ?? '-'); ?></a>
                                                         </td>
                                                         <?php if($item->reference_type === 'ACTIVITY'): ?>
                                                             <td><?php echo e($item->activity->name); ?></td>
@@ -135,7 +135,7 @@
                                                 <?php if(in_array($item->reference_id, ['9', '8'])): ?>
                                                     <tr class="text-warning">
                                                         <td><a class="link-black"
-                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name ?? '-'); ?></a>
                                                         </td>
                                                         <td><?php echo e($item->location); ?></td>
                                                         <?php if(in_array($item->reference_id, ['9', '8'])): ?>
@@ -158,7 +158,7 @@
                                                 <?php else: ?>
                                                     <tr>
                                                         <td><a class="link-black"
-                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name); ?></a>
+                                                                href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name ?? '-'); ?></a>
                                                         </td>
                                                         <td><?php echo e($item->location); ?></td>
                                                         <?php if(in_array($item->reference_id, ['9', '8'])): ?>

@@ -164,7 +164,8 @@
                                         <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto"></div>
 
                                         <h4 class="page-title font-weight-bold mb-2">
-                                            <i class="fe fe-list text-primary"></i> PERSONAL ACTIVITY
+                                            <i class="fe fe-list text-primary"></i> PERSONAL
+                                            ACTIVITY
                                         </h4>
                                         <p class="text-muted mb-0 small">Pilih activity personal yang akan dikerjakan.</p>
 
@@ -173,6 +174,21 @@
                                             SELECT
                                         </button>
                                     </div>
+
+                                    <div class="rounded-lg p-3 text-center">
+                                        <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto"></div>
+
+                                        <h4 class="page-title font-weight-bold mb-2">
+                                            <i class="fe fe-list text-primary"></i> ROUTINE WORK
+                                        </h4>
+                                        <p class="text-muted mb-0 small">Pilih pekerjaan rutin yang akan dikerjakan.</p>
+
+                                        <button type="button" id="btnChooseRoutine"
+                                            class="btn btn-primary btn-block px-4 py-2 shadow-sm mt-3">
+                                            SELECT
+                                        </button>
+                                    </div>
+
 
                                     <div class="rounded-lg p-3 text-center">
                                         <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto"></div>
@@ -278,6 +294,54 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div id="activityRoutineListTemplate" style="display: none;">
+                <div style="max-height:400px; overflow-y:auto;" data-simplebar>
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <td class="text-center">No</td>
+                                <td class="text-center">Activity</td>
+                                <td class="text-center">End User</td>
+                                <td class="text-center">Location</td>
+                                <td class="text-center">Duration</td>
+                                <td class="text-center">Description</td>
+                                <td class="text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($routineActivityList as $item)
+                                <tr>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                    <td class="text-center">{{ $item->name }}</td>
+                                    <td class="text-center">{{ $item->enduser->name ?? '-' }} -
+                                        {{ $item->enduser->department ?? '-' }}</td>
+                                    <td class="text-center">{{ $item->location->building ?? '-' }} -
+                                        {{ $item->location->location ?? '-' }}</td>
+                                    <td class="text-center">{{ $item->duration ?? '-' }} m</td>
+                                    <td class="text-center">{{ $item->description ?? '-' }}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-primary btn-take-routine-activity"
+                                            data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                            data-location_id="{{ $item->location->id ?? '-' }}"
+                                            data-location="{{ $item->location->location ?? '-' }}"
+                                            data-building="{{ $item->location->building ?? '-' }}"
+                                            data-enduser="{{ $item->enduser->id ?? '-' }}"
+                                            data-duration="{{ $item->duration ?? '-' }}"
+                                            data-description="{{ $item->description ?? '-' }}"
+                                            data-url="{{ route('dashboard_operator.take_routine') }}">
+                                            Take
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <form id="takeRoutineForm" method="POST">
+                    @csrf
+                </form>
             </div>
 
             <div id="showActivityTemplate" style="display: none;">
@@ -596,6 +660,75 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $('#takeForm').attr('action', takeUrl).trigger('submit');
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $(document).on('click', '#btnChooseRoutine', function() {
+                Swal.fire({
+                    title: 'Choose Your Routine Job',
+                    theme: 'dark',
+                    width: '900px',
+                    html: $('#activityRoutineListTemplate').html(),
+                    showConfirmButton: false,
+                    showCloseButton: true
+                });
+            });
+
+            function escapeHtml(text) {
+                return $('<div>').text(text || '-').html();
+            }
+            $(document).on('click', '.btn-take-routine-activity', function() {
+                const button = $(this);
+                const activityName = button.data('name');
+                const endUser = button.data('enduser');
+                const locationId = button.data('location_id');
+                const activityLocation = button.data('location');
+                const activityBuilding = button.data('building');
+                const duration = button.data('duration');
+                const description = button.data('description');
+                const takeUrl = button.data('url');
+                let htmlContent = '';
+
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Confirm Take Routine Job',
+                    theme: 'dark',
+                    html: '<div class="text-center">' +
+                        '<p class="mb-2">Are you sure you want to take this Routine Job?</p>' +
+                        '<p class="mb-1"><strong>Job Name:</strong> &nbsp;' + escapeHtml(activityName) +
+                        '</p>' +
+                        '<p class="mb-0"><strong>Location:</strong> &nbsp;' + escapeHtml(activityLocation) +
+                        '- ' + escapeHtml(activityBuilding) +
+                        '<p class="mb-1"><strong>Duration :</strong> &nbsp;' + escapeHtml(duration) + 'm' +
+                        '</p>' +
+                        '</p>' +
+                        '</div>',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Take Job',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#2f7cf6',
+                    cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        const form = document.getElementById('takeRoutineForm');
+
+                        form.action = takeUrl;
+
+                        form.innerHTML = `
+            @csrf
+            <input type="hidden" name="name" value="${activityName}">
+            <input type="hidden" name="enduser_id" value="${endUser}">
+            <input type="hidden" name="location_id" value="${locationId}">
+            <input type="hidden" name="building" value="${activityBuilding}">
+            <input type="hidden" name="duration" value="${duration}">
+            <input type="hidden" name="description" value="${description}">
+        `;
+
+                        form.submit();
                     }
                 });
             });

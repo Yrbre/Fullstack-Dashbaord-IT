@@ -311,6 +311,10 @@ class TaskPersonalController extends Controller
 
         $task->update($data);
 
+        if ($data->status != 'ON DUTY') {
+            $task->task_user()->updateExistingPivot($task->task_user()->pluck('user_id')->toArray(), ['taken' => false]);
+        }
+
         return redirect()->route('task_personal.index')->with('success', 'Task Personal updated successfully.');
     }
 

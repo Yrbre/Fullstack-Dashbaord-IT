@@ -58,7 +58,7 @@
                                                         \Carbon\Carbon::parse($item->start_time)->diffInMinutes(now()) > 5)
                                                     <tr style="color: yellow">
                                                         <td><a class="link-black"
-                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name ?? '-' }}</a>
                                                         </td>
                                                         @if ($item->reference_type === 'ACTIVITY')
                                                             <td>{{ $item->activity->name }}</td>
@@ -80,7 +80,7 @@
                                                 @else
                                                     <tr>
                                                         <td><a class="link-black"
-                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name ?? '-' }}</a>
                                                         </td>
                                                         @if ($item->reference_type === 'ACTIVITY')
                                                             <td>{{ $item->activity->name }}</td>
@@ -132,7 +132,7 @@
                                                 @if (in_array($item->reference_id, ['9', '8']))
                                                     <tr class="text-warning">
                                                         <td><a class="link-black"
-                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name ?? '-' }}</a>
                                                         </td>
                                                         <td>{{ $item->location }}</td>
                                                         @if (in_array($item->reference_id, ['9', '8']))
@@ -154,7 +154,7 @@
                                                 @else
                                                     <tr>
                                                         <td><a class="link-black"
-                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name }}</a>
+                                                                href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name ?? '-' }}</a>
                                                         </td>
                                                         <td>{{ $item->location }}</td>
                                                         @if (in_array($item->reference_id, ['9', '8']))

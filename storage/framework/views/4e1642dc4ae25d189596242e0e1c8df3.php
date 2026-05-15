@@ -44,7 +44,7 @@
                                                         <a class="dropdown-item js-delete-location"
                                                             data-id="<?php echo e($item->id); ?>"
                                                             data-location="<?php echo e($item->location); ?>"
-                                                            data-department="<?php echo e($item->department); ?>"
+                                                            data-building="<?php echo e($item->building); ?>"
                                                             data-url="<?php echo e(route('location.destroy', $item->id)); ?>"
                                                             href="#">Remove</a>
                                                     </div>
@@ -69,7 +69,7 @@
             e.preventDefault();
             var button = $(this);
             var location = button.data('location');
-            var department = button.data('department');
+            var building = button.data('building');
             var url = button.data('url');
 
             Swal.fire({
@@ -78,7 +78,7 @@
                 theme: 'dark',
                 html: '<p>Are you sure you want to delete this Location?</p>' +
                     '<div class="justify-content-center">' +
-                    '<strong>Department :</strong> ' + department + '<br>' +
+                    '<strong>Building :</strong> ' + building + '<br>' +
                     '<strong>Location :</strong> ' + location +
                     '</div>',
                 showCancelButton: true,
