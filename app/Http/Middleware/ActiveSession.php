@@ -12,7 +12,7 @@ class ActiveSession
     public function handle(Request $request, Closure $next)
     {
         // Only guard the actions that start a new assignment; other menus should remain accessible.
-        if (!$request->routeIs('active_task.index', 'dashboard_operator.take')) {
+        if (!$request->routeIs('active_task.index', 'dashboard_operator.take', 'dashboard_operator.take_routine', 'dashboard_operator.take_onspot')) {
             return $next($request);
         }
 
