@@ -129,7 +129,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($outSide as $item)
-                                                @if (in_array($item->reference_id, ['9', '8']))
+                                                @if (in_array($item->reference_id, ['9', '8']) || $item->task->is_on_spot_job == true)
                                                     <tr class="text-warning">
                                                         <td><a class="link-black"
                                                                 href="{{ route('activity_history.list', $item->user->id) }}">{{ $item->user->name ?? '-' }}</a>

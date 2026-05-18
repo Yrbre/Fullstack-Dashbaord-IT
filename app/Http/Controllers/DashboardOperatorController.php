@@ -448,4 +448,90 @@ class DashboardOperatorController extends Controller
 
         return redirect()->route('dashboard_operator.index')->with('success', 'Routine activity taken successfully.');
     }
+
+    public function takeOnSpotActivity(string $id, Request $request)
+    {
+        $closeActivity = ActivityHistory::where('user_id', auth()->id())
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+        if (!empty($closeActivity)) {
+            $closeActivity->update([
+                'end_time' => now()->format('Y-m-d H:i:s'),
+            ]);
+        }
+
+        $data = $request->all();
+        $data['priority'] = 'MEDIUM';
+        $data['is_on_spot_job'] = true;
+        $data['category_id'] = '7';
+        $data['assign_to'] = auth()->id();
+        $data['task_level'] = 'PERSONAL';
+        $data['status'] = 'ON DUTY';
+        $data['delivered'] = auth()->id();
+        $data['progress'] = 10;
+        $data['schedule_start'] = now()->format('Y-m-d H:i:s');
+        $data['schedule_end'] = Carbon::parse($data['schedule_start'])->addMinutes(60)->format('Y-m-d H:i:s');
+        $data['actual_start'] = now()->format('Y-m-d H:i:s');
+        $data['in_timeline'] = true;
+        $task = null;
+        $activityHistory = null;
+
+
+        DB::transaction(function () use ($data, &$task, &$activityHistory) {
+            $task = Tasks::create([
+                'relation_task' => null,
+                'name'          => $data['trouble'],
+                'is_on_spot_job' => $data['is_on_spot_job'],
+                'priority'      => $data['priority'],
+                'category_id'   => $data['category_id'],
+                'assign_to'     => $data['assign_to'],
+                'task_level'    => $data['task_level'],
+                'enduser_id'    => $data['end_user'],
+                'status'        => $data['status'],
+                'progress'      => $data['progress'],
+                'task_load'     => 100,
+                'delivered'     => $data['delivered'],
+                'location_id'   => $data['location'],
+                'in_timeline'   => $data['in_timeline'],
+                'schedule_start' => $data['schedule_start'],
+                'schedule_end'  => $data['schedule_end'],
+                'actual_start'  => $data['actual_start'],
+            ]);
+            $activityHistory = ActivityHistory::create([
+                'user_id'           => auth()->id(),
+                'reference_id'      => $task->id,
+                'reference_type'    => 'TASK',
+                'location'          => sprintf(
+                    '%s - %s',
+                    $task->location?->building ?? '-',
+                    $task->location?->location ?? '-'
+                ),
+                'start_time'        => now(),
+                'description'       => $task->description ?? null,
+            ]);
+
+            $task->task_user()->attach($data['assign_to'], [
+                'taken' => true,
+            ]);
+        });
+
+
+
+
+        $mailData           = (object) $activityHistory;
+        $taskData           = (object) $task;
+        $managementEmail    = User::where('role', 'MANAGEMENT')->pluck('email')->toArray();
+        $deliveredEmail     = User::where('id', $data['delivered'])->pluck('email')->toArray();
+        $email              = array_unique(array_merge($managementEmail, $deliveredEmail));
+
+        try {
+            Mail::to($email)->send(new NotifTakeJob($mailData, $taskData));
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to send email: ' . $e->getMessage());
+        }
+
+        return redirect()->route('dashboard_operator.index')->with('success', 'On-Spot activity taken successfully.');
+    }
 }

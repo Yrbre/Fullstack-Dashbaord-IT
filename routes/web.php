@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth', 'verified', 'active.session']], function 
     Route::post('/dashboard_operator/take/{id}', [DashboardOperatorController::class, 'takeActivity'])->name('dashboard_operator.take');
     Route::put('/dashboard_operator/complete/{id}', [DashboardOperatorController::class, 'completeActivity'])->name('dashboard_operator.complete');
     Route::post('/dashboard_operator/routine', [DashboardOperatorController::class, 'takeRoutineActivity'])->name('dashboard_operator.take_routine');
+    Route::post('/dashboard_operator/onspot/{id}', [DashboardOperatorController::class, 'takeOnSpotActivity'])->name('dashboard_operator.take_onspot');
     Route::get('/activity/active/{id}', [DashboardOperatorController::class, 'idle'])->name('dashboard_operator.idle');
     Route::get('/active_task/{id}', [DashboardOperatorController::class, 'takeTask'])->name('active_task.index');
     Route::get('/task/active/{id}', [DashboardOperatorController::class, 'idleTask'])->name('dashboard_operator.idle_task');

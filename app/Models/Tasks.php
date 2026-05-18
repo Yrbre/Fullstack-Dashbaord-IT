@@ -15,6 +15,7 @@ class Tasks extends Model
     protected $fillable = [
         'relation_task',
         'name',
+        'is_on_spot_job',
         'priority',
         'category_id',
         'assign_to',

@@ -132,7 +132,7 @@
                                         </thead>
                                         <tbody>
                                             <?php $__currentLoopData = $outSide; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <?php if(in_array($item->reference_id, ['9', '8'])): ?>
+                                                <?php if(in_array($item->reference_id, ['9', '8']) || $item->task->is_on_spot_job == true): ?>
                                                     <tr class="text-warning">
                                                         <td><a class="link-black"
                                                                 href="<?php echo e(route('activity_history.list', $item->user->id)); ?>"><?php echo e($item->user->name ?? '-'); ?></a>

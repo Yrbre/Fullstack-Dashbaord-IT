@@ -179,7 +179,7 @@
                                         <div class="activity-icon-wrapper rounded-circle mb-3 mx-auto"></div>
 
                                         <h4 class="page-title font-weight-bold mb-2">
-                                            <i class="fe fe-list text-primary"></i> ROUTINE WORK
+                                            <i class="fe fe-clock text-info"></i> ROUTINE WORK
                                         </h4>
                                         <p class="text-muted mb-0 small">Pilih pekerjaan rutin yang akan dikerjakan.</p>
 
@@ -200,9 +200,9 @@
                                         <p class="text-muted mb-0 small">Untuk pekerjaan dadakan yang langsung diambil.</p>
 
                                         <button type="button"
-                                            class="btn btn-primary btn-block px-4 py-2 shadow-sm mt-3 btn-take-activity"
-                                            data-id="9" data-name="ONSPOT JOB" data-location="-"
-                                            data-url="{{ route('dashboard_operator.take', 9) }}">
+                                            class="btn btn-primary btn-block px-4 py-2 shadow-sm mt-3 btn-take-onspot"
+                                            data-id="9" data-name="ONSPOT JOB" data-location="-" id="btnOnSpotJob"
+                                            data-url="{{ route('dashboard_operator.take_onspot', 9) }}">
                                             TAKE
                                         </button>
                                     </div>
@@ -665,6 +665,131 @@
             });
         </script>
 
+
+        {{-- Take On-Spot Activity --}}
+        <script>
+            $(document).on('click', '#btnOnSpotJob', function() {
+                const button = $(this);
+
+                const activityName = button.data('name');
+                const activityLocation = button.data('location');
+                const takeUrl = button.data('url');
+                const activityId = Number(button.data('id'));
+                let htmlContent = '';
+
+                if (activityId === 9) {
+                    Swal.fire({
+                        icon: 'question',
+                        title: 'INFORMATION ACTIVITY',
+                        theme: 'dark',
+                        html: `
+                    <div class="text-start" style="max-width: 560px; margin: 0 auto;">
+                        <div class="small text-muted mb-3">Lengkapi data berikut sebelum mengambil activity.</div>
+
+                        <div class="d-flex align-items-start mb-3" style="gap: 12px;">
+                            <label for="swal-enduser" class="form-label mb-0 pt-2" style="min-width: 120px;">End User</label>
+                            <div style="flex: 1;">
+                                <select class="swal2-select select2" id="swal-enduser" name="enduser_personal" style="margin: 0; width: 100%;">
+                                    <optgroup label="Select End User">
+                                        <option value="" selected disabled>Select User</option>
+                                            @foreach ($endUser as $item)
+                                                <option value="{{ $item->id }}" @if (old('enduser_personal') == $item->id) selected @endif>
+                                                    {{ $item->name ?? '-' }} - {{ $item->department ?? '-' }}</option>
+                                            @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3" style="gap: 12px;">
+                            <label for="swal-location" class="form-label mb-0 pt-2" style="min-width: 120px;">Location</label>
+                            <div style="flex: 1;">
+                                <select class="swal2-select select2" id="swal-location" name="location" style="margin: 0; width: 100%;">
+                                    <optgroup label="Select Location">
+                                        <option value="" selected disabled>Select Location</option>
+                                            @foreach ($location as $item)
+                                                <option value="{{ $item->id }}" @if (old('location') == $item->id) selected @endif>
+                                                    {{ $item->building ?? '-' }} - {{ $item->location ?? '-' }}</option>
+                                            @endforeach
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-0" style="gap: 12px;">
+                            <label for="swal-trouble" class="form-label mb-0 pt-2" style="min-width: 120px;">Trouble</label>
+                            <div style="flex: 1;">
+                                <textarea class="uppercase swal2-textarea" id="swal-trouble" style="margin: 0; width: 100%; min-height: 110px;" placeholder="Masukkan Trouble"></textarea>
+                            </div>
+                        </div>
+                    </div>
+        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, Take Activity',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonColor: '#2f7cf6',
+                        cancelButtonColor: '#6c757d',
+                        didOpen: () => {
+                            $('#swal-enduser').select2({
+                                theme: 'bootstrap4',
+                                width: '100%',
+                                dropdownParent: $('.swal2-popup'),
+                                placeholder: 'Select User',
+                                allowClear: true
+                            });
+                            $('#swal-location').select2({
+                                theme: 'bootstrap4',
+                                width: '100%',
+                                dropdownParent: $('.swal2-popup'),
+                                placeholder: 'Select Location',
+                                allowClear: true
+                            });
+                        },
+
+                        // VALIDASI sebelum submit
+                        preConfirm: () => {
+                            const endUser = $('#swal-enduser').val();
+                            const location = $('#swal-location').val();
+                            const trouble = $('#swal-trouble').val();
+
+                            if (!endUser || !location || !trouble) {
+                                Swal.showValidationMessage('Semua field wajib diisi');
+                                return false;
+                            }
+
+                            return {
+                                endUser,
+                                location,
+                                trouble
+                            };
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            // inject ke form sebelum submit
+                            $('#takeForm').attr('action', takeUrl);
+                            $('#takeForm input[name="end_user"], #takeForm input[name="location"], #takeForm input[name="trouble"]')
+                                .remove();
+
+                            // pastikan input hidden ada
+                            $('#takeForm').append(`
+        <input type="hidden" name="end_user" value="${escapeHtml(result.value.endUser)}">
+        <input type="hidden" name="location" value="${escapeHtml(result.value.location)}">
+        <input type="hidden" name="trouble" value="${escapeHtml(result.value.trouble)}">
+        `);
+
+                            $('#takeForm').trigger('submit');
+                        }
+                    });
+
+                    return; // IMPORTANT: stop eksekusi Swal bawah
+                }
+            });
+        </script>
+
+
+
+        {{-- Take Routine Work --}}
         <script>
             $(document).on('click', '#btnChooseRoutine', function() {
                 Swal.fire({
@@ -734,6 +859,8 @@
             });
         </script>
 
+
+        {{-- Take Task Confirm --}}
         <script>
             $(document).on('click', '.btn-take-task', function() {
                 var button = $(this);
@@ -764,6 +891,8 @@
                 });
             });
         </script>
+
+        {{-- SweetAlert --}}
         <script>
             @if (session('success'))
                 Swal.fire({
