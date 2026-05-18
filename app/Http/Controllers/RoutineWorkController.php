@@ -17,11 +17,10 @@ class RoutineWorkController extends Controller
     public function index()
     {
         try {
-            $allRoutineWorks = RoutineWork::orderBy('owner_id', 'asc')->orderBy('name', 'asc')->get();
-            $routineWorks = RoutineWork::where('owner_id', auth()->id())->get();
-            return view('pages.routine_work.index', compact('routineWorks', 'allRoutineWorks'));
+            $allRoutineWorks = RoutineWork::orderBy('name', 'asc')->get();
+            return view('pages.routine_work.index', compact('allRoutineWorks'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to retrieve routine works');
+            return redirect()->back()->with('error', 'Failed to retrieve routine works' . $e->getMessage());
         }
     }
 
@@ -31,9 +30,7 @@ class RoutineWorkController extends Controller
     public function create()
     {
         try {
-            $locations  = Location::orderBy('building', 'asc')->orderBy('location', 'asc')->get();
-            $endusers    = EndUser::whereNotNull('name')->orderBy('name', 'asc')->get();
-            return view('pages.routine_work.create', compact('locations', 'endusers'));
+            return view('pages.routine_work.create');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to load create form');
         }
@@ -48,10 +45,7 @@ class RoutineWorkController extends Controller
             $data = $request->validated();
             DB::transaction(function () use ($data) {
                 RoutineWork::create([
-                    'owner_id'      => auth()->id(),
                     'name'          => $data['name'],
-                    'location_id'   => $data['location_id'],
-                    'enduser_id'    => $data['enduser_id'],
                     'duration'      => $data['duration'],
                     'description'   => $data['description'] ?? null,
                 ]);
@@ -80,9 +74,7 @@ class RoutineWorkController extends Controller
     {
         try {
             $routineWork = RoutineWork::findOrFail($id);
-            $locations  = Location::all();
-            $endusers    = EndUser::whereNotNull('name')->get();
-            return view('pages.routine_work.edit', compact('routineWork', 'locations', 'endusers'));
+            return view('pages.routine_work.edit', compact('routineWork'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to load edit form');
         }

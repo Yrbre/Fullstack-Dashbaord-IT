@@ -28,9 +28,4 @@ class EndUser extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
-
-    public function routineWork()
-    {
-        return $this->hasMany(RoutineWork::class, 'enduser_id', 'id');
-    }
 }

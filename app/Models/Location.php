@@ -21,9 +21,4 @@ class Location extends Model
     {
         return $this->hasMany(Tasks::class, 'location_id', 'id');
     }
-
-    public function routineWork()
-    {
-        return $this->hasMany(RoutineWork::class, 'location_id', 'id');
-    }
 }

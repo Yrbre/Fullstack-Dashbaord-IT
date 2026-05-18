@@ -18,42 +18,6 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group col-12">
-                        <label for="simple-select2">End User</label>
-                        <select class="form-control select2 @error('enduser_id') is-invalid @enderror" id="select3"
-                            name="enduser_id">
-                            <optgroup label="Select End User">
-                                <option value="" selected disabled>Select End User</option>
-                                @foreach ($endusers as $item)
-                                    <option value="{{ $item->id }}"
-                                        {{ old('enduser_id', $routineWork->enduser_id) == $item->id ? 'selected' : '' }}>
-                                        {{ $item->name }} - {{ $item->department }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
-                        </select>
-                        @error('enduser_id')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="simple-select2">Location</label>
-                        <select class="form-control select2 @error('location_id') is-invalid @enderror" id="select2"
-                            name="location_id">
-                            <optgroup label="Select Location">
-                                <option value="" selected disabled>Select Location</option>
-                                @foreach ($locations as $item)
-                                    <option value="{{ $item->id }}"
-                                        {{ old('location_id', $routineWork->location_id) == $item->id ? 'selected' : '' }}>
-                                        {{ $item->building }} - {{ $item->location }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
-                        </select>
-                        @error('location_id')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
                     <div class="form-group col-md-12">
                         <label for="">Duration in minutes</label>
                         <input type="number" class="uppercase form-control @error('duration') is-invalid @enderror"

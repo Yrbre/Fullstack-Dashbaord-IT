@@ -23,8 +23,6 @@ class UpdateRoutineWorkRequest extends FormRequest
     {
         return [
             'name'              => 'sometimes|string|max:255',
-            'enduser_id'        => 'sometimes|exists:endusers,id',
-            'location_id'      => 'sometimes|exists:location_lists,id',
             'duration'          => 'sometimes|integer|min:1',
             'description'       => 'nullable|string',
         ];

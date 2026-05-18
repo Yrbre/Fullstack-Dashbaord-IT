@@ -41,9 +41,7 @@ class DashboardOperatorController extends Controller
             ->latest()
             ->first();
 
-        $routineActivityList = RoutineWork::where('owner_id', auth()->id())
-            ->with('enduser', 'location')
-            ->orderBy('name', 'asc')
+        $routineActivityList = RoutineWork::orderBy('name', 'asc')
             ->get();
 
         $activityList = Activity::where('id', '!=', '1')
@@ -394,8 +392,10 @@ class DashboardOperatorController extends Controller
         $data['schedule_end'] = Carbon::parse($data['schedule_start'])->addMinutes($data['duration'])->format('Y-m-d H:i:s');
         $data['actual_start'] = now()->format('Y-m-d H:i:s');
         $data['in_timeline'] = true;
+        $task = null;
+        $dataActivityHistory = null;
 
-        DB::Transaction(function () use ($data) {
+        DB::Transaction(function () use ($data, &$task, &$dataActivityHistory) {
             $task = Tasks::create([
                 'relation_task' => null,
                 'name'          => $data['name'],
@@ -403,12 +403,12 @@ class DashboardOperatorController extends Controller
                 'category_id'   => $data['category_id'],
                 'assign_to'     => $data['assign_to'],
                 'task_level'    => $data['task_level'],
-                'enduser_id'    => $data['enduser_id'],
+                'enduser_id'    => $data['end_user'],
                 'status'        => $data['status'],
                 'progress'      => $data['progress'],
                 'task_load'     => 100,
                 'delivered'     => $data['delivered'],
-                'location_id'   => $data['location_id'],
+                'location_id'   => $data['location'],
                 'in_timeline'   => $data['in_timeline'],
                 'schedule_start' => $data['schedule_start'],
                 'schedule_end'  => $data['schedule_end'],
@@ -416,7 +416,7 @@ class DashboardOperatorController extends Controller
                 'description'   => $data['description'],
             ]);
 
-            ActivityHistory::create([
+            $dataActivityHistory = ActivityHistory::create([
                 'user_id'           => auth()->id(),
                 'reference_id'      => $task->id,
                 'reference_type'    => 'TASK',
@@ -435,12 +435,21 @@ class DashboardOperatorController extends Controller
         });
 
 
-        $mailData = (object) $data;
-
-
+        try {
+            $mailData = (object) $data;
+            Mail::to($emails)->send(new NotifCreate($mailData));
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to send email: ' . $e->getMessage());
+        }
 
         try {
-            Mail::to($emails)->send(new NotifCreate($mailData));
+            $mailData           = (object) $dataActivityHistory;
+            $taskData           = (object) $task;
+            $managementEmail    = User::where('role', 'MANAGEMENT')->pluck('email')->toArray();
+            $deliveredEmail     = User::where('id', $data['delivered'])->pluck('email')->toArray();
+            $email              = array_unique(array_merge($managementEmail, $deliveredEmail));
+            Mail::to($email)->send(new NotifTakeJob($mailData, $taskData));
         } catch (\Exception $e) {
             // Log the error or handle it as needed
             Log::error('Failed to send email: ' . $e->getMessage());

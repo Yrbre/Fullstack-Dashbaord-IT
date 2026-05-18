@@ -23,8 +23,6 @@ class StoreRoutineWorkRequest extends FormRequest
     {
         return [
             'name'              => 'required|string|max:255',
-            'location_id'       => 'required|exists:location_lists,id',
-            'enduser_id'        => 'required|exists:endusers,id',
             'duration'          => 'required|string',
             'description'       => 'nullable|string',
         ];

@@ -312,8 +312,6 @@
                             <tr>
                                 <td class="text-center">No</td>
                                 <td class="text-center">Activity</td>
-                                <td class="text-center">End User</td>
-                                <td class="text-center">Location</td>
                                 <td class="text-center">Duration</td>
                                 <td class="text-center">Description</td>
                                 <td class="text-center">Action</td>
@@ -324,21 +322,13 @@
                                 <tr>
                                     <td class="text-center"><?php echo e($loop->iteration); ?></td>
                                     <td class="text-center"><?php echo e($item->name); ?></td>
-                                    <td class="text-center"><?php echo e($item->enduser->name ?? '-'); ?> -
-                                        <?php echo e($item->enduser->department ?? '-'); ?></td>
-                                    <td class="text-center"><?php echo e($item->location->building ?? '-'); ?> -
-                                        <?php echo e($item->location->location ?? '-'); ?></td>
                                     <td class="text-center"><?php echo e($item->duration ?? '-'); ?> m</td>
-                                    <td class="text-center"><?php echo e($item->description ?? '-'); ?></td>
+                                    <td class="text-center"><?php echo e($item->description ?? ''); ?></td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-sm btn-primary btn-take-routine-activity"
                                             data-id="<?php echo e($item->id); ?>" data-name="<?php echo e($item->name); ?>"
-                                            data-location_id="<?php echo e($item->location->id ?? '-'); ?>"
-                                            data-location="<?php echo e($item->location->location ?? '-'); ?>"
-                                            data-building="<?php echo e($item->location->building ?? '-'); ?>"
-                                            data-enduser="<?php echo e($item->enduser->id ?? '-'); ?>"
                                             data-duration="<?php echo e($item->duration ?? '-'); ?>"
-                                            data-description="<?php echo e($item->description ?? '-'); ?>"
+                                            data-description="<?php echo e($item->description ?? ' '); ?>"
                                             data-url="<?php echo e(route('dashboard_operator.take_routine')); ?>">
                                             Take
                                         </button>
@@ -441,6 +431,7 @@
             <?php echo csrf_field(); ?>
         </form>
 
+        
         <script>
             $(document).on('click', '.btn-show-activity', function() {
                 const templateId = $(this).data('template-id');
@@ -456,6 +447,7 @@
                 });
             });
         </script>
+        
         <script>
             $(document).on('click', '#btnChooseActivity', function() {
                 Swal.fire({
@@ -820,10 +812,6 @@
             $(document).on('click', '.btn-take-routine-activity', function() {
                 const button = $(this);
                 const activityName = button.data('name');
-                const endUser = button.data('enduser');
-                const locationId = button.data('location_id');
-                const activityLocation = button.data('location');
-                const activityBuilding = button.data('building');
                 const duration = button.data('duration');
                 const description = button.data('description');
                 const takeUrl = button.data('url');
@@ -833,21 +821,76 @@
                     icon: 'question',
                     title: 'Confirm Take Routine Job',
                     theme: 'dark',
-                    html: '<div class="text-center">' +
-                        '<p class="mb-2">Are you sure you want to take this Routine Job?</p>' +
-                        '<p class="mb-1"><strong>Job Name:</strong> &nbsp;' + escapeHtml(activityName) +
-                        '</p>' +
-                        '<p class="mb-0"><strong>Location:</strong> &nbsp;' + escapeHtml(activityLocation) +
-                        '- ' + escapeHtml(activityBuilding) +
-                        '<p class="mb-1"><strong>Duration :</strong> &nbsp;' + escapeHtml(duration) + 'm' +
-                        '</p>' +
-                        '</p>' +
-                        '</div>',
+                    html: `
+                    <div class="text-start" style="max-width: 560px; margin: 0 auto;">
+                        <div class="small text-muted mb-3">Lengkapi data berikut sebelum mengambil activity.</div>
+
+                        <div class="d-flex align-items-start mb-3" style="gap: 12px;">
+                            <label for="swal-enduser" class="form-label mb-0 pt-2" style="min-width: 120px;">End User</label>
+                            <div style="flex: 1;">
+                                <select class="swal2-select select2" id="swal-enduser" name="enduser_personal" style="margin: 0; width: 100%;">
+                                    <optgroup label="Select End User">
+                                        <option value="" selected disabled>Select User</option>
+                                            <?php $__currentLoopData = $endUser; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($item->id); ?>" <?php if(old('enduser_personal') == $item->id): ?> selected <?php endif; ?>>
+                                                    <?php echo e($item->name ?? '-'); ?> - <?php echo e($item->department ?? '-'); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3" style="gap: 12px;">
+                            <label for="swal-location" class="form-label mb-0 pt-2" style="min-width: 120px;">Location</label>
+                            <div style="flex: 1;">
+                                <select class="swal2-select select2" id="swal-location" name="location" style="margin: 0; width: 100%;">
+                                    <optgroup label="Select Location">
+                                        <option value="" selected disabled>Select Location</option>
+                                            <?php $__currentLoopData = $location; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($item->id); ?>" <?php if(old('location') == $item->id): ?> selected <?php endif; ?>>
+                                                    <?php echo e($item->building ?? '-'); ?> - <?php echo e($item->location ?? '-'); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+        `,
                     showCancelButton: true,
                     confirmButtonText: 'Yes, Take Job',
                     cancelButtonText: 'Cancel',
                     confirmButtonColor: '#2f7cf6',
-                    cancelButtonColor: '#6c757d'
+                    cancelButtonColor: '#6c757d',
+                    didOpen: () => {
+                        $('#swal-enduser').select2({
+                            theme: 'bootstrap4',
+                            width: '100%',
+                            dropdownParent: $('.swal2-popup'),
+                            placeholder: 'Select User',
+                            allowClear: true
+                        });
+                        $('#swal-location').select2({
+                            theme: 'bootstrap4',
+                            width: '100%',
+                            dropdownParent: $('.swal2-popup'),
+                            placeholder: 'Select Location',
+                            allowClear: true
+                        });
+                    },
+                    preConfirm: () => {
+                        const endUser = $('#swal-enduser').val();
+                        const location = $('#swal-location').val();
+
+                        if (!endUser || !location) {
+                            Swal.showValidationMessage('Semua field wajib diisi');
+                            return false;
+                        }
+
+                        return {
+                            endUser,
+                            location,
+                        };
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
 
@@ -858,9 +901,8 @@
                         form.innerHTML = `
             <?php echo csrf_field(); ?>
             <input type="hidden" name="name" value="${activityName}">
-            <input type="hidden" name="enduser_id" value="${endUser}">
-            <input type="hidden" name="location_id" value="${locationId}">
-            <input type="hidden" name="building" value="${activityBuilding}">
+            <input type="hidden" name="end_user" value="${escapeHtml(result.value.endUser)}">
+            <input type="hidden" name="location" value="${escapeHtml(result.value.location)}">
             <input type="hidden" name="duration" value="${duration}">
             <input type="hidden" name="description" value="${description}">
         `;

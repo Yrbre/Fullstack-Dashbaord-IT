@@ -20,9 +20,4 @@ class Category extends Model
     {
         return $this->hasMany(Tasks::class, 'category_id', 'id');
     }
-
-    public function routineWork()
-    {
-        return $this->hasMany(RoutineWork::class, 'category_id', 'id');
-    }
 }

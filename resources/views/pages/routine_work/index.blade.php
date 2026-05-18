@@ -8,71 +8,6 @@
                 <a href="{{ route('routine_works.create') }}" class="btn btn-primary">Create New</a>
             </div>
 
-            @can('OPERATOR')
-                <div class="row">
-                    <div class="col-12 my-4">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <h5 class="card-title">Table Routine Work</h5>
-                                <p class="card-text"></p>
-                                <table class="table datatables" id="dataTable-1">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>End User</th>
-                                            <th>Location</th>
-                                            <th>Duration In Minute</th>
-                                            <th>Description</th>
-                                            <th class="text-center">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($routineWorks as $item)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->name ?? '-' }}</td>
-                                                <td>{{ $item->enduser->name ?? '-' }} - {{ $item->enduser->department ?? '-' }}
-                                                </td>
-                                                <td>{{ $item->location->building ?? '-' }} -
-                                                    {{ $item->location->location ?? '-' }}</td>
-                                                <td>{{ $item->duration ?? '-' }} m</td>
-                                                <td>{{ $item->description ?? '-' }}</td>
-                                                <td>
-                                                    <div class="dropdown d-flex justify-content-center">
-                                                        <button class="btn btn-sm btn-info dropdown-toggle" type="button"
-                                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('routine_works.edit', $item->id) }}">Edit</a>
-                                                            <a class="dropdown-item js-delete-routine-work"
-                                                                data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                                                                data-location="{{ $item->location->location ?? '-' }}"
-                                                                data-building ="{{ $item->location->building ?? '-' }}"
-                                                                data-url="{{ route('routine_works.destroy', $item->id) }}"
-                                                                href="#">Remove</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="7" class="text-center">No routine works found.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                                <form method="POST" id="deleteForm">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endcan
-
             @if (Auth()->user()->role != 'OPERATOR')
                 <div class="row">
                     <div class="col-12 my-4">
@@ -84,10 +19,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Owner</th>
                                             <th>Name</th>
-                                            <th>End User</th>
-                                            <th>Location</th>
                                             <th>Duration</th>
                                             <th>Description</th>
                                             <th class="text-center">Action</th>
@@ -97,12 +29,7 @@
                                         @forelse ($allRoutineWorks as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->owner->name ?? '-' }}</td>
                                                 <td>{{ $item->name ?? '-' }}</td>
-                                                <td>{{ $item->enduser->name ?? '-' }} -
-                                                    {{ $item->enduser->department ?? '-' }}</td>
-                                                <td>{{ $item->location->building ?? '-' }} -
-                                                    {{ $item->location->location ?? '-' }}</td>
                                                 <td>{{ $item->duration ?? '-' }} m</td>
                                                 <td>{{ $item->description ?? '-' }}</td>
                                                 <td>

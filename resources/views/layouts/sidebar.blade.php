@@ -124,13 +124,13 @@
                                 <span class="ml-3 item-text">Personal Activity</span>
                             </a>
                         </li>
+                        <li class="nav-item w-100">
+                            <a class="nav-link" href="{{ route('routine_works.index') }}">
+                                <i class="fe fe-clock fe-16"></i>
+                                <span class="ml-3 item-text">Routine Work</span>
+                            </a>
+                        </li>
                     @endif
-                    <li class="nav-item w-100">
-                        <a class="nav-link" href="{{ route('routine_works.index') }}">
-                            <i class="fe fe-clock fe-16"></i>
-                            <span class="ml-3 item-text">Routine Work</span>
-                        </a>
-                    </li>
                     <li class="nav-item w-100">
                         <a class="nav-link @yield('menucategory')" href="{{ route('category.index') }}">
                             <i class="fe fe-grid fe-16"></i>
