@@ -312,7 +312,7 @@ class TaskPersonalController extends Controller
 
         $task->update($data);
 
-        if ($data->status != 'ON DUTY') {
+        if ($data['status'] != 'ON DUTY') {
             $task->task_user()->updateExistingPivot($task->task_user()->pluck('user_id')->toArray(), ['taken' => false]);
         }
 

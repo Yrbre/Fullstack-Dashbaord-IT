@@ -203,7 +203,8 @@
                     @if (Auth::check() && in_array(Auth::user()->role, ['OPERATOR']))
                         <div class="form-group col-md-6">
                             <label for="simple-select2">Status</label>
-                            <input type="text" class="form-control" value="{{ $task->status }}" readonly>
+                            <input type="text" name="status" class="form-control" value="{{ $task->status }}"
+                                readonly>
                             @error('status')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror

@@ -281,7 +281,8 @@ unset($__errorArgs, $__bag); ?>
                     <?php if(Auth::check() && in_array(Auth::user()->role, ['OPERATOR'])): ?>
                         <div class="form-group col-md-6">
                             <label for="simple-select2">Status</label>
-                            <input type="text" class="form-control" value="<?php echo e($task->status); ?>" readonly>
+                            <input type="text" name="status" class="form-control" value="<?php echo e($task->status); ?>"
+                                readonly>
                             <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
