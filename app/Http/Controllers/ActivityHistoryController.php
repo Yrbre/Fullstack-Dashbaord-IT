@@ -103,13 +103,17 @@ class ActivityHistoryController extends Controller
 
         return response()->json($activityHistory->map(function ($item) {
             return [
-                'activity_name' => $item->reference_type === 'ACTIVITY'
-                    ? ($item->activity->name ?? '-')
-                    : ($item->task->name ?? '-'),
-                'location'       => $item->location,
+                'activity_name'  => $item->reference_type === 'ACTIVITY'
+                    ? ($item->activity->name ?? 'Activity Deleted')
+                    : ($item->task->name ?? 'Job Deleted'),
+                'location'       => $item->location ?? '-',
                 'reference_type' => $item->reference_type,
-                'start_time'     => \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i'),
+                'priority'       => $item->task?->priority ?? null,  // ✅ tambah
+                'start_time'     => $item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-',
                 'end_time'       => $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-',
+                'duration'       => $item->duration ?? '-',          // ✅ tambah
+                'description'    => $item->description ?? '-',       // ✅ tambah
+                'status'         => $item->status ?? '-',            // ✅ tambah
             ];
         }));
     }

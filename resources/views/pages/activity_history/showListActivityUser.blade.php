@@ -19,7 +19,7 @@
     </div>
     <div class="card shadow">
         <div class="card-body">
-            <table class="table datatables table-hover" id="dataTable-1">
+            <table class="table table-hover" id="activityTable">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -34,66 +34,21 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($activityHistory as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            @if ($item->reference_type === 'TASK')
-                                <td>JOB</td>
-                            @elseif ($item->reference_type === 'ACTIVITY')
-                                <td>ACTIVITY PERSONAL</td>
-                            @endif
-                            @if ($item->reference_type === 'TASK')
-                                <td>{{ $item->task->name ?? 'Job Deleted' }}</td>
-                            @elseif ($item->reference_type === 'ACTIVITY')
-                                <td>{{ $item->activity->name ?? 'Activity Deleted' }}</td>
-                            @else
-                                <td>-</td>
-                            @endif
-                            <td>
-                                {{ $item->location ?? '-' }}
-                            </td>
-                            <td>
-                                @if ($item->reference_type === 'TASK')
-                                    @if (!$item->task)
-                                        <span class="badge badge-secondary">Job Deleted</span>
-                                    @elseif ($item->task?->priority === 'CRITICAL')
-                                        <span class="badge badge-danger">{{ $item->task?->priority }}</span>
-                                    @elseif ($item->task?->priority === 'HIGH')
-                                        <span class="badge badge-warning">{{ $item->task?->priority }}</span>
-                                    @elseif ($item->task?->priority === 'MEDIUM')
-                                        <span class="badge badge-info">{{ $item->task?->priority }}</span>
-                                    @elseif ($item->task?->priority === 'LOW')
-                                        <span class="badge badge-secondary">{{ $item->task?->priority }}</span>
-                                    @elseif ($item->task?->priority === null)
-                                        <span class="badge badge-secondary">-</span>
-                                    @endif
-                                @elseif ($item->reference_type === 'ACTIVITY')
-                                    -
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td>{{ $item->start_time ? \Carbon\Carbon::parse($item->start_time)->format('d-m-Y H:i') : '-' }}
-                            </td>
-                            <td>{{ $item->end_time ? \Carbon\Carbon::parse($item->end_time)->format('d-m-Y H:i') : '-' }}
-                            </td>
-                            <td style="color: greenyellow">
-                                {{ $item->duration ?? '-' }}
-                            </td>
-                            <td>{{ $item->description ?? '-' }}</td>
-                            <td>{{ $item->status ?? '-' }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                {{-- Kosongkan tbody, diisi via AJAX --}}
+                <tbody></tbody>
             </table>
         </div>
     </div>
-    <script>
-        var dataTable;
 
+    <script>
         $(document).ready(function() {
-            dataTable = $('#dataTable-1').DataTable({
+
+            // Destroy dulu jika sudah ada instance sebelumnya
+            if ($.fn.DataTable.isDataTable('#activityTable')) {
+                $('#activityTable').DataTable().destroy();
+            }
+
+            var dataTable = $('#activityTable').DataTable({
                 autoWidth: true,
                 order: [],
                 "lengthMenu": [
@@ -101,86 +56,121 @@
                     [16, 32, 64, "All"]
                 ]
             });
-        });
 
-        var filterUrl = "{{ route('activity_history.list.filter', $user->id) }}";
+            var filterUrl = "{{ route('activity_history.list.filter', $user->id) }}";
 
-        function fetchAndRender(params) {
-            $.ajax({
-                url: filterUrl,
-                data: params,
-                type: 'GET',
-                success: function(data) {
-                    dataTable.clear();
-                    data.forEach(function(item) {
-                        dataTable.row.add([
-                            item.activity_name,
-                            item.location,
-                            item.reference_type,
-                            item.start_time,
-                            item.end_time
-                        ]);
-                    });
-                    dataTable.draw();
-                },
-                error: function() {
+            function fetchAndRender(params) {
+                $.ajax({
+                    url: filterUrl,
+                    data: params,
+                    type: 'GET',
+                    beforeSend: function() {
+                        $('#btnCustomDate').prop('disabled', true).text('Loading...');
+                    },
+                    success: function(data) {
+                        dataTable.clear();
+
+                        if (data.length === 0) {
+                            dataTable.draw();
+                            return;
+                        }
+
+                        $.each(data, function(index, item) {
+                            // Kolom Priority
+                            var priorityBadge = '-';
+                            if (item.reference_type === 'TASK') {
+                                if (!item.priority) {
+                                    priorityBadge =
+                                        '<span class="badge badge-secondary">-</span>';
+                                } else if (item.priority === 'CRITICAL') {
+                                    priorityBadge =
+                                        '<span class="badge badge-danger">CRITICAL</span>';
+                                } else if (item.priority === 'HIGH') {
+                                    priorityBadge =
+                                        '<span class="badge badge-warning">HIGH</span>';
+                                } else if (item.priority === 'MEDIUM') {
+                                    priorityBadge =
+                                        '<span class="badge badge-info">MEDIUM</span>';
+                                } else if (item.priority === 'LOW') {
+                                    priorityBadge =
+                                        '<span class="badge badge-secondary">LOW</span>';
+                                }
+                            }
+
+                            // Kolom Reference Type label
+                            var refTypeLabel = '-';
+                            if (item.reference_type === 'TASK') {
+                                refTypeLabel = 'JOB';
+                            } else if (item.reference_type === 'ACTIVITY') {
+                                refTypeLabel = 'ACTIVITY PERSONAL';
+                            }
+
+                            dataTable.row.add([
+                                index + 1, // #
+                                refTypeLabel, // Reference Type
+                                item.activity_name, // Activity
+                                item.location ?? '-', // Location
+                                priorityBadge, // Priority
+                                item.start_time, // Start Time
+                                item.end_time, // End Time
+                                '<span style="color: greenyellow">' + (item.duration ??
+                                    '-') + '</span>', // Duration
+                                item.description ?? '-', // Description
+                                item.status ?? '-' // Status
+                            ]);
+                        });
+
+                        dataTable.draw();
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            theme: 'dark',
+                            text: 'Failed to fetch data. ' + (xhr.responseJSON?.message ?? ''),
+                        });
+                    },
+                    complete: function() {
+                        $('#btnCustomDate').prop('disabled', false).text('Apply');
+                    }
+                });
+            }
+
+            // Load data awal
+            fetchAndRender({});
+
+            // Custom Date Range
+            $('#btnCustomDate').on('click', function() {
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+
+                if (!startDate || !endDate) {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
+                        icon: 'warning',
+                        title: 'Warning',
                         theme: 'dark',
-                        text: 'Failed to fetch data.',
+                        text: 'Please select both start and end date.'
                     });
+                    return;
                 }
-            });
-        }
 
-        // Quick filter buttons
-        $('.filter-btn').on('click', function() {
-            $('.filter-btn').removeClass('active');
-            $(this).addClass('active');
-            $('#startDate').val('');
-            $('#endDate').val('');
+                if (startDate > endDate) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        theme: 'dark',
+                        text: 'Start date cannot be after end date.'
+                    });
+                    return;
+                }
 
-            var filter = $(this).data('filter');
-            if (filter === 'all') {
-                fetchAndRender({});
-            } else {
+                $('.filter-btn').removeClass('active');
                 fetchAndRender({
-                    filter: filter
+                    start_date: startDate,
+                    end_date: endDate
                 });
-            }
-        });
-
-        // Custom date range
-        $('#btnCustomDate').on('click', function() {
-            var startDate = $('#startDate').val();
-            var endDate = $('#endDate').val();
-
-            if (!startDate || !endDate) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Warning',
-                    theme: 'dark',
-                    text: 'Please select both start and end date.',
-                });
-                return;
-            }
-
-            if (startDate > endDate) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Warning',
-                    theme: 'dark',
-                    text: 'Start date cannot be after end date.',
-                });
-                return;
-            }
-
-            $('.filter-btn').removeClass('active');
-            fetchAndRender({
-                start_date: startDate,
-                end_date: endDate
             });
+
         });
     </script>
 @endsection
