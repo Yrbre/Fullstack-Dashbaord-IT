@@ -65,6 +65,7 @@ class DashboardOperatorController extends Controller
             ->user_task()
             ->where('status', 'COMPLETED')
             ->where('task_level', 'PERSONAL')
+            ->whereMonth('tasks.created_at', Carbon::now()->month)
             ->orderBy('actual_end', 'desc')
             ->get();
 
