@@ -115,7 +115,8 @@
 
                     <div class="form-group col-6">
                         <label for="simple-select2">End User / Dept PIC</label>
-                        <select class="form-control select2" id="select-personal" name="enduser_personal">
+                        <select class="form-control select2 @error('enduser_personal') is-invalid @enderror"
+                            id="select-personal" name="enduser_personal">
                             <optgroup label="Select Personal">
                                 <option value="" selected disabled>Select User</option>
                                 @foreach ($endUser as $item)
@@ -125,8 +126,11 @@
                                 <option value="OTHER" @if (old('enduser_personal') == 'OTHER') selected @endif>OTHER</option>
                             </optgroup>
                         </select>
+                        @error('enduser_personal')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="form-group col-6" id="otherPersonalInput" style="display: none;">
+                    {{-- <div class="form-group col-6" id="otherPersonalInput" style="display: none;">
                         <label for="other_personal">Specify User</label>
                         <input type="text" class="uppercase form-control" id="other_personal" name="other_personal"
                             placeholder="Enter custom personal" value="{{ old('other_personal') }}">
@@ -137,7 +141,7 @@
                             name="other_personal_department" placeholder="Enter custom department"
                             value="{{ old('other_personal_department') }}" pattern="^\S+$"
                             oninput="this.value = this.value.replace(/\s+/g, '')">
-                    </div>
+                    </div> --}}
 
                     <input type="hidden" name="status" value="NEW">
                     {{-- <div class="form-group col-6">
@@ -165,8 +169,7 @@
                             <optgroup label="Select Location">
                                 <option value="" selected disabled>Select Location</option>
                                 @foreach ($location as $item)
-                                    <option value="{{ $item->id }}"
-                                        @if (old('location_id') == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}" @if (old('location_id') == $item->id) selected @endif>
                                         {{ $item->building }} - {{ $item->location }}</option>
                                 @endforeach
                                 {{-- <option value="OTHER" @if (old('location_id') == 'OTHER') selected @endif>OTHER</option> --}}

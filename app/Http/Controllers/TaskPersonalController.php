@@ -119,16 +119,16 @@ class TaskPersonalController extends Controller
         }
 
         // Logic Other Location
-        $location_ID = null;
-        if (($data['location_id'] ?? null) === 'OTHER') {
-            $location = Location::firstOrCreate([
-                'location'   => $data['other_location'],
-                'building'   => $data['other_building'],
-            ]);
-            $location_ID = $location->id;
-        } else {
-            $location_ID = $data['location_id'] ?? null;
-        }
+        // $location_ID = null;
+        // if (($data['location_id'] ?? null) === 'OTHER') {
+        //     $location = Location::firstOrCreate([
+        //         'location'   => $data['other_location'],
+        //         'building'   => $data['other_building'],
+        //     ]);
+        //     $location_ID = $location->id;
+        // } else {
+        //     $location_ID = $data['location_id'] ?? null;
+        // }
 
         // Logic Set On Duty & Compeleted
         if ($data['status'] === 'ON DUTY') {
@@ -151,7 +151,7 @@ class TaskPersonalController extends Controller
             $data['task_load'] = 100;
         }
 
-        DB::transaction(function () use ($data, $enduserId, $location_ID) {
+        DB::transaction(function () use ($data, $enduserId) {
 
 
             $task = Tasks::create([
@@ -166,7 +166,7 @@ class TaskPersonalController extends Controller
                 'progress'      => $data['progress'],
                 'task_load'     => $data['task_load'],
                 'delivered'     => Auth::user()->id,
-                'location_id'   => $location_ID,
+                'location_id'   => $data['location_id'],
                 'in_timeline'   => $data['in_timeline'],
                 'schedule_start' => $data['schedule_start'],
                 'schedule_end'  => $data['schedule_end'],
@@ -177,7 +177,7 @@ class TaskPersonalController extends Controller
 
             // Logic create activity history when status ON DUTY
             if ($data['status'] === 'ON DUTY') {
-                $locationName = Location::find($location_ID)->location;
+                $locationName = Location::find($data['location_id'])->location;
                 ActivityHistory::create([
                     'user_id'           => $data['assign_to'],
                     'reference_id'      => $task->id,
