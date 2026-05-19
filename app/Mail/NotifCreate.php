@@ -17,7 +17,8 @@ class NotifCreate extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public object $data
+        public object $data,
+        public object $taskData,
     ) {
         //
     }
@@ -30,7 +31,7 @@ class NotifCreate extends Mailable
         return new Envelope(
             from: new Address('noreply.actmon@intra.tifico.co.id', 'Activity Monitoring'),
             replyTo: [new Address('support@tifico.co.id', 'IT Support')],
-            subject: $this->data->priority . '-' . $this->data->name,
+            subject: 'JOB ASSIGNED to ' . $this->taskData->user->name . ' : ' . $this->data->name,
         );
     }
 

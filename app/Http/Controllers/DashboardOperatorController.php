@@ -381,7 +381,7 @@ class DashboardOperatorController extends Controller
         $member = User::where('id', auth()->id())->pluck('id')->toArray();
         $emails = User::where('id', $member)->pluck('email')->first();
 
-        $data['priority'] = 'MEDIUM';
+        $data['priority'] = 'LOW';
         $data['category_id'] = '6';
         $data['assign_to'] = auth()->id();
         $data['task_level'] = 'PERSONAL';
@@ -436,8 +436,9 @@ class DashboardOperatorController extends Controller
 
 
         try {
-            $mailData = (object) $data;
-            Mail::to($emails)->send(new NotifCreate($mailData));
+            $mailData   = (object) $data;
+            $task       = (object) $task;
+            Mail::to($emails)->send(new NotifCreate($mailData, $task));
         } catch (\Exception $e) {
             // Log the error or handle it as needed
             Log::error('Failed to send email: ' . $e->getMessage());

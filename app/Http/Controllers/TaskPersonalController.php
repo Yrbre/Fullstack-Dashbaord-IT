@@ -150,8 +150,8 @@ class TaskPersonalController extends Controller
         if ($data['relation_task'] === null) {
             $data['task_load'] = 100;
         }
-
-        DB::transaction(function () use ($data, $enduserId) {
+        $task = null;
+        DB::transaction(function () use ($data, $enduserId, &$task) {
 
 
             $task = Tasks::create([
@@ -209,9 +209,10 @@ class TaskPersonalController extends Controller
             ->all();
 
         $mailData = (object) $data;
+        $taskData = (object) $task;
         if (!empty($deliverableEmails)) {
             try {
-                Mail::to($deliverableEmails)->send(new NotifCreate($mailData));
+                Mail::to($deliverableEmails)->send(new NotifCreate($mailData, $taskData));
             } catch (Throwable $e) {
                 Log::error('Failed to send task notification email.', [
                     'error' => $e->getMessage(),
@@ -299,7 +300,7 @@ class TaskPersonalController extends Controller
             $newMemberEmails = User::whereIn('id', $newMembers)->pluck('email')->toArray();
             $mailData = (object) $data;
             try {
-                Mail::to($newMemberEmails)->send(new NotifCreate($mailData));
+                Mail::to($newMemberEmails)->send(new NotifCreate($mailData, $task));
             } catch (Throwable $e) {
                 Log::error('Failed to send task update notification email.', [
                     'error' => $e->getMessage(),
