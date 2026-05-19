@@ -215,6 +215,15 @@ class DashboardOperatorController extends Controller
     public function idleTask(string $id)
     {
         $task = Tasks::findOrFail($id);
+        $activityHistory = ActivityHistory::where('reference_type', 'TASK')
+            ->where('reference_id', $task->id)
+            ->where('user_id', auth()->id())
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+        if (!$activityHistory) {
+            return redirect()->route('dashboard_operator.index')->with('error', 'No active session found for this task.');
+        }
         return view('pages.dashboard_operator.idle_task', compact('task'));
     }
 
@@ -269,6 +278,16 @@ class DashboardOperatorController extends Controller
     public function idle(string $id)
     {
         $activityHistory = ActivityHistory::findOrFail($id);
+        $activeActivity = ActivityHistory::where('reference_type', 'ACTIVITY')
+            ->where('reference_id', $activityHistory->reference_id)
+            ->where('user_id', auth()->id())
+            ->whereNull('end_time')
+            ->latest()
+            ->first();
+        if (!$activeActivity) {
+            return redirect()->route('dashboard_operator.index')->with('error', 'No active session found for this activity.');
+        }
+
         return view('pages.dashboard_operator.idle', compact('activityHistory'));
     }
 
