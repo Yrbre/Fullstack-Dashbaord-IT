@@ -402,15 +402,92 @@
                         <span>INFORMATION</span>
                     </div>
 
-                    <div class="timeline">
-                        {{-- Schedule Info --}}
-                        <div class="timeline-item">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-label">Take At</div>
-                            <div class="timeline-date">Date & Time:
-                                {{ $data->start_time ? \Carbon\Carbon::parse($data->start_time)->format('d M Y H:i') : '-' }}
+                    <div class="info-item">
+                        <div class="info-label">
+                            <span>⚡</span> Priority Level
+                        </div>
+                        @php
+                            $priorityClass = '';
+                            if (strtolower($task->priority) == 'high' || strtolower($task->priority) == 'tinggi') {
+                                $priorityClass = 'priority-high';
+                            } elseif (
+                                strtolower($task->priority) == 'medium' ||
+                                strtolower($task->priority) == 'sedang'
+                            ) {
+                                $priorityClass = 'priority-medium';
+                            } elseif (strtolower($task->priority) == 'low' || strtolower($task->priority) == 'rendah') {
+                                $priorityClass = 'priority-low';
+                            }
+                        @endphp
+                        <div>
+                            <span class="priority-badge {{ $priorityClass }}">
+                                {{ $task->priority }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-container">
+                        <div class="schedule-header">
+                            <span>📅</span> Schedule Timeline
+                        </div>
+
+                        @php
+                            $start = \Carbon\Carbon::parse($data->schedule_start);
+                            $end = \Carbon\Carbon::parse($data->schedule_end);
+                            $hours = $start->diffInHours($end);
+                            $days = $start->diffInDays($end);
+                            $isOngoing = $start->isPast() && $end->isFuture();
+                            $isUpcoming = $start->isFuture();
+                            $isCompleted = $end->isPast();
+                        @endphp
+
+                        <div class="timeline">
+                            <!-- Start Time -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">START</div>
+                                <div class="timeline-date">{{ $start->format('l, d F Y') }}</div>
+                                <div class="timeline-time">{{ $start->format('H:i') }} WIB</div>
+                            </div>
+
+                            <!-- End Time -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">END</div>
+                                <div class="timeline-date">{{ $end->format('l, d F Y') }}</div>
+                                <div class="timeline-time">{{ $end->format('H:i') }} WIB</div>
                             </div>
                         </div>
+
+
+
+                        <div class="schedule-header">
+                            <span>⌚</span> TAKE TIME :
+                        </div>
+
+                        <div class="timeline">
+                            {{-- Schedule Info --}}
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">Take At</div>
+                                <div class="timeline-date">Date & Time:
+                                    {{ $data->start_time ? \Carbon\Carbon::parse($data->start_time)->format('d M Y H:i') : '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="schedule-header">
+                            <span>📝</span> Description
+                        </div>
+                        <div class="timeline">
+                            <!-- Start Time -->
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-label">Description</div>
+                                <div class="timeline-date">{{ $data->description }}</div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
