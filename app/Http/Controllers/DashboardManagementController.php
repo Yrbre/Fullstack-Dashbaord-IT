@@ -71,6 +71,7 @@ class DashboardManagementController extends Controller
             ->whereHas('user')
             ->where('status', '!=', 'COMPLETED')
             ->where('task_level', 'DEPARTMENT')
+            ->whereYear('tasks.created_at', Carbon::now()->year)
             ->get()
             ->map(function ($task) {
                 $totalWeight = $task->children->sum(fn($child) => (float) $child->task_load);
@@ -92,6 +93,7 @@ class DashboardManagementController extends Controller
             ->whereHas('user')
             ->where('status', 'COMPLETED')
             ->where('task_level', 'DEPARTMENT')
+            ->whereYear('tasks.created_at', Carbon::now()->year)
             ->get();
 
         $weight = Tasks::withSum('children', 'task_load')->get()->pluck('children_sum_task_load', 'id');
