@@ -19,7 +19,7 @@ class HolidayService
         $this->calenderId = urlencode('en.indonesian#holiday@group.v.calendar.google.com');
     }
 
-    public function getHolidays(int $year, bool $includeJointHoliday = true): Collection
+    public function getHolidays(int $year, bool $includeJointHoliday = false): Collection
     {
         $cacheKey = "holidays_{$year}_" . ($includeJointHoliday ? 'with' : 'without') . "_joint";
 
@@ -46,18 +46,18 @@ class HolidayService
         });
     }
 
-    public function getHolidayDates(int $year, bool $includeJointHoliday = true): Collection
+    public function getHolidayDates(int $year, bool $includeJointHoliday = false): Collection
     {
         return $this->getHolidays($year, $includeJointHoliday)->pluck('date');
     }
 
-    public function isHoliday(string $date, bool $includeJointHoliday = true): bool
+    public function isHoliday(string $date, bool $includeJointHoliday = false): bool
     {
         $year = Carbon::parse($date)->year;
         return $this->getHolidayDates($year, $includeJointHoliday)->contains($date);
     }
 
-    public function countWorkingMinutes(Carbon $start, Carbon $end, bool $includeJointHoliday = true): int
+    public function countWorkingMinutes(Carbon $start, Carbon $end, bool $includeJointHoliday = false): int
     {
         $totalMinutes = 0;
         $current = $start->copy();
